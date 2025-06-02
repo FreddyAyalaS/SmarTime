@@ -1,4 +1,4 @@
-# SmarTime - Proyecto Completo
+# SmarTime
 
 Este repositorio contiene el proyecto SmarTime, una plataforma web para gestionar el tiempo de estudio de los estudiantes de la Facultad de Sistemas e Informática de la UNMSM.
 
