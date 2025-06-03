@@ -1,0 +1,63 @@
+/* src/styles/TopHeader.css */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Adjust padding: 
+       - Keep left padding (e.g., 30px) for the title.
+       - Reduce right padding (e.g., 15px or 20px) for the icons.
+    */
+    padding: 0 20px 0 30px; /* Example: Top/Bottom 0, Right 20px, Left 30px */
+    background-color: #ffffff;
+    height: 70px;
+    box-sizing: border-box; /* Already there, which is good */
+    width: 100%; /* Explicitly set width to be sure it spans full width */
+}
+
+.top-header-title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: -0.5px;
+}
+
+.top-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Adjust gap between icons if needed, e.g., 15px or 20px */
+}
+
+.icon-button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.icon-button img {
+    display: block;
+}
+
+.notification-button {
+    background-color: #f0f2f5;
+    width: 42px;
+    height: 42px;
+}
+
+.notification-button img {
+    width: 100px;
+    height: 40px;
+   
+}
+
+.profile-button img {
+    width: 60px;
+    height: 202px;
+    border-radius: 50%;
+  
+}

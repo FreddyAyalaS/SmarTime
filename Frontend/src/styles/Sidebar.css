@@ -1,0 +1,101 @@
+/* src/styles/Sidebar.css */
+.sidebar {
+    width: 260px; /* Adjust width as needed */
+    height: 100vh;
+    background-color: #A690A4; /* Main background color from image */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color: #383838; /* Dark grey text, adjust as needed */
+    position: fixed; /* Or absolute, depending on layout */
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif; /* Choose a suitable font */
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px; /* Space below header */
+    padding-left: 10px; /* Align with nav items */
+}
+
+.sidebar-logo {
+    height: 45px; /* Adjust logo size */
+    width: auto;
+}
+
+.sidebar-title {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #4A4A9D; /* Purple color for "SmarTime" */
+    margin: 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin-bottom: 8px; /* Space between nav items */
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between icon and text */
+    padding: 12px 15px; /* Padding inside each nav item */
+    text-decoration: none;
+    color: #383838; /* Text color for nav items */
+    border-radius: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: 0.95em;
+    font-weight: 500;
+}
+
+.nav-icon {
+    width: 22px; /* Icon size */
+    height: 22px;
+    /* For SVG icons, you might control color via fill or filter
+       e.g., filter: brightness(0) saturate(100%) invert(16%) sepia(0%) saturate(1%) hue-rotate(344deg) brightness(96%) contrast(89%);
+       to make them match the #383838 text color.
+       Or ensure your SVGs are designed to inherit color (fill="currentColor")
+    */
+}
+
+.nav-item:hover {
+    background-color: #967c95; /* Slightly darker shade for hover */
+    color: #FFFFFF; /* White text on hover */
+}
+
+.nav-item.active {
+    background-color: #FFFFFF33; /* White with transparency for active item (as in image) */
+    /* Or a solid color like #8c6f8b; */
+    color: #2c2c2c; /* Darker text for active, or keep it #383838 */
+    font-weight: 600;
+}
+
+
+
+.sidebar-footer {
+    margin-top: auto; /* Pushes the logout button to the bottom */
+    padding-top: 20px; /* Space above logout button */
+    /* border-top: 1px solid #967c95;  Optional separator */
+}
+
+.logout-button {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #967c95;
+    color: #FFFFFF;
+}

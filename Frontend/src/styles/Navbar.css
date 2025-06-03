@@ -1,0 +1,67 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #A690A4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ahora separa .navbar-left de .navbar-content-right */
+  padding: 10px 40px;
+  z-index: 1000;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 100px; /* O el tamaño que desees */
+  margin-left: 20px;
+}
+
+/* Nuevo contenedor para la parte derecha (links + botón) */
+.navbar-content-right {
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Espacio entre el bloque de links y el botón. Ajusta según necesites. */
+}
+
+/* Estilos para la lista de enlaces de navegación */
+.navbar-right ul {
+  display: flex;
+  align-items: center;
+  gap: 100px; /* MUY IMPORTANTE: Reducido de 100px. Este es el espacio ENTRE los links. Ajusta según necesites. */
+  list-style: none;
+  margin-right: 60px; /* Quitar márgenes por defecto de ul */
+  padding: 0; /* Quitar paddings por defecto de ul */
+  /* margin-right: 0px; /* Ya no es necesario aquí si .navbar-content-right usa gap */
+}
+
+/* Estilos para los elementos <a> dentro de los links de navegación.
+   Anteriormente tenías una clase .nav-links li a, ahora aplicamos directamente a los <a> dentro de .navbar-right ul */
+.navbar-right ul li a {
+  text-decoration: none;
+  color: #000000;
+  font-weight: 600;
+}
+
+.loginButton {
+  background-color: #212121;
+  color: white;
+  padding: 10px 15px;
+   margin-right: 70px; 
+  /* margin-left: 0; /* Puedes mantenerlo o quitarlo si no es necesario */
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+.Tittle{
+  color: #6261DA;
+  margin-left: 50px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+}
