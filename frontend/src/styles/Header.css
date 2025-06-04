@@ -1,0 +1,101 @@
+/* src/styles/Header.css */
+
+.app-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Separa la sección izquierda de la derecha */
+  height: 70px; /* Altura del header, ajusta según tu prototipo */
+  padding: 0 ; /* Padding lateral */
+  background-color: #FFFFFF; /* Fondo blanco */ /* Borde inferior sutil (gris claro) */
+  box-sizing: border-box;
+  width: 100%; /* Asegura que ocupe todo el ancho disponible del contenedor padre */
+}
+
+.app-header-left {
+  display: flex;
+  align-items: center;
+}
+
+.app-header-logo-link {
+  text-decoration: none;
+  /* Si el logo "SmartTime" no es parte del título de la página,
+     podrías ocultarlo o quitarlo del header si el sidebar ya lo tiene.
+     Si quieres mantenerlo, considera su estilo: */
+  display: none; /* Oculto por defecto, ya que el sidebar ya tiene "SmartTime" */
+  /* Si lo quieres visible:
+  margin-right: 25px;
+  */
+}
+
+.app-header-logo-text {
+  font-size: 1.5rem; /* Tamaño si es texto */
+  font-weight: bold;
+  color: #4A2E5E; /* Color morado oscuro, similar al sidebar */
+}
+
+.app-header-page-title {
+  font-size: 1.75rem; /* Tamaño del título "Configuración", "Dashboard", etc. */
+  font-weight: bold;
+  color: #111827; /* Negro o un gris muy oscuro para el título */
+  margin: 0; /* Quita márgenes por defecto del h1 */
+  /* Si el logo está visible, puedes añadir un margen izquierdo:
+  margin-left: 20px;
+  */
+}
+
+.app-header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espacio entre los botones de íconos */
+}
+
+.app-header-icon-button {
+  background-color: transparent;
+  border: none;
+  padding: 8px; /* Padding para hacer el área clickeable más grande */
+  border-radius: 50%; /* Para hacerlo circular si el fondo fuera visible */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.app-header-icon-button:hover {
+  background-color: #F3F4F6; /* Un gris muy claro para el hover del botón del ícono */
+}
+
+.app-header-icon-button img {
+  width: 60px; /* Ajusta el tamaño de tus íconos SVG */
+  height: 60px;
+}
+
+/* Específicamente para el ícono de campana si tiene ese fondo circular claro */
+.app-header-icon-button[aria-label="Notificaciones"] {
+  background-color: #F3F4F6; /* Fondo gris muy claro para el ícono de campana */
+  border-radius: 50%;
+}
+.app-header-icon-button[aria-label="Notificaciones"]:hover {
+  background-color: #E5E7EB; /* Un poco más oscuro en hover */
+}
+
+
+.app-header-user-menu {
+  /* El botón dentro ya tiene la clase icon-button */
+  /* Si este div necesita estilos adicionales, añádelos aquí */
+}
+
+/* Específicamente para el ícono de usuario que es un círculo negro */
+.app-header-icon-button[aria-label="Menú de usuario"] img {
+  /* Si tu SVG ya es un círculo negro, no necesitas mucho más.
+     Si es un ícono simple que quieres poner DENTRO de un círculo negro: */
+  background-color: #000000;
+  border-radius: 50%;
+  padding: 4px; /* Pequeño padding si el ícono no llena el círculo */
+  /* Asegúrate que el SVG del usuario sea blanco o de un color que contraste con el fondo negro.
+     Podrías usar `filter: invert(1)` si el SVG es negro y quieres que sea blanco. */
+  /* filter: brightness(0) invert(1); */ /* Si el SVG es negro y quieres que sea blanco */
+}
+.app-header-icon-button[aria-label="Menú de usuario"]:hover {
+  background-color: #F3F4F6; /* Para el hover del botón completo */
+}
