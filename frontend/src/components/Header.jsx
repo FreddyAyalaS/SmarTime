@@ -1,14 +1,13 @@
-// src/components/Header/Header.jsx
+
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate
-import UserIconPlaceholder from '../assets/Icons/user-profile.svg'; // Asegúrate que las rutas sean correctas
+import { Link, useNavigate } from 'react-router-dom'; 
+import UserIconPlaceholder from '../assets/Icons/user-profile.svg'; 
 import BellIconPlaceholder from '../assets/Icons/notification-bell.svg';
-// import './Header.css'; // O './Header.module.css' si lo tienes ahí
 import '../styles/Header.css'
 const Header = ({ pageTitle = "Enfocado en Mejorar" }) => {
-  const navigate = useNavigate(); // Hook para la navegación programática
+  const navigate = useNavigate(); 
 
-  // Nombres de clase (como los tenías)
+
   const headerContainerClasses = "app-header-container";
   const leftSectionClasses = "app-header-left";
   const logoLinkClasses = "app-header-logo-link";
@@ -16,10 +15,10 @@ const Header = ({ pageTitle = "Enfocado en Mejorar" }) => {
   const pageTitleClasses = "app-header-page-title";
   const rightSectionClasses = "app-header-right";
   const iconButtonClasses = "app-header-icon-button";
-  const userMenuClasses = "app-header-user-menu"; // Este es el div que envuelve el botón de usuario
+  const userMenuClasses = "app-header-user-menu"; 
 
   const handleUserProfileClick = () => {
-    navigate('/settings'); // Redirige a la página de configuración
+    navigate('/settings'); 
   };
 
   return (
@@ -40,12 +39,11 @@ const Header = ({ pageTitle = "Enfocado en Mejorar" }) => {
             type="button"
             className={iconButtonClasses}
             aria-label="Menú de usuario"
-            onClick={handleUserProfileClick} // <--- AÑADE EL MANEJADOR DE CLIC AQUÍ
+            onClick={handleUserProfileClick} 
           >
             <img src={UserIconPlaceholder} alt="Usuario" />
           </button>
-          {/* Aquí es donde podrías tener un menú desplegable en el futuro.
-              Por ahora, todo el botón del ícono de usuario redirige. */}
+          {/*  */}
         </div>
       </div>
     </header>

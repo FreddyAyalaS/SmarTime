@@ -2,11 +2,7 @@
 import React from 'react';
 
 const Button = ({ children, onClick, type = 'button', variant = 'primary', fullWidth = false, disabled = false, className = '' /* Dejamos className por si se quiere pasar algo externo */ }) => {
-  // La lógica de qué clases aplicar basada en 'variant' o 'fullWidth' se haría cuando se añadan los estilos.
-  // Por ahora, solo pasamos las props básicas al elemento <button>.
 
-  // Estilos en línea solo como placeholders para ver las variantes (¡esto NO es lo ideal para producción!)
-  // Se reemplazarían completamente con clases CSS.
   let buttonStyle = {
     padding: '10px 15px',
     margin: '5px',
@@ -42,8 +38,8 @@ const Button = ({ children, onClick, type = 'button', variant = 'primary', fullW
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={className} // Para cualquier clase externa que se quiera pasar
-      style={buttonStyle} // ¡SOLO PARA DEMOSTRACIÓN VISUAL INICIAL! Quitar al añadir CSS real.
+      className={className} 
+      style={buttonStyle} 
     >
       {children}
     </button>

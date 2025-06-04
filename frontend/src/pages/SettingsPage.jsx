@@ -1,7 +1,7 @@
 // src/pages/SettingsPage/SettingsPage.jsx
 import React, { useState } from 'react';
 // import styles from './SettingsPage.module.css'; // Si usas CSS Modules
-// import './SettingsPage.css'; // Si usas CSS global para esta página
+import '../styles/SettingsPage.css'; 
 
 // Importa tus componentes reutilizables
 import Input from '../components/Input'; // Ajusta la ruta si es necesario
@@ -38,12 +38,12 @@ const EditProfileSection = () => {
     <div className={sectionClasses}>
       <div className={formContainerClasses}>
         <form onSubmit={handleProfileSubmit} className={formClasses}>
-          <Input label="Nombre real" name="name" value={name} onChange={(e) => setName(e.target.value)} />
-          <Input label="Nombre de Usuario" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-          <Input label="Contraseña" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Nueva contraseña (opcional)" />
-          <Input label="Email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <Input label="Carrera" name="career" value={career} onChange={(e) => setCareer(e.target.value)} />
-          <Input label="Fecha de nacimiento" name="birthDate" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
+          <Input label="Nombre real:   " name="name" value={name} onChange={(e) => setName(e.target.value)} />
+          <Input label="Nombre de Usuario:   " name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <Input label="Contraseña:   " name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Nueva contraseña (opcional)" />
+          <Input label="Email:   " name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input label="Carrera:   " name="career" value={career} onChange={(e) => setCareer(e.target.value)} />
+          <Input label="Fecha de nacimiento:   " name="birthDate" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
         </form>
       </div>
       <div className={profilePictureContainerClasses}>
@@ -74,7 +74,6 @@ const ToggleSwitch = ({ label, checked, onChange, name }) => {
       <label htmlFor={name} className={switchLabel}>{label}</label>
       <label className="relative inline-flex items-center cursor-pointer"> {/* Clases de Tailwind si las tuvieras */}
         <input type="checkbox" id={name} name={name} checked={checked} onChange={onChange} className="sr-only peer" /> {/* sr-only para ocultar checkbox real */}
-        <div className={`w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-500 peer-checked:bg-blue-600 ${switchSlider}`}></div>
       </label>
     </div>
   );

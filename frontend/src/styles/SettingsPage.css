@@ -1,0 +1,222 @@
+/* src/pages/SettingsPage/SettingsPage.css */
+
+/* --- Estilos Generales de la Página de Configuración --- */
+.settings-page-container {
+  padding: 20px 30px; /* Ajusta el padding según necesites */
+  background-color: #f9fafb; /* Un gris muy claro para el fondo de la página, si es diferente al del layout principal */
+  border-radius: 8px; /* Si quieres que la página en sí tenga bordes redondeados dentro del layout */
+  /* Considera un height: 100%; si quieres que ocupe todo el espacio del <main> */
+}
+
+/* Si decides tener un título H1 dentro de SettingsPage además del Header global */
+/*
+.settings-page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 20px;
+}
+*/
+
+/* --- Estilos para las Pestañas (Tabs) --- */
+.settings-tabs-container {
+  display: flex;
+  margin-bottom: 25px; /* Espacio entre las pestañas y el contenido */
+  border-bottom: 2px solid #e5e7eb; /* Línea sutil debajo de las pestañas inactivas */
+}
+
+.settings-tab-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280; /* Color para pestañas inactivas */
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent; /* Para el efecto de la línea activa */
+  cursor: pointer;
+  margin-right: 5px; /* Espacio entre botones de pestaña */
+  transition: color 0.2s ease, border-color 0.2s ease;
+  margin-bottom: -2px; /* Para que el borde activo sobreescriba el borde del contenedor */
+}
+
+.settings-tab-button:hover {
+  color: #374151; /* Un gris más oscuro en hover */
+}
+
+.settings-tab-button-active {
+  color: #3b82f6; /* Color azul para la pestaña activa (ajusta a tu prototipo) */
+  border-bottom: 2px solid #3b82f6; /* Línea azul debajo de la pestaña activa */
+  font-weight: 600;
+}
+
+.settings-tab-content {
+  background-color: #ffffff; /* Fondo blanco para el contenido de la pestaña */
+  padding: 25px;
+  border-radius: 0 0 8px 8px; /* Bordes redondeados solo abajo si las pestañas están encima */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* Si las pestañas están dentro del card principal, este no necesita su propio fondo/sombra */
+}
+
+
+/* --- Estilos para la Sección Editar Perfil --- */
+.settings-edit-profile-section {
+  display: grid; /* Usamos grid para layout de dos columnas */
+  grid-template-columns: 2fr 1fr; /* Columna del formulario más ancha que la de la foto */
+  gap: 40px; /* Espacio entre el formulario y la sección de la foto */
+  align-items: flex-start; /* Alinea los items al inicio de su celda de grid */
+}
+
+.settings-form-container {
+  /* No necesita mucho si el grid ya lo posiciona */
+}
+
+.settings-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px; /* Espacio entre cada Input */
+}
+
+.settings-profile-picture-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.settings-profile-picture {
+  width: 180px; /* Ajusta el tamaño de la foto de perfil */
+  height: 180px;
+  background-color: #e7cccc; /* Fondo negro como en el prototipo */
+  border-radius: 50%; /* Círculo perfecto */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Para que la imagen no se salga si no es circular */
+  color: white; /* Para el placeholder 👤 */
+}
+
+.settings-profile-picture img { /* Si usas una etiqueta <img> dentro */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Estilos para el botón "Cambiar foto" (usa las clases de tu componente Button) */
+/* Si necesitas anular o añadir algo específico: */
+.settings-change-photo-button {
+  /* Asume que tu componente Button con variant="secondary" ya se ve como el prototipo (negro) */
+  /* Si no, podrías hacer:
+  background-color: #1f2937; !important;
+  color: white !important;
+  padding: 8px 16px !important;
+  font-size: 0.875rem !important;
+  */
+  /* Basado en tu prototipo, es un botón negro, así que la variante 'primary' o una 'dark' sería más adecuada
+     si tu 'secondary' es gris. Asumamos que tienes una variante que lo hace negro. */
+}
+
+.settings-save-button-container {
+  grid-column: 1 / -1; /* Hace que el botón ocupe todas las columnas del grid */
+  display: flex;
+  justify-content: flex-end; /* Alinea el botón a la derecha */
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb; /* Línea separadora */
+}
+/* El botón "Guardar" debería usar la variante 'success' de tu componente Button
+   para que sea verde, como: <Button variant="success">Guardar</Button> */
+
+
+/* --- Estilos para la Sección Preferencias --- */
+.settings-preferences-section {
+  display: flex;
+  flex-direction: column;
+  gap: 25px; /* Espacio entre cada item de preferencia */
+}
+
+.settings-preference-item {
+  display: flex;
+  justify-content: space-between; /* Label a la izquierda, switch a la derecha */
+  align-items: center;
+  padding: 10px 0; /* Espacio vertical pequeño */
+  /* border-bottom: 1px solid #f3f4f6; /* Línea sutil entre items (opcional) */
+}
+
+/* Estilos para el ToggleSwitch (Placeholder CSS, ya que el JSX usa clases Tailwind) */
+/* DEBES RECREAR ESTE SWITCH CON CSS PURO SI NO USAS TAILWIND */
+/* Este CSS es una aproximación y puede necesitar ajustes */
+.settings-toggle-switch-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; /* Para que el label y el switch ocupen todo el ancho del item */
+}
+
+.settings-toggle-label {
+  font-size: 1rem;
+  color: #1f2937; /* Color de texto oscuro */
+  font-weight: 500;
+}
+
+/* Estilos para el switch visual (si no usas las clases de Tailwind del JSX) */
+/* Este es un ejemplo básico de cómo podrías hacerlo.
+   El JSX que proporcionaste para ToggleSwitch ya tiene clases de Tailwind que hacen esto.
+   Si quieres "solo React" sin Tailwind, debes recrear este efecto con CSS puro. */
+
+/* Contenedor del switch visual */
+.settings-toggle-slider-container { /* Corresponde a la <label> que envuelve el input y el div visual */
+  position: relative;
+  display: inline-block;
+  width: 44px;  /* w-11 (2.75rem) */
+  height: 24px; /* h-6 (1.5rem) */
+}
+
+/* El input real (oculto) */
+.settings-toggle-input { /* Corresponde al <input type="checkbox" className="sr-only peer"> */
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* El fondo del switch */
+.settings-toggle-slider { /* Corresponde al <div> que simula el slider */
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc; /* bg-gray-300 */
+  transition: .4s;
+  border-radius: 34px; /* rounded-full */
+}
+
+/* El círculo que se mueve */
+.settings-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 20px; /* h-5 (1.25rem) */
+  width: 20px;  /* w-5 (1.25rem) */
+  left: 2px;   /* left-[2px] */
+  bottom: 2px; /* top-[2px] (ajustado para bottom) */
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%; /* rounded-full */
+}
+
+/* Cuando el input está checked, cambia el fondo del slider */
+.settings-toggle-input:checked + .settings-toggle-slider {
+  background-color: #2563eb; /* peer-checked:bg-blue-600 (ajusta color) */
+}
+
+/* Cuando el input está checked, mueve el círculo */
+.settings-toggle-input:checked + .settings-toggle-slider:before {
+  transform: translateX(20px); /* peer-checked:after:translate-x-full (ajusta la distancia) */
+}
+
+/* Estilos de foco (opcional, pero bueno para accesibilidad) */
+.settings-toggle-input:focus + .settings-toggle-slider {
+  box-shadow: 0 0 1px #2563eb; /* peer-focus:ring-4 ... */
+}
+
+/* El botón Guardar en Preferencias reutiliza .settings-save-button-container */

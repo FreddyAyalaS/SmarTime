@@ -1,4 +1,4 @@
-// src/components/Layout.jsx
+
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
@@ -7,7 +7,7 @@ import '../styles/Sidebar.css'
 
 const Layout = () => {
   return (
-    <div className="app-layout"> {/* Clase global */}
+    <div className="app-layout"> {}
       <div className="sidebar-placeholder">
         <Sidebar />
       </div>
