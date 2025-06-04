@@ -1,19 +1,30 @@
 // src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Outlet, Navigate, useLocation } from 'react-router-dom';
-import './App.css'; // Importamos App.css directamente
+import './App.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
+import Layout from './components/Layout'; // NUEVO
 
-// ... (otros placeholders usando clases globales como "page-placeholder")
-const DashboardPagePlaceholder = () => <div className="page-placeholder"><h1>Dashboard </h1></div>;
-const NotFoundPagePlaceholder = () => <div className="page-placeholder"><h1>404 - Página no encontrada</h1><Link to="/">Volver al inicio</Link></div>;
-// --- Fin Placeholder Pages ---
+// Placeholder temporal para dashboard (puedes reemplazarlo por DashboardPage)
+const DashboardPagePlaceholder = () => (
+  <div className="page-placeholder">
+    <h1>Dashboard</h1>
+  </div>
+);
 
+// Página para rutas no encontradas
+const NotFoundPagePlaceholder = () => (
+  <div className="page-placeholder">
+    <h1>404 - Página no encontrada</h1>
+    <Link to="/">Volver al inicio</Link>
+  </div>
+);
+
+// Función que simula autenticación
 const isAuthenticated = () => true;
 
+// Ruta protegida: redirige si no está autenticado
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   if (!isAuthenticated()) {
@@ -22,34 +33,21 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-const MainAppLayout = () => {
-  return (
-    <div className="app-layout"> {/* Clase global */}
-      
-      <div className="sidebar-placeholder"> {<Sidebar /> }</div> {/* Clase global */}
-      <div className="main-content-wrapper"> {/* Clase global */}
-        
-        <div className="header-placeholder"> { <Header /> }</div> {/* Clase global */}
-        <main className="page-outlet"> {/* Clase global */}
-          <Outlet />
-        </main>
-      </div>
-    </div>
-  );
-};
-
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Rutas públicas */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        <Route element={<ProtectedRoute><MainAppLayout /></ProtectedRoute>}>
+        {/* Rutas privadas dentro del layout */}
+        <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPagePlaceholder />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 
+        {/* Ruta no encontrada */}
         <Route path="*" element={<NotFoundPagePlaceholder />} />
       </Routes>
     </Router>
