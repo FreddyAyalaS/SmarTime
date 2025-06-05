@@ -2,10 +2,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-// Asume que crearás 'ForgotPasswordPage.module.css' o 'ForgotPasswordPage.css' e importarás los estilos
-// import styles from './ForgotPasswordPage.module.css'; // Si usas CSS Modules
-// import './ForgotPasswordPage.css'; // Si usas CSS global para esta página
 
+import '../styles/ForgotPasswordPage.css'
 // Importa tus componentes reutilizables
 import Input from '../components/Input'; // Ajusta la ruta si es necesario
 import Button from '../components/Button';

@@ -1,19 +1,10 @@
-// src/pages/LoginPage/LoginPage.jsx
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-// Asume que crearás 'LoginPage.module.css' o 'LoginPage.css' e importarás los estilos
-// import styles from './LoginPage.module.css'; // Si usas CSS Modules
-// import './LoginPage.css'; // Si usas CSS global para esta página
-
-// Importa tus componentes
-import Input from '../components/Input'; // Ajusta la ruta si es necesario
+import Input from '../components/Input'; 
 import Button from '../components/Button';
 import Card from '../components/Card';
 import '../styles/LoginPage.css'
-
-// Asume que tienes un logo en src/assets/ si lo usas como imagen
-// import AppLogo from '../../assets/logo-smart-time.svg';
 import AppLogo from '../assets/Icons/Logo.png';
 
 
@@ -28,20 +19,20 @@ const LoginPage = () => {
     navigate('/dashboard'); // Simulación
   };
 
-  // Nombres de clase que definirás en tu archivo CSS para LoginPage
+  // css clases
   const pageContainerClasses = "login-page-container";
-  const formCardClasses = "login-form-card"; // Puedes pasar esta como className a Card si es necesario
+  const formCardClasses = "login-form-card"; 
   const logoContainerClasses = "login-logo-container";
-  const appNameClasses = "login-app-name"; // Para el texto "SmartTime"
-  const pageTitleClasses = "login-page-title"; // Para "Iniciar Sesión"
-  const googleButtonClasses = "login-google-button"; // Clase adicional para el botón de Google si es necesario
+  const appNameClasses = "login-app-name"; 
+  const pageTitleClasses = "login-page-title"; 
+  const googleButtonClasses = "login-google-button"; 
   const dividerContainerClasses = "login-divider-container";
   const dividerLineClasses = "login-divider-line";
   const dividerTextClasses = "login-divider-text";
   const formClasses = "login-form";
   const forgotPasswordClasses = "login-forgot-password";
-  const linkClasses = "login-link"; // Para enlaces genéricos dentro de la página de login
-  const submitButtonClasses = "login-submit-button"; // Clase adicional para el botón de login si es necesario
+  const linkClasses = "login-link"; 
+  const submitButtonClasses = "login-submit-button"; 
   const signupPromptClasses = "login-signup-prompt";
   const logoImageClasses = "logo";
 
@@ -78,10 +69,6 @@ const LoginPage = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-        // Puedes pasar classNames a Input si su CSS lo permite
-        // className="login-input-group"
-        // labelClassName="login-input-label"
-        // inputClassName="login-input-field"
         />
         <Input
           label="Contraseña"

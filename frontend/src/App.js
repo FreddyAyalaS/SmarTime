@@ -25,7 +25,7 @@ const NotFoundPagePlaceholder = () => (
 );
 
 // Función que simula autenticación
-const isAuthenticated = () => true; // Cambia para probar la redirección a /login
+const isAuthenticated = () => false; // Cambia para probar la redirección a /login
 
 // Ruta protegida: redirige si no está autenticado
 const ProtectedRoute = ({ children }) => {

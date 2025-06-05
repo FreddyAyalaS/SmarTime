@@ -1,17 +1,15 @@
-// src/pages/RegisterPage/RegisterPage.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import Input from '../components/Input';
 import Button from '../components/Button';
 import Card from '../components/Card';
-import '../styles/RegisterPage.css'; // O tu ruta correcta
+import '../styles/RegisterPage.css'; 
 
-import AppLogoIcon from '../assets/Icons/Logo.png'; // Asumiendo que esta es la ruta correcta
+import AppLogoIcon from '../assets/Icons/Logo.png'; 
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  // ... (tus estados: name, username, email, etc.)
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -26,10 +24,10 @@ const RegisterPage = () => {
     navigate('/login');
   };
 
-  // Nombres de clase (muchos serán similares o iguales a los de LoginPage)
-  const pageContainerClasses = "register-page-container"; // Similar a login-page-container
-  const formSectionClasses = "register-form-section";   // Similar a login-form-section
-  const logoHeaderContainerClasses = "register-logo-header-container"; // Contenedor para logo + "SmartTime"
+  // css clases
+  const pageContainerClasses = "register-page-container"; 
+  const formSectionClasses = "register-form-section";   
+  const logoHeaderContainerClasses = "register-logo-header-container"; 
   const logoImageClasses = "register-logo-image";
   const appNameTextClasses = "register-app-name-text";
   const formCardClasses = "register-form-card";
@@ -38,14 +36,13 @@ const RegisterPage = () => {
   const submitButtonClasses = "register-submit-button";
   const loginPromptClasses = "register-login-prompt";
   const linkClasses = "register-link";
-  const imageSectionClasses = "register-image-section"; // Similar a login-image-section
+  const imageSectionClasses = "register-image-section"; 
 
 
   return (
     <div className={pageContainerClasses}>
       <div className={formSectionClasses}>
-        {/* Contenedor para el logo y el nombre de la app, ANTES del Card */}
-        <Card className={formCardClasses}> {/* El Card ya NO recibe la prop 'title' para el logo */}
+        <Card className={formCardClasses}>
           <div className={logoHeaderContainerClasses}>
             <img src={AppLogoIcon} alt="SmartTime Logo Icono" className={logoImageClasses} />
             <span className={appNameTextClasses}>SmartTime</span>

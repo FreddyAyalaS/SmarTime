@@ -1,36 +1,30 @@
-// src/pages/SettingsPage/SettingsPage.jsx
 import React, { useState } from 'react';
-// import styles from './SettingsPage.module.css'; // Si usas CSS Modules
-import '../styles/SettingsPage.css'; 
-
-// Importa tus componentes reutilizables
-import Input from '../components/Input'; // Ajusta la ruta si es necesario
+import '../styles/SettingsPage.css';
+import Input from '../components/Input';
 import Button from '../components/Button';
-// Podrías crear un componente ToggleSwitch si lo vas a reutilizar
-// import ToggleSwitch from '../../components/ToggleSwitch/ToggleSwitch';
 
-// --- Sub-componente para la pestaña Editar Perfil ---
+
 const EditProfileSection = () => {
-  // Nombres de clase para esta sección
+  // css clases
   const sectionClasses = "settings-edit-profile-section";
   const formContainerClasses = "settings-form-container";
   const profilePictureContainerClasses = "settings-profile-picture-container";
-  const profilePictureClasses = "settings-profile-picture"; // Para la imagen/icono grande
+  const profilePictureClasses = "settings-profile-picture";
   const changePhotoButtonClasses = "settings-change-photo-button";
   const formClasses = "settings-profile-form";
   const saveButtonContainerClasses = "settings-save-button-container";
 
-  // Estado para los campos del formulario (inicializar con datos del usuario si los tienes)
+
   const [name, setName] = useState('Sebastian Santiago Ayala Alberca');
   const [username, setUsername] = useState('Draco');
-  const [password, setPassword] = useState('****************'); // No mostrar la real, solo placeholder
+  const [password, setPassword] = useState('****************');
   const [email, setEmail] = useState('sebastianayala1@unmsm.edu.pe');
   const [career, setCareer] = useState('Ing. de software');
   const [birthDate, setBirthDate] = useState('25 Diciembre 2004');
 
   const handleProfileSubmit = (e) => {
     e.preventDefault();
-    console.log('Perfil guardado:', { name, username, /* no enviar password a menos que se cambie */ email, career, birthDate });
+    console.log('Perfil guardado:', { name, username, email, career, birthDate });
     alert('Perfil guardado (Simulación)');
   };
 
@@ -47,22 +41,18 @@ const EditProfileSection = () => {
         </form>
       </div>
       <div className={profilePictureContainerClasses}>
-        {/* Placeholder para la imagen de perfil */}
         <div className={profilePictureClasses}>
-          {/* Aquí iría un <img> o un ícono SVG grande */}
-          <span style={{fontSize: '5rem'}}>👤</span> {/* Placeholder muy básico */}
+          <span style={{ fontSize: '5rem' }}>👤</span>
         </div>
         <Button variant="secondary" className={changePhotoButtonClasses}>Cambiar foto</Button>
       </div>
       <div className={saveButtonContainerClasses}>
-         <Button type="submit" variant="success" onClick={handleProfileSubmit}>Guardar</Button> {/* Asume variante 'success' para botón verde */}
+        <Button type="submit" variant="success" onClick={handleProfileSubmit}>Guardar</Button>
       </div>
     </div>
   );
 };
 
-// --- Sub-componente para la pestaña Preferencias ---
-// Placeholder para un componente ToggleSwitch
 const ToggleSwitch = ({ label, checked, onChange, name }) => {
   const switchContainer = "settings-toggle-switch-container";
   const switchLabel = "settings-toggle-label";
@@ -72,18 +62,17 @@ const ToggleSwitch = ({ label, checked, onChange, name }) => {
   return (
     <div className={switchContainer}>
       <label htmlFor={name} className={switchLabel}>{label}</label>
-      <label className="relative inline-flex items-center cursor-pointer"> {/* Clases de Tailwind si las tuvieras */}
-        <input type="checkbox" id={name} name={name} checked={checked} onChange={onChange} className="sr-only peer" /> {/* sr-only para ocultar checkbox real */}
+      <label className="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" id={name} name={name} checked={checked} onChange={onChange} className="sr-only peer" />
       </label>
     </div>
   );
 };
 
-
 const PreferencesSection = () => {
   const sectionClasses = "settings-preferences-section";
   const preferenceItemClasses = "settings-preference-item";
-  const saveButtonContainerClasses = "settings-save-button-container"; // Reutilizamos clase
+  const saveButtonContainerClasses = "settings-save-button-container";
 
   const [antiProcrastination, setAntiProcrastination] = useState(false);
   const [notifications, setNotifications] = useState(true);
@@ -91,7 +80,6 @@ const PreferencesSection = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   const handlePreferencesSubmit = (e) => {
-    // e.preventDefault(); // No es un form, el botón es el que guarda
     console.log('Preferencias guardadas:', { antiProcrastination, notifications, suggestions, darkMode });
     alert('Preferencias guardadas (Simulación)');
   };
@@ -111,20 +99,20 @@ const PreferencesSection = () => {
         <ToggleSwitch label="Activar Modo Oscuro" name="darkMode" checked={darkMode} onChange={() => setDarkMode(!darkMode)} />
       </div>
       <div className={saveButtonContainerClasses}>
-         <Button variant="success" onClick={handlePreferencesSubmit}>Guardar</Button>
+        <Button variant="success" onClick={handlePreferencesSubmit}>Guardar</Button>
       </div>
     </div>
   );
 };
 
 
-// --- Componente Principal de la Página de Configuración ---
-const SettingsPage = () => {
-  const [activeTab, setActiveTab] = useState('profile'); // 'profile' o 'preferences'
 
-  // Nombres de clase para la página de Configuración
-  const pageContainerClasses = "settings-page-container"; // Estilo general de la página
-  const pageTitleClasses = "settings-page-title"; // Para "Configuración"
+const SettingsPage = () => {
+  const [activeTab, setActiveTab] = useState('profile');
+
+  // css clases
+  const pageContainerClasses = "settings-page-container";
+  const pageTitleClasses = "settings-page-title";
   const tabsContainerClasses = "settings-tabs-container";
   const tabButtonClasses = "settings-tab-button";
   const tabButtonActiveClasses = "settings-tab-button-active";
@@ -132,10 +120,6 @@ const SettingsPage = () => {
 
   return (
     <div className={pageContainerClasses}>
-      {/* El título "Configuración" ya debería estar en el Header que es parte del Layout */}
-      {/* Si necesitas un título adicional aquí, puedes añadirlo: */}
-      {/* <h1 className={pageTitleClasses}>Configuración</h1> */}
-
       <div className={tabsContainerClasses}>
         <button
           className={`${tabButtonClasses} ${activeTab === 'profile' ? tabButtonActiveClasses : ''}`}
@@ -150,7 +134,6 @@ const SettingsPage = () => {
           Preferencias
         </button>
       </div>
-
       <div className={tabContentClasses}>
         {activeTab === 'profile' && <EditProfileSection />}
         {activeTab === 'preferences' && <PreferencesSection />}
