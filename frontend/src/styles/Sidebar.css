@@ -1,41 +1,31 @@
-/* src/styles/Sidebar.css */
 .app-sidebar-container {
-  width: 260px; /* Ancho del sidebar */
-  height: 100vh; /* Ocupa toda la altura */
-  background-color: #A690A4; /* Color de fondo lila/morado claro del prototipo */
-  padding: 25px 0; /* Padding arriba/abajo, sin padding lateral para los items */
+  width: 260px;
+  height: 100vh;
+  background-color: #A690A4;
+  padding: 25px 0;
   display: flex;
   flex-direction: column;
-  color: #4A2E5E; /* Color de texto morado oscuro para los items */
-  font-family: 'Arial', sans-serif; /* O la fuente que estés usando */
+  color: #4A2E5E;
+  font-family: 'Arial', sans-serif;
   box-sizing: border-box;
-  /* position: fixed; Si quieres que sea fijo y el contenido haga scroll al lado.
-     Si es parte de un layout flex con App.js, esto no es necesario. */
 }
 
 .app-sidebar-logo-section {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Alinea el logo a la izquierda */
-  padding: 0; /* Padding lateral para el logo */
-  margin-bottom: 30px; /* Espacio debajo del logo */
-  /* border-bottom: 1px solid #A08CB7; /* Línea sutil debajo del logo (opcional) */
+  justify-content: flex-start;
+  padding: 0;
+  margin-bottom: 30px;
 }
 
-/* .app-sidebar-logo-image { */
-  /* height: 40px; /* Ajusta el tamaño de tu logo SVG/PNG */
-  /* margin-right: 10px; */
-/* } */
-
 .app-sidebar-logo-text {
-  font-size: 1.8rem; /* Tamaño del texto "SmartTime" */
+  font-size: 1.8rem;
   font-weight: bold;
-  color: #4A2E5E; /* Color del texto del logo */
-  /* Si tienes un logo SVG que ya incluye el texto, podrías no necesitar este span */
+  color: #4A2E5E;
 }
 
 .app-sidebar-nav {
-  flex-grow: 1; /* Hace que la navegación ocupe el espacio disponible */
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
@@ -43,80 +33,40 @@
 .app-sidebar-nav-item {
   display: flex;
   align-items: center;
-  padding: 15px 30px; /* Padding: arriba/abajo, y lateral para los items */
+  padding: 15px 30px;
   text-decoration: none;
-  color: #4A2E5E; /* Color de texto de los items */
-  font-weight: 500; /* Un poco más de peso */
+  color: #4A2E5E;
+  font-weight: 500;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-  cursor: pointer; /* Para el item de logout que es un div */
+  cursor: pointer;
 }
 
 .app-sidebar-nav-item:hover {
-  background-color: #AEA0CF; /* Un lila un poco más oscuro para el hover */
-  color: #FFFFFF; /* Texto blanco en hover */
-}
-
-.app-sidebar-nav-item-active {
-  background-color: #4A2E5E; /* Fondo morado oscuro para el item activo */
-  color: #FFFFFF !important; /* Texto blanco para el item activo, !important si es necesario */
-  font-weight: bold;
-  border-left: 4px solid #FFFFFF; /* Indicador izquierdo blanco (ajusta color y tamaño) */
-  padding-left: calc(30px - 4px); /* Compensa el padding por el borde */
-}
-
-.app-sidebar-nav-item-active .app-sidebar-nav-item-icon {
-  /* Si quieres que el ícono cambie de color en activo (requiere SVGs que hereden color o filtros) */
-  /* filter: brightness(0) invert(1); Ejemplo para hacer un SVG negro a blanco */
-}
-
-
-.app-sidebar-nav-item-icon {
-  width: 24px; /* Tamaño de los íconos */
-  height: 24px;
-  margin-right: 15px; /* Espacio entre el ícono y el texto */
-  /* Para controlar el color de los SVGs si son monocromáticos y quieres que cambien con el texto:
-     (esto funciona si los SVGs no tienen colores fijos y usan 'currentColor')
-     fill: currentColor;
-     stroke: currentColor;
-  */
-}
-
-.app-sidebar-nav-item-text {
-  font-size: 0.95rem; /* Tamaño del texto de los items */
-}
-
-/* El ítem de Cerrar Sesión puede estar al final de la lista de navegación */
-/* Si quieres que esté visualmente separado abajo, necesitas un contenedor .app-sidebar-footer */
-.app-sidebar-footer {
-  /* Este es el div que envuelve al logout ahora, puede heredar de nav-item */
-  margin-top: auto; /* Empuja este item al final si la navegación no ocupa todo el espacio */
-  /* border-top: 1px solid #A08CB7; /* Línea sutil arriba del logout (opcional) */
-  /* padding-top: 10px; */ /* Espacio arriba de la línea si la usas */
-}
-
-/* No necesitas .app-sidebar-logout-button si lo integraste como un nav-item */
-/* Si decides mantenerlo como un botón separado dentro de .app-sidebar-footer, puedes usar: */
-/*
-.app-sidebar-logout-button {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 15px 30px;
-  background-color: transparent;
-  border: none;
-  color: #4A2E5E;
-  text-align: left;
-  font-weight: 500;
-  cursor: pointer;
-}
-.app-sidebar-logout-button:hover {
   background-color: #AEA0CF;
   color: #FFFFFF;
 }
-.app-sidebar-logout-button .app-sidebar-nav-item-icon {
+
+.app-sidebar-nav-item-active {
+  background-color: #4A2E5E;
+  color: #FFFFFF !important;
+  font-weight: bold;
+  border-left: 4px solid #FFFFFF;
+  padding-left: calc(30px - 4px);
+}
+
+.app-sidebar-nav-item-icon {
+  width: 24px;
+  height: 24px;
   margin-right: 15px;
 }
-*/
-.app-sidebar-logo-image{
 
+.app-sidebar-nav-item-text {
+  font-size: 0.95rem;
+}
+
+.app-sidebar-footer {
+  margin-top: auto;
+}
+
+.app-sidebar-logo-image {
 }

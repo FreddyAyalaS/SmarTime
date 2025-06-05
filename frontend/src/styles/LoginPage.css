@@ -1,133 +1,102 @@
-/* src/styles/LoginPage.css */
-
-/* Contenedor principal de la página de Login */
 .login-page-container {
-  display: flex; /* Para poner el formulario y la imagen de fondo lado a lado */
+  display: flex;
   min-height: 100vh;
   width: 100%;
-  align-items: stretch; /* Para que ambos lados ocupen toda la altura */
-  background-color: #A690A4; /* Color de fondo morado claro general si la imagen no cubre todo */
+  align-items: stretch;
+  background-color: #A690A4;
 }
 
-/* Contenedor para el formulario de login (lado izquierdo) */
 .login-form-section {
-  flex-basis: 50%; /* O un ancho fijo si prefieres, ej: 600px */
-  /* Si quieres un ancho máximo para el formulario: max-width: 600px; */
+  flex-basis: 50%;
   display: flex;
-  flex-direction: column; /* Para el logo encima del card */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px; /* Padding general para esta sección */
-  background-color: #A690A4; /* Fondo morado claro para la sección del formulario */
-  /* Si quieres que el card no toque los bordes en pantallas pequeñas */
+  padding: 40px 20px;
+  background-color: #A690A4;
   box-sizing: border-box;
-
 }
 
-/* Card que contiene el formulario */
 .login-form-card {
-  /* Tu componente Card ya tiene estilos base. Aquí podemos sobreescribir o añadir. */
-  /* Asegúrate que la clase 'card' de Card.css no entre en conflicto o complemente esto. */
-  background-color: #F3F4F6; /* Un gris muy claro para el fondo del card */
-  padding: 30px 40px;    /* Ajusta el padding interno del card */
-  border-radius: 24px;   /* Bordes muy redondeados (1.5rem) */
+  background-color: #F3F4F6;
+  padding: 30px 40px;
+  border-radius: 24px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   width: 800px;
-  height: 500px;;
-  max-width: 350px;    /* Ancho máximo del card */
+  height: 500px;
+  max-width: 350px;
   text-align: center;
   margin-top: 60px;
   margin-left: 120px;
   margin-right: 100px;
-  /* La prop 'title' del Card se usa para el logo "SmartTime" */
 }
 
-/* Estilo para el título "SmartTime" que viene de la prop 'title' del Card */
-.login-app-name { /* Esta clase se aplica al h1 dentro del Card */
-  font-size: 2.8rem; /* Tamaño grande para "SmartTime" */
+.login-app-name {
+  font-size: 2.8rem;
   font-weight: bold;
-  color: #5B21B6; /* Morado oscuro para el texto del logo */
-  margin-top: 0; /* Espacio debajo del logo "SmartTime" */
-  /* Aquí puedes añadir la fuente específica si la tienes */
-  /* Deberías tener un elemento <img> para el ícono del logo si no es parte de la fuente */
+  color: #5B21B6;
+  margin-top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.login-app-name img { /* Si pones una <img> dentro del h1 o al lado */
-  height: 50px; /* Ajusta el tamaño de tu logo SVG/PNG */
+.login-app-name img {
+  height: 50px;
   margin-right: 10px;
 }
 
-
-/* Título "Iniciar Sesión" */
 .login-page-title {
   font-size: 1.75rem;
-  font-weight: 600; /* Semibold */
-  color: #1F2937; /* Gris oscuro/negro */
+  font-weight: 600;
+  color: #1F2937;
   margin-bottom: 20px;
 }
 
-/* Botón de Google */
 .login-google-button {
-  /* Tu componente Button con variant="google" debería manejar los estilos base.
-     Aquí puedes añadir márgenes o pequeños ajustes si son específicos de esta página. */
-  margin-bottom: 25px !important; /* Forzar margen, ajusta el valor */
-  /* Asegúrate que tu .btn-google en Button.css tenga el ícono y estilos correctos */
-  /* Para añadir el ícono G si no lo tienes en el componente Button: */
+  margin-bottom: 25px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
 }
 
-.login-google-button::before { /* Ejemplo para un ícono G simple con CSS */
+.login-google-button::before {
   font-weight: bold;
   margin-right: 10px;
-  /* Considera usar un SVG real para el logo de Google */
-  /* background-image: url('../assets/Icons/google-logo.svg');
-  background-size: 18px 18px;
-  background-repeat: no-repeat;
-  background-position: left center;
-  padding-left: 25px; */
 }
 
-
-/* Separador "O con su cuenta" */
 .login-divider-container {
   display: flex;
   align-items: center;
-  margin: 25px 0; /* Ajusta el margen */
-  color: #6B7280; /* Gris para el texto */
+  margin: 25px 0;
+  color: #6B7280;
 }
 
 .login-divider-line {
   flex-grow: 1;
   border: none;
-  border-top: 1px solid #D1D5DB; /* Línea gris clara */
+  border-top: 1px solid #D1D5DB;
 }
 
 .login-divider-text {
-  padding: 0 15px; /* Espacio alrededor del texto */
-  font-size: 0.875rem; /* Texto un poco más pequeño */
-}
-
-/* Formulario */
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px; /* Espacio entre los inputs */
-}
-
-/* Enlace "¿Olvidó su contraseña?" */
-.login-forgot-password {
-  text-align: right;
-  margin-bottom: 18px; /* Espacio antes del botón de Iniciar Sesión */
+  padding: 0 15px;
   font-size: 0.875rem;
 }
 
-.login-link { /* Para "¿Olvidó su contraseña?" y "Regístrate" */
-  color: #6D28D9; /* Morado para los enlaces (ajusta) */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.login-forgot-password {
+  text-align: right;
+  margin-bottom: 18px;
+  font-size: 0.875rem;
+}
+
+.login-link {
+  color: #6D28D9;
   text-decoration: none;
   font-weight: 500;
 }
@@ -136,85 +105,60 @@
   text-decoration: underline;
 }
 
-/* Botón "Iniciar Sesión" */
 .login-submit-button {
-  /* Tu componente Button con variant="primary" debería manejar los estilos base (botón negro).
-     Aquí puedes añadir márgenes o pequeños ajustes si son específicos de esta página. */
-  padding-top: 12px !important; /* Ajusta el padding si es necesario */
+  padding-top: 12px !important;
   padding-bottom: 12px !important;
 }
 
-/* Texto "¿Aún no eres miembro? Regístrate" */
 .login-signup-prompt {
-  margin-top: 25px; /* Ajusta el margen superior */
+  margin-top: 25px;
   font-size: 0.875rem;
-  color: #4B5568; /* Gris */
+  color: #4B5568;
 }
 
-/* Sección de la imagen de fondo (lado derecho) */
 .login-image-section {
-  flex-basis: 70%; /* O el porcentaje que desees */
-  background-image: url('../assets/Icons/auth-background.png'); 
+  flex-basis: 70%;
+  background-image: url('../assets/Icons/auth-background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* Opcional: añadir un overlay oscuro si la imagen es muy clara y el texto no contrasta
-  position: relative;
-  */
 }
-/*
-.login-image-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0,0,0,0.3); // Overlay oscuro
-}
-*/
 
-/* Media query para pantallas más pequeñas donde el layout podría cambiar a una sola columna */
-@media (max-width: 768px) { /* O el breakpoint que prefieras, ej: 900px */
+@media (max-width: 768px) {
   .login-page-container {
-    flex-direction: column; /* Apila el formulario encima de la imagen (o la oculta) */
-    align-items: center; /* Centra el formulario */
+    flex-direction: column;
+    align-items: center;
   }
 
   .login-form-section {
-    flex-basis: auto; /* Permite que el formulario tome su ancho natural */
+    flex-basis: auto;
     width: 100%;
-    padding: 20px; /* Reduce padding en móviles */
-    order: 1; /* Si quieres que el formulario esté arriba */
+    padding: 20px;
+    order: 1;
   }
 
   .login-form-card {
-    margin-top: 20px; /* Espacio si el logo está fuera del card */
-    max-width: 100%; /* Que ocupe más en pantallas pequeñas */
+    margin-top: 20px;
+    max-width: 100%;
     padding: 20px;
   }
 
   .login-image-section {
-    display: none; /* Opción 1: Ocultar la imagen en móviles para simplificar */
-    /* Opción 2: Mostrarla con una altura fija si quieres
-    flex-basis: auto;
-    height: 300px;
-    width: 100%;
-    order: 2;
-    */
+    display: none;
   }
 
   .login-app-name {
-    font-size: 2rem; /* Reducir tamaño del logo en móviles */
+    font-size: 2rem;
   }
 
   .login-page-title {
     font-size: 1.5rem;
   }
 }
-.login-logo-container{
-    width: 70px; /* Tamaño de los íconos */
-    height: 70px;
-    display: flex;
-    gap: 20px
+
+.login-logo-container {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  gap: 20px;
 }
