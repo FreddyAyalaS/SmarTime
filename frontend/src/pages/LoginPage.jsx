@@ -10,9 +10,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input'; // Ajusta la ruta si es necesario
 import Button from '../components/Button';
 import Card from '../components/Card';
+import '../styles/LoginPage.css'
 
 // Asume que tienes un logo en src/assets/ si lo usas como imagen
 // import AppLogo from '../../assets/logo-smart-time.svg';
+import AppLogo from '../assets/Icons/Logo.png';
+
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -40,65 +43,75 @@ const LoginPage = () => {
   const linkClasses = "login-link"; // Para enlaces genéricos dentro de la página de login
   const submitButtonClasses = "login-submit-button"; // Clase adicional para el botón de login si es necesario
   const signupPromptClasses = "login-signup-prompt";
+  const logoImageClasses = "logo";
 
 
   return (
     <div className={pageContainerClasses}>
-      <Card title="SmartTime" className={formCardClasses} titleClassName={appNameClasses}> {/* Pasando titleClassName */}
-        <h2 className={pageTitleClasses}>Iniciar Sesión</h2>
-
-        <Button variant="google" fullWidth className={googleButtonClasses}>
-          {/* Si tienes un ícono SVG para Google:
-          <svg className="google-icon" ...></svg>
-          */}
-          Continuar con Google
-        </Button>
-
-        <div className={dividerContainerClasses}>
-          <hr className={dividerLineClasses} />
-          <span className={dividerTextClasses}>O con su cuenta</span>
-          <hr className={dividerLineClasses} />
-        </div>
-
-        <form onSubmit={handleLogin} className={formClasses}>
-          <Input
-            label="Correo"
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            // Puedes pasar classNames a Input si su CSS lo permite
-            // className="login-input-group"
-            // labelClassName="login-input-label"
-            // inputClassName="login-input-field"
-          />
-          <Input
-            label="Contraseña"
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <div className={forgotPasswordClasses}>
-            <Link to="/forgot-password" className={linkClasses}>
-              ¿Olvidó su contraseña?
-            </Link>
+      <Card
+        title={
+          <div className={logoContainerClasses}>
+            <img src={AppLogo} alt="SmartTime Logo" className={logoImageClasses} />
+            <span className={appNameClasses}>SmartTime</span>
           </div>
-          <Button type="submit" variant="primary" fullWidth className={submitButtonClasses}>
-            Iniciar Sesión
-          </Button>
-        </form>
+        }
+        className={formCardClasses}
+      >
+      <h2 className={pageTitleClasses}>Iniciar Sesión</h2>
 
-        <p className={signupPromptClasses}>
-          ¿Aún no eres miembro?{' '}
-          <Link to="/register" className={linkClasses}>
-            Regístrate
+      <Button variant="google" fullWidth className={googleButtonClasses}>
+  
+        Continuar con Google
+      </Button>
+
+      <div className={dividerContainerClasses}>
+        <hr className={dividerLineClasses} />
+        <span className={dividerTextClasses}>O con su cuenta</span>
+        <hr className={dividerLineClasses} />
+      </div>
+
+      <form onSubmit={handleLogin} className={formClasses}>
+        <Input
+          label="Correo"
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        // Puedes pasar classNames a Input si su CSS lo permite
+        // className="login-input-group"
+        // labelClassName="login-input-label"
+        // inputClassName="login-input-field"
+        />
+        <Input
+          label="Contraseña"
+          type="password"
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <div className={forgotPasswordClasses}>
+          <Link to="/forgot-password" className={linkClasses}>
+            ¿Olvidó su contraseña?
           </Link>
-        </p>
-      </Card>
-    </div>
+        </div>
+        <Button type="submit" variant="primary" fullWidth className={submitButtonClasses}>
+          Iniciar Sesión
+        </Button>
+      </form>
+
+      <p className={signupPromptClasses}>
+        ¿Aún no eres miembro?{' '}
+        <Link to="/register" className={linkClasses}>
+          Regístrate
+        </Link>
+      </p>
+    </Card>
+      {/* Sección de la imagen de fondo */ }
+  <div className="login-image-section"></div>
+    </div >
+    
   );
 };
 

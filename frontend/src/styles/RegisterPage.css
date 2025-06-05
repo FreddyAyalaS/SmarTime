@@ -1,0 +1,148 @@
+/* src/styles/RegisterPage.css */
+
+/* Contenedor principal de toda la página de Registro */
+.register-page-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  align-items: stretch;
+  background-color: #A690A4; /* Color de fondo general */
+}
+
+/* Sección izquierda que contiene el logo y el card del formulario */
+.register-form-section {
+  flex-basis:50%; /* Ancho de la sección del formulario */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px; /* Aumenta padding vertical si es necesario por más campos */
+  background-color: #A690A4; /* Mismo fondo que la página */
+  box-sizing: border-box;
+  overflow-y: auto; /* Permite scroll si el formulario es muy largo */
+}
+
+/* Contenedor para el logo y el nombre "SmartTime" encima del card */
+.register-logo-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px; /* Un poco menos de margen que en login, ya que el card es más alto */
+}
+
+/* Imagen del logo (calendario y libro) */
+.register-logo-image {
+  height: 50px; /* Mismo tamaño que en login */
+  width: auto;
+  margin-right: 10px;
+}
+
+/* Texto "SmartTime" junto al logo */
+.register-app-name-text {
+  font-size: 2.8rem; /* Mismo tamaño que en login */
+  font-weight: bold;
+  color: #5B21B6;
+  line-height: 1;
+}
+
+/* Card que envuelve el contenido del formulario */
+.register-form-card {
+  background-color: #F3F4F6; /* Fondo del card */
+  padding: 25px 35px; /* Ajusta padding si es necesario para más campos */
+  border-radius: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px; /* Puede ser un poco más ancho que el de login */
+  text-align: center;
+  /* Los márgenes fijos (width, height, margin-left, etc.) se controlan mejor
+     por el contenedor .register-form-section y el max-width del card */
+}
+
+/* Título "Regístrate" dentro del card */
+.register-page-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 20px;
+}
+
+/* Formulario de registro */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espacio entre los inputs */
+}
+
+/* Botón "Registrarse" */
+.register-submit-button {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  margin-top: 15px; /* Espacio encima del botón */
+}
+
+/* Texto y enlace para ir a la página de Login */
+.register-login-prompt {
+  margin-top: 20px;
+  font-size: 0.875rem;
+  color: #4B5568;
+}
+
+/* Estilo para los enlaces de texto */
+.register-link {
+  color: #6D28D9;
+  text-decoration: none;
+  font-weight: 500;
+}
+.register-link:hover {
+  text-decoration: underline;
+}
+
+/* Sección derecha con la imagen de fondo */
+.register-image-section {
+  flex-basis: 70%; /* O el porcentaje que desees, para que coincida con login */
+  background-image: url('../assets/Icons/auth-background.png'); /* MISMA IMAGEN QUE LOGIN */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Ajustes para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .register-page-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .register-form-section {
+    flex-basis: auto;
+    width: 100%;
+    padding: 20px;
+    order: 1;
+    justify-content: flex-start;
+    overflow-y: visible; /* Evita doble scrollbar si el contenido ya hace scroll */
+  }
+
+  .register-logo-header-container {
+     margin-top: 20px;
+  }
+  .register-app-name-text {
+    font-size: 2.2rem;
+  }
+  .register-logo-image {
+    height: 40px;
+  }
+
+  .register-form-card {
+    max-width: 100%;
+    padding: 20px;
+    /* El height fijo no es recomendable para contenido variable */
+  }
+
+  .register-image-section {
+    display: none; /* Oculta la imagen en móviles */
+  }
+
+  .register-page-title {
+    font-size: 1.5rem;
+  }
+}

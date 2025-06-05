@@ -219,4 +219,7 @@
   box-shadow: 0 0 1px #2563eb; /* peer-focus:ring-4 ... */
 }
 
-/* El botón Guardar en Preferencias reutiliza .settings-save-button-container */
+.input-field{
+  width: 200px;
+  margin-left: 10px;
+}
