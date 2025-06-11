@@ -1,18 +1,17 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, /* Outlet, */ Navigate, useLocation } from 'react-router-dom'; // Ya no necesitamos Outlet aquí directamente
+import { BrowserRouter as Router, Routes, Route, Link, /* Outlet, */ Navigate, useLocation } from 'react-router-dom'; 
 import './App.css';
-import LoginPage from './pages/LoginPage'; // Asume que están en src/pages/NombrePagina/NombrePagina.jsx
+import LoginPage from './pages/LoginPage'; 
 import RegisterPage from './pages/RegisterPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage'; // <--- IMPORTA LA NUEVA PÁGINA
-import Layout from './components/Layout'; // Asume que Layout.jsx está en src/components/Layout/Layout.jsx
+import ForgotPasswordPage from './pages/ForgotPasswordPage'; 
+import Layout from './components/Layout'; 
 import SettingsPage from './pages/SettingsPage';
 
-// Placeholder temporal para dashboard (puedes reemplazarlo por DashboardPage)
+
 const DashboardPagePlaceholder = () => (
-  <div className="page-placeholder"> {/* Usa la clase de App.css */}
+  <div className="page-placeholder"> 
     <h1>Dashboard</h1>
-    {/* Aquí podrías empezar a usar tus componentes Card, etc. */}
   </div>
 );
 
@@ -25,9 +24,9 @@ const NotFoundPagePlaceholder = () => (
 );
 
 // Función que simula autenticación
-const isAuthenticated = () => false; // Cambia para probar la redirección a /login
+const isAuthenticated = () => true; 
 
-// Ruta protegida: redirige si no está autenticado
+
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   if (!isAuthenticated()) {
@@ -48,8 +47,8 @@ function App() {
         {/* Rutas privadas dentro del layout */}
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPagePlaceholder />} />
-          <Route path="/settings" element={<SettingsPage />} /> {/* <--- AÑADE LA RUTA */}
-          {/* Aquí añadirías otras rutas protegidas:
+          <Route path="/settings" element={<SettingsPage />} /> 
+          {/* rutas protegidas:
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/tasks" element={<TasksPage />} />
           etc.
