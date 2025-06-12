@@ -1,32 +1,37 @@
 // src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, /* Outlet, */ Navigate, useLocation } from 'react-router-dom'; 
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
-import LoginPage from './pages/LoginPage'; 
+
+// Pages
+import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage'; 
-import Layout from './components/Layout'; 
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import LandingPageScroll from './pages/LandingPageScroll'; // 👉 nuevo componente unificado
 import SettingsPage from './pages/SettingsPage';
 
+// Layout
+import Layout from './components/Layout';
 
+// Placeholder temporal para Dashboard
 const DashboardPagePlaceholder = () => (
-  <div className="page-placeholder"> 
+  <div className="page-placeholder">
     <h1>Dashboard</h1>
   </div>
 );
 
 // Página para rutas no encontradas
 const NotFoundPagePlaceholder = () => (
-  <div className="page-placeholder"> {/* Usa la clase de App.css */}
+  <div className="page-placeholder">
     <h1>404 - Página no encontrada</h1>
     <Link to="/">Volver al inicio</Link>
   </div>
 );
 
-// Función que simula autenticación
-const isAuthenticated = () => true; 
+// Simulación de autenticación
+const isAuthenticated = () => true;
 
-
+// Ruta protegida
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   if (!isAuthenticated()) {
@@ -43,16 +48,12 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/landing" element={<LandingPageScroll />} /> {/* 👈 nueva landing con scroll */}
 
-        {/* Rutas privadas dentro del layout */}
+        {/* Rutas protegidas dentro del layout */}
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPagePlaceholder />} />
-          <Route path="/settings" element={<SettingsPage />} /> 
-          {/* rutas protegidas:
-          <Route path="/calendar" element={<CalendarPage />} />
-          <Route path="/tasks" element={<TasksPage />} />
-          etc.
-          */}
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 
