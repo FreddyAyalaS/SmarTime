@@ -91,3 +91,36 @@
 .task-time, .task-complexity {
   font-size: 0.75rem;
 }
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 100px;
+  gap: 1px;
+  background-color: #ccc;
+}
+
+.calendar-day {
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #ddd;
+  position: relative;
+  cursor: pointer;
+}
+
+.day-number {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.calendar-day-name {
+  color:#000000;
+  background-color: #f0f0f0;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
