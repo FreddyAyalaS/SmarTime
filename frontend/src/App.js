@@ -2,6 +2,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
+import { upComingTask } from '../src/data/UpComingTask'; 
+
 
 // Pages
 import LoginPage from './pages/LoginPage';
@@ -9,16 +11,22 @@ import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import LandingPageScroll from './pages/LandingPageScroll'; // 👉 nuevo componente unificado
 import SettingsPage from './pages/SettingsPage';
+import DashboardPage from './pages/DashboardPage';
+
+
 
 // Layout
 import Layout from './components/Layout';
 
 // Placeholder temporal para Dashboard
-const DashboardPagePlaceholder = () => (
-  <div className="page-placeholder">
-    <h1>Dashboard</h1>
-  </div>
-);
+const DashboardPagePlaceholder = () => {
+  return (
+    <div className="dashboard-placeholder">
+      <h1>Dashboard</h1>
+    </div>
+  );
+};
+
 
 // Página para rutas no encontradas
 const NotFoundPagePlaceholder = () => (
@@ -52,7 +60,7 @@ function App() {
 
         {/* Rutas protegidas dentro del layout */}
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-          <Route path="/dashboard" element={<DashboardPagePlaceholder />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>

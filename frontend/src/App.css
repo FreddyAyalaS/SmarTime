@@ -63,3 +63,7 @@
 .page-placeholder nav a:hover {
   text-decoration: underline;
 }
+
+.dashboard-placeholder{
+  margin-left: 20px;
+}
