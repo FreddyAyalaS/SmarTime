@@ -1,0 +1,26 @@
+/* src/components/SummaryCard/SummaryCard.css */
+.summary-card {
+  background-color: #FFFFFF; /* Fondo blanco para la tarjeta de resumen */
+  border: 2px solid #4A90E2; /* Borde azul como en la imagen */
+  border-radius: 16px; /* Bordes redondeados para la tarjeta */
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra un poco más pronunciada */
+  margin-bottom: 20px; /* Espacio si hay varias tarjetas de resumen */
+  width: 500px;
+  height: 250px;
+  margin-left: 170px;
+  
+}
+.summary-card-title {
+  font-size: 1.4rem; /* Tamaño del título "Actividades (Hoy)" */
+  font-weight: bold;
+  color: #333333; /* Color de texto oscuro para el título */
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-bottom: 0; /* Espacio debajo del título */
+  border-bottom: 1px solid #E0E0E0; /* Línea sutil debajo del título (opcional) */
+}
+.summary-card-content {
+  width: 500px;
+  height: 230px;
+}
