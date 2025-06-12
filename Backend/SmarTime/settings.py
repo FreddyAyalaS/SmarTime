@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     # Tus apps
     'Apps.Autenticacion',
+    'Apps.Calendario',
 ]
 
 AUTH_USER_MODEL = 'Autenticacion.UsuarioPersonalizado'
