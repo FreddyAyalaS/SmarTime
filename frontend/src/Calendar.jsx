@@ -1,8 +1,12 @@
+
 // Calendar.jsx
 import React, { useState } from 'react';
 import TaskForm from './components/TaskForm';
 import './Calendar.css';
 import CalendarDay from './components/CalendarDay';
+import ActivityModal from './components/ActivityModal';
+
+
 
 const Calendar = () => {
   const [showOptions, setShowOptions] = useState(false);
@@ -10,8 +14,10 @@ const Calendar = () => {
   const [selectedType, setSelectedType] = useState('');
   const [tasks, setTasks] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
-
   const toggleOptions = () => setShowOptions(!showOptions);
+  const generateId = () => '_' + Math.random().toString(36).substr(2, 9);
+  const [selectedDayTasks, setSelectedDayTasks] = useState([]);
+  const [showActivityModal, setShowActivityModal] = useState(false);
 
   const handleOptionClick = (type) => {
     setSelectedType(type);
@@ -19,8 +25,13 @@ const Calendar = () => {
     setShowOptions(false);
   };
 
+  // En handleSaveTask:
   const handleSaveTask = (taskData) => {
-    const taskWithType = { ...taskData, type: selectedType };
+    const taskWithType = {
+      ...taskData,
+      type: selectedType,
+      id: generateId(), // asignar id único
+    };
     setTasks([...tasks, taskWithType]);
   };
 
@@ -99,13 +110,32 @@ const Calendar = () => {
             year={currentDate.getFullYear()}
             tasks={tasks}
             setTasks={setTasks}
+            onDayClick={(dayTasks) => {
+              setSelectedDayTasks(dayTasks);
+              setShowActivityModal(true);
+            }}
           />
+
         ))}
       </div>
 
       {showTaskForm && (
-        <TaskForm onClose={() => setShowTaskForm(false)} onSave={handleSaveTask} />
+        <TaskForm
+          onClose={() => setShowTaskForm(false)}
+          onSave={handleSaveTask}
+          type={selectedType}
+        />
+
       )}
+
+
+      {showActivityModal && (
+        <ActivityModal
+          activities={selectedDayTasks}
+          onClose={() => setShowActivityModal(false)}
+        />
+      )}
+
     </div>
   );
 };

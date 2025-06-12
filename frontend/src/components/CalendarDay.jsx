@@ -3,48 +3,46 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 import TaskItem from './TaskItem';
 
-const CalendarDay = ({ dayNumber, month, year, tasks, setTasks }) => {
-  const dateStr = dayNumber
-    ? new Date(year, month, dayNumber).toISOString().split('T')[0]
-    : null;
+const CalendarDay = ({ dayNumber, month, year, tasks, setTasks, onDayClick }) => {
 
-  const dayTasks = tasks.filter(task => task.date === dateStr);
+    const dateStr = dayNumber
+        ? new Date(year, month, dayNumber).toISOString().split('T')[0]
+        : null;
 
-  const [, drop] = useDrop({
-    accept: "TASK",
-    drop: (item) => {
-      if (!dayNumber) return;
-      const newDate = new Date(year, month, dayNumber);
-      const updatedTask = { ...item, date: newDate.toISOString().split('T')[0] };
+    const dayTasks = tasks.filter(task => task.date === dateStr);
 
-      setTasks(prev =>
-        prev.map(t =>
-          t.title === item.title && t.date === item.date ? updatedTask : t
-        )
-      );
-    },
-  });
+    const [, drop] = useDrop({
+        accept: "TASK",
+        drop: (item) => {
+            if (!dayNumber) return;
+            const newDate = new Date(year, month, dayNumber);
+            const updatedTask = { ...item, date: newDate.toISOString().split('T')[0] };
 
-  const handleDayClick = () => {
-    if (dayTasks.length > 0) {
-      alert(
-        dayTasks
-          .map(task => `Tipo: ${task.type}\nTítulo: ${task.title}\nCurso: ${task.course}\nHora: ${task.time}\nComplejidad: ${task.complexity}`)
-          .join('\n\n')
-      );
-    }
-  };
+            setTasks(prev =>
+                prev.map(t =>
+                    t.title === item.title && t.date === item.date ? updatedTask : t
+                )
+            );
+        },
+    });
 
-  return (
-    <div ref={drop} className="calendar-day" onClick={handleDayClick}>
-      <div className="day-number">{dayNumber}</div>
-      <div className="calendar-cells">
-        {dayTasks.map((task, i) => (
-          <TaskItem key={i} task={task} />
-        ))}
-      </div>
-    </div>
-  );
+    const handleDayClick = () => {
+        if (dayTasks.length > 0 && onDayClick) {
+            onDayClick(dayTasks);
+        }
+    };
+
+
+    return (
+        <div ref={drop} className="calendar-day" onClick={handleDayClick}>
+            <div className="day-number">{dayNumber}</div>
+            <div className="calendar-cells">
+                {dayTasks.map((task, i) => (
+                    <TaskItem key={i} task={task} />
+                ))}
+            </div>
+        </div>
+    );
 };
 
 export default CalendarDay;
