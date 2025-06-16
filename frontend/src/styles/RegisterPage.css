@@ -26,7 +26,7 @@
 }
 
 .register-logo-image {
-  height: 50px;
+  height: 90px;
   width: auto;
   margin-right: 10px;
 }
@@ -130,4 +130,27 @@
   .register-page-title {
     font-size: 1.5rem;
   }
+}
+.register-error-message {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-top: 5px; /* Puede ir después de los inputs y antes del botón */
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.register-success-message {
+  background-color: #d1fae5; /* Fondo verde claro */
+  color: #047857; /* Texto verde oscuro */
+  border: 1px solid #6ee7b7; /* Borde verde */
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  text-align: left;
 }
