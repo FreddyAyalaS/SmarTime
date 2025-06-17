@@ -10,6 +10,8 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import LandingPageScroll from './pages/LandingPageScroll'; // 👉 nuevo componente unificado
 import SettingsPage from './pages/SettingsPage';
 import DashboardPage from './pages/DashboardPage';
+import CalendarPage from './pages/CalendarPage';
+
 // Layout
 import Layout from './components/Layout';
 
@@ -49,6 +51,7 @@ function App() {
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/calendario" element={<CalendarPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 

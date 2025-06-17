@@ -15,7 +15,7 @@ import AppLogo from '../assets/Icons/Logo.png';
 
 const navItemsData = [ 
   { id: 'dashboard', text: 'Dashboard', icon: homeIcon, path: '/dashboard' },
-  { id: 'calendario', text: 'Calendario', icon: calendarIcon, path: '/calendar' },
+  { id: 'calendario', text: 'Calendario', icon: calendarIcon, path: '/calendario' },
   { id: 'tareas', text: 'Tareas', icon: tasksIcon, path: '/tasks' },
   { id: 'modo', text: 'Modo Antiprocrastinación', icon: antiProcrastinationIcon, path: '/anti-procrastination' },
   { id: 'estadistica', text: 'Estadística', icon: statsIcon, path: '/analytics' },
