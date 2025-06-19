@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import test_email
+from .views import enviar_recordatorios
 
 urlpatterns = [
-    path("probar-correo/", test_email),
+    path("probar-correo/", enviar_recordatorios),
 ]

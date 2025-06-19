@@ -3,7 +3,5 @@
 <ul>
   {% for actividad in actividades %}
   <li>{{ actividad.titulo }} - {{ actividad.hora_ini }}</li>
-  {% empty %}
-  <li>No tienes actividades para hoy.</li>
   {% endfor %}
 </ul>
