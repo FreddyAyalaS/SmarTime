@@ -2,8 +2,13 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from datetime import date
 from .models import Tarea, Clase, Estudio, ActividadNoAcademica
 from .serializers import TareaSerializer, ClaseSerializer, EstudioSerializer, ActividadNoAcademicaSerializer
+from .serializers import (
+    TareaResumenSerializer, EstudioResumenSerializer,
+    ClaseResumenSerializer, ActividadNoAcademicaResumenSerializer
+)
 
 # ViewSet para Tareas
 class TareaViewSet(viewsets.ModelViewSet):
@@ -198,3 +203,35 @@ class ActividadNoAcademicaViewSet(viewsets.ModelViewSet):
 #Detalle de una actividad	                      GET	           http://localhost:8000/calendario/api/actividadesNoAcademicas/<id>/
 #Actualizar actividad	                          PATCH	           http://localhost:8000/calendario/api/actividadesNoAcademicas/<id>/
 #Eliminar actividad	                              DELETE	       http://localhost:8000/calendario/api/actividadesNoAcademicas/<id>/
+
+
+
+
+class ActividadesDeHoyAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        usuario = request.user
+        hoy = date.today()
+
+        tareas = Tarea.objects.filter(usuario=usuario, fechaRealizacion=hoy)
+        estudios = Estudio.objects.filter(usuario=usuario, fecha=hoy)
+        clases = Clase.objects.filter(usuario=usuario, fecha=hoy)
+        actividades_no_acad = ActividadNoAcademica.objects.filter(usuario=usuario, fecha=hoy)
+
+        tareas_serializadas = TareaResumenSerializer(tareas, many=True).data
+        estudios_serializados = EstudioResumenSerializer(estudios, many=True).data
+        clases_serializadas = ClaseResumenSerializer(clases, many=True).data
+        actividades_serializadas = ActividadNoAcademicaResumenSerializer(actividades_no_acad, many=True).data
+
+        todas = (
+            [{"tipo": "Tarea", **item} for item in tareas_serializadas] +
+            [{"tipo": "Estudio", **item} for item in estudios_serializados] +
+            [{"tipo": "Clase", **item} for item in clases_serializadas] +
+            [{"tipo": "ActividadNoAcademica", **item} for item in actividades_serializadas]
+        )
+
+        # Ordenar por horaInicio (convertido a string para comparación)
+        todas_ordenadas = sorted(todas, key=lambda x: x['horaInicio'])
+
+        return Response(todas_ordenadas)
