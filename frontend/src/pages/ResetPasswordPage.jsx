@@ -1,4 +1,3 @@
-// src/pages/ResetPasswordPage/ResetPasswordPage.jsx
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
@@ -10,23 +9,25 @@ import '../styles/ResetPasswordPage.css';
 import { resetPasswordWithToken } from '../services/authService';
 
 const ResetPasswordPage = () => {
-  const { resetToken } = useParams();
+  const { uidb64, token } = useParams();
+  console.log("uidb64:", uidb64);
+  console.log("token:", token); // ✅ capturar ambos
   const navigate = useNavigate();
 
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmar_password, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (newPassword !== confirmPassword) {
+    if (password !== confirmar_password) {
       setError('Las contraseñas no coinciden.');
       return;
     }
-    if (!resetToken) {
-      setError('Token de restablecimiento no encontrado. Por favor, usa el enlace de tu correo.');
+    if (!uidb64 || !token) {
+      setError('Enlace de restablecimiento inválido.');
       return;
     }
 
@@ -35,64 +36,58 @@ const ResetPasswordPage = () => {
     setSuccessMessage('');
 
     try {
-      const response = await resetPasswordWithToken(resetToken, newPassword);
-      setSuccessMessage(response.message || '¡Contraseña restablecida con éxito! Ya puedes iniciar sesión.');
+      const response = await resetPasswordWithToken( uidb64,token, password, confirmar_password);
+      setSuccessMessage(response.mensaje || '¡Contraseña restablecida con éxito! Ya puedes iniciar sesión.');
       alert('¡Contraseña restablecida!');
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      setError(err.message || 'Error al restablecer la contraseña. El enlace podría haber expirado.');
+      setError(err.message || 'Error al restablecer la contraseña.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const pageContainerClasses = "reset-password-page-container";
-  const formCardClasses = "reset-password-form-card";
-  const appNameClasses = "reset-password-app-name";
-  const pageTitleClasses = "reset-password-page-title";
-  const formClasses = "reset-password-form";
-  const submitButtonClasses = "reset-password-submit-button";
-  const loginLinkContainerClasses = "reset-password-login-link-container";
-  const errorMessageClasses = "reset-password-error-message";
-  const successMessageClasses = "reset-password-success-message";
-
   return (
-    <div className={pageContainerClasses}>
-      <Card title="SmartTime" className={formCardClasses} titleClassName={appNameClasses}>
-        <h2 className={pageTitleClasses}>Establecer Nueva Contraseña</h2>
+    <div className="reset-password-page-container">
+      <Card title="SmartTime" className="reset-password-form-card" titleClassName="reset-password-app-name">
+        <h2 className="reset-password-page-title">Establecer Nueva Contraseña</h2>
 
-        <form onSubmit={handleSubmit} className={formClasses}>
+        <form onSubmit={handleSubmit} className="reset-password-form">
           <Input
             label="Nueva Contraseña"
             type="password"
-            name="newPassword"
+            name="password"
             placeholder="Ingresa tu nueva contraseña"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
           <Input
             label="Confirmar Nueva Contraseña"
             type="password"
-            name="confirmPassword"
+            name="confirmar_password"
             placeholder="Confirma tu nueva contraseña"
-            value={confirmPassword}
+            value={confirmar_password}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
 
-          {error && <p className={errorMessageClasses}>{error}</p>}
-          {successMessage && <p className={successMessageClasses}>{successMessage}</p>}
+          {error && <p className="reset-password-error-message">{error}</p>}
+          {successMessage && <p className="reset-password-success-message">{successMessage}</p>}
 
-          <Button type="submit" variant="primary" fullWidth className={submitButtonClasses} disabled={isLoading || !!successMessage}>
+          <Button
+            type="submit"
+            variant="primary"
+            fullWidth
+            className="reset-password-submit-button"
+            disabled={isLoading || !!successMessage}
+          >
             {isLoading ? 'Estableciendo...' : 'Restablecer Contraseña'}
           </Button>
         </form>
 
         {successMessage && (
-          <div className={loginLinkContainerClasses}>
+          <div className="reset-password-login-link-container">
             <Link to="/login" className="link-styled">
               Ir a Iniciar Sesión
             </Link>

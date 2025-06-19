@@ -78,18 +78,24 @@ export const logoutUser = async () => {
   }
 };
 
-export const resetPasswordWithToken = async (token, newPassword) => {
+export const resetPasswordWithToken = async (uidb64, token, password, confirmar_password) => {
   console.log('authService: Intentando generar nueva contraseña...');
   try {
     const payload = {
-      token: token,
-      password: newPassword
+      uidb64,
+      token,
+      password,
+      confirmar_password
     };
+
     const response = await apiClient.post(`${AUTH_BASE_PATH}/generarNuevaContrasena/`, payload);
     console.log('authService: Nueva contraseña generada:', response.data);
     return response.data;
   } catch (error) {
-    const errorMessage = getErrorMessage(error, 'Error al generar la nueva contraseña. El token podría ser inválido o haber expirado.');
+    const errorMessage = getErrorMessage(
+      error,
+      'Error al generar la nueva contraseña. El token podría ser inválido o haber expirado.'
+    );
     console.error('Error en resetPasswordWithToken service:', errorMessage, error.response);
     throw new Error(errorMessage);
   }

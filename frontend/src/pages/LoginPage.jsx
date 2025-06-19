@@ -1,4 +1,3 @@
-// src/pages/LoginPage/LoginPage.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -25,12 +24,16 @@ const LoginPage = () => {
     try {
       const responseData = await loginUser({ username, password });
 
-      if (responseData.token && responseData.user) {
-        localStorage.setItem('authToken', responseData.token);
+      if (responseData.access) {
+        // Guardamos el token de acceso en localStorage
+        localStorage.setItem('authToken', responseData.access);
+        // También el refresh token si lo quieres usar más adelante
+        localStorage.setItem('refreshToken', responseData.refresh);
+
         alert('¡Inicio de sesión exitoso!');
         navigate('/dashboard');
       } else {
-        setError(responseData.message || 'Respuesta inesperada del servidor.');
+        setError(responseData.mensaje || 'Respuesta inesperada del servidor.');
       }
     } catch (err) {
       console.error('Error en handleLogin:', err.message);
