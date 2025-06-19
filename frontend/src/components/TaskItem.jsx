@@ -1,4 +1,3 @@
-// src/components/TaskItem.jsx
 import React from 'react';
 import { useDrag } from 'react-dnd';
 
@@ -6,7 +5,7 @@ const getColorByType = (type) => {
   switch (type) {
     case 'Tarea': return '#4A90E2';
     case 'Estudio': return '#2ECC71';
-    case 'Evento': return '#F39C12';
+    case 'Clase': return '#F39C12';
     case 'Act. no académica': return '#95A5A6';
     default: return '#cccccc';
   }
@@ -36,8 +35,11 @@ const TaskItem = ({ task }) => {
       }}
     >
       <div className="task-title">{task.title}</div>
-      <div className="task-time">{task.time}</div>
-      <div className="task-complexity">Nivel: {task.complexity}</div>
+      {task.hInicio && <div className="task-time">Inicio: {task.hInicio}</div>}
+      {task.startTime && <div className="task-time">Inicio: {task.startTime}</div>}
+      {task.complexity !== undefined && (
+        <div className="task-complexity">Nivel: {task.complexity}</div>
+      )}
     </div>
   );
 };

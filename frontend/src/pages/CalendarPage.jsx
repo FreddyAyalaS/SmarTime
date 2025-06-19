@@ -29,10 +29,29 @@ const Calendar = () => {
     const taskWithType = {
       ...taskData,
       type: selectedType,
-      id: generateId(), // asignar id único
+      id: generateId(),
     };
-    setTasks([...tasks, taskWithType]);
+
+    const repeatedTasks = [];
+
+    if ((selectedType === 'Clase' || selectedType === 'Act. no académica') && taskData.repetir) {
+      const weeks = parseInt(taskData.semanas) || 1;
+
+      for (let i = 1; i < weeks; i++) {
+        const repeatedDate = new Date(taskData.fecha);
+        repeatedDate.setDate(repeatedDate.getDate() + 7 * i);
+
+        repeatedTasks.push({
+          ...taskWithType,
+          id: generateId(),
+          fecha: repeatedDate.toISOString().split('T')[0],
+        });
+      }
+    }
+
+    setTasks(prev => [...prev, taskWithType, ...repeatedTasks]);
   };
+
 
   // Para generar el arreglo de días del mes
   const getMonthDays = (year, month) => {
