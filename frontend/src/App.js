@@ -11,7 +11,7 @@ import LandingPageScroll from './pages/LandingPageScroll'; // 👉 nuevo compone
 import SettingsPage from './pages/SettingsPage';
 import DashboardPage from './pages/DashboardPage';
 import CalendarPage from './pages/CalendarPage';
-
+import ResetPasswordPage from './pages/ResetPasswordPage';
 // Layout
 import Layout from './components/Layout';
 
@@ -45,13 +45,14 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:resetToken" element={<ResetPasswordPage />} />
         <Route path="/landing" element={<LandingPageScroll />} /> {/* 👈 nueva landing con scroll */}
 
         {/* Rutas protegidas dentro del layout */}
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/calendario" element={<CalendarPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 
