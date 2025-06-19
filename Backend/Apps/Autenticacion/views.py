@@ -87,7 +87,8 @@ class PasswordResetRequestAPIView(APIView):
 
 
 class SetNewPasswordAPIView(APIView):
-    permission_classes = [AllowAny] #Solo usuarios no autenticados
+    permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = SetNewPasswordSerializer(data=request.data)
         if serializer.is_valid():
@@ -113,6 +114,7 @@ class SetNewPasswordAPIView(APIView):
             return Response({"mensaje": "Contraseña actualizada con éxito"}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
