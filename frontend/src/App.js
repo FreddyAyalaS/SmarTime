@@ -26,7 +26,7 @@ const NotFoundPagePlaceholder = () => (
 );
 
 // Simulación de autenticación
-const isAuthenticated = () => true;
+const isAuthenticated = () => false;
 
 // Ruta protegida
 const ProtectedRoute = ({ children }) => {
