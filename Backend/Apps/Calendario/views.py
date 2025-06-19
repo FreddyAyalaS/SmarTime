@@ -10,6 +10,7 @@ from .serializers import (
     TareaResumenSerializer, EstudioResumenSerializer,
     ClaseResumenSerializer, ActividadNoAcademicaResumenSerializer
 )
+from rest_framework.views import APIView
 
 # ViewSet para Tareas
 class TareaViewSet(viewsets.ModelViewSet):
