@@ -1,0 +1,9 @@
+<h2>Hola {{ nombre }},</h2>
+<p>Estas son tus actividades para hoy:</p>
+<ul>
+  {% for actividad in actividades %}
+  <li>{{ actividad.titulo }} - {{ actividad.hora_ini }}</li>
+  {% empty %}
+  <li>No tienes actividades para hoy.</li>
+  {% endfor %}
+</ul>
