@@ -1,11 +1,14 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ActividadAcademicaViewSet, ActividadNoAcademicaViewSet
+from .views import TareaViewSet, ClaseViewSet, EstudioViewSet, ActividadNoAcademicaViewSet
 
 router = DefaultRouter()
-router.register(r'actividadesAcademicas', ActividadAcademicaViewSet, basename='actividadAcademica')
+router.register(r'tareas', TareaViewSet, basename='tarea')
+router.register(r'clases', ClaseViewSet, basename='clase')
+router.register(r'estudios', EstudioViewSet, basename='estudio')
 router.register(r'actividadesNoAcademicas', ActividadNoAcademicaViewSet, basename='actividadNoAcademica')
 
+
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
 ]

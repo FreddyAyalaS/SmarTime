@@ -43,10 +43,12 @@ INSTALLED_APPS = [
     # Apps externas
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
 
     # Tus apps
     'Apps.Autenticacion',
     'Apps.Calendario',
+    
 ]
 
 AUTH_USER_MODEL = 'Autenticacion.UsuarioPersonalizado'
@@ -59,6 +61,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    #CORS
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'SmarTime.urls'
@@ -147,5 +153,29 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
+
+
+#SMTP-Correo
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'smartime.ux@gmail.com'
+EMAIL_HOST_PASSWORD = 'irushwniqnjmibws'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
+#CORS
+CORS_ALLOW_ALL_ORIGINS = True  # Solo en desarrollo
+CORS_ALLOW_CREDENTIALS = True
+
+
+
+#CORS_ALLOWED_ORIGINS = [
+#    "http://localhost:3000",  # React por defecto
+#]
+
 # El email se mostrará en la consola, simulando el envío
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -9,10 +9,11 @@ class RegistroUsuarioSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         validators=[UniqueValidator(queryset=UsuarioPersonalizado.objects.all(), message="Este nombre de usuario ya existe.")]
     )    
+    confirmar_password = serializers.CharField(write_only=True)
     
     class Meta:
         model = UsuarioPersonalizado
-        fields = ['first_name', 'username', 'password', 'email', 'fecha_nacimiento', 'escuela_profesional']
+        fields = ['first_name', 'username', 'password', 'confirmar_password', 'email', 'fecha_nacimiento', 'escuela_profesional']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -24,13 +25,17 @@ class RegistroUsuarioSerializer(serializers.ModelSerializer):
         return value
     
     def validate(self, data):
-        required_fields = ['first_name', 'username', 'password', 'email', 'fecha_nacimiento', 'escuela_profesional']
+        required_fields = ['first_name', 'username', 'password','confirmar_password', 'email', 'fecha_nacimiento', 'escuela_profesional']
         for field in required_fields:
             if not data.get(field):
                 raise serializers.ValidationError({field: 'Este campo es obligatorio.'})
+        if data.get('password') != data.get('confirmar_password'):
+            raise serializers.ValidationError({"confirmar_password": "Las contraseñas no coinciden."})
+
         return data
 
     def create(self, validated_data):
+        validated_data.pop('confirmar_password')
         user = UsuarioPersonalizado.objects.create_user(**validated_data)
         return user
 

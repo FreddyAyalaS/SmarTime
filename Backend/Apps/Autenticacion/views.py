@@ -12,6 +12,9 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 class RegistroUsuarioAPIView(APIView):
     def post(self, request):
@@ -52,7 +55,8 @@ class LogoutUsuarioAPIView(APIView):
 
 
 class PasswordResetRequestAPIView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [AllowAny] #Cualquiera tiene acceso, ya que al no tener contraseña tiene que poder usarla, así no esté autenticado.
+
     def post(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)
         if serializer.is_valid():
@@ -65,14 +69,21 @@ class PasswordResetRequestAPIView(APIView):
             token_generator = PasswordResetTokenGenerator()
             token = token_generator.make_token(user)
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-
-            # Aquí simulas el envío por email mostrando el link en consola
             reset_link = f"http://localhost:3000/reset-password/{uidb64}/{token}/"
-            print(f"Link de restablecimiento de contraseña: {reset_link}")
 
-            return Response({"mensaje": "Se ha enviado un enlace para restablecer la contraseña (revisar consola)."}, status=status.HTTP_200_OK)
+            # Envío de correo real
+            subject = "Restablece tu contraseña"
+            message = f"Hola, has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:\n\n{reset_link}\n\nSi no fuiste tú, ignora este mensaje."
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [email]
+
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False) #Envía el correo usando la configuración SMTP definida en settings.py
+
+            return Response({"mensaje": "Se ha enviado un enlace para restablecer la contraseña al correo."}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class SetNewPasswordAPIView(APIView):
