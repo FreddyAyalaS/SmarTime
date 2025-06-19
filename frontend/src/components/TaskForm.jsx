@@ -1,20 +1,31 @@
-// src/components/TaskForm.jsx
 import React, { useState } from 'react';
 import '../styles/TaskForm.css';
 
 const TaskForm = ({ onClose, onSave, type }) => {
-
   const [taskData, setTaskData] = useState({
     title: '',
     course: '',
     description: '',
-    date: '',
-    time: '',
+    deliveryDate: '',
+    deliveryTime: '',
+    realizationDate: '',
+    startTime: '',
+    endTime: '',
     complexity: 0,
+    temas: '',
+    fecha: '',
+    hInicio: '',
+    hFin: '',
+    repetir: false,
+    semanas: 1,
   });
 
   const handleChange = (e) => {
-    setTaskData({ ...taskData, [e.target.name]: e.target.value });
+    const { name, value, type: inputType, checked } = e.target;
+    setTaskData({
+      ...taskData,
+      [name]: inputType === 'checkbox' ? checked : value,
+    });
   };
 
   const handleComplexityClick = (level) => {
@@ -27,87 +38,174 @@ const TaskForm = ({ onClose, onSave, type }) => {
     onClose();
   };
 
-  const getColorByType = (type) => {
+  const getTypeClass = (type) => {
     switch (type) {
-      case 'Tarea': return '#4A90E2';
-      case 'Estudio': return '#2ECC71';
-      case 'Evento': return '#F39C12';
-      case 'Act. no académica': return '#95A5A6';
-      default: return '#cccccc';
+      case 'Tarea': return 'tarea';
+      case 'Estudio': return 'estudio';
+      case 'Clase': return 'clase';
+      case 'Act. no académica': return 'act_no_academica';
+      default: return 'default';
     }
   };
 
   return (
     <div className="modal-overlay">
-      <form
-        className="task-form"
-        style={{
-          backgroundColor: getColorByType(type),
-          padding: '20px',
-          borderRadius: '10px',
-          width: '300px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '10px',
-        }}
-        onSubmit={handleSubmit}
-      >
-        <h2>{type}:</h2>
-        <input
-          type="text"
-          name="title"
-          placeholder="Título de la tarea"
-          value={taskData.title}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="course"
-          placeholder="Curso"
-          value={taskData.course}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Añade una descripción"
-          value={taskData.description}
-          onChange={handleChange}
-        />
-        <input
-          type="date"
-          name="date"
-          value={taskData.date}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="time"
-          name="time"
-          value={taskData.time}
-          onChange={handleChange}
-          required
-        />
-
-        <div className="complexity">
-          <span>Complejidad:</span>
-          {[1, 2, 3, 4, 5].map((level) => (
-            <button
-              type="button"
-              key={level}
-              className={taskData.complexity === level ? 'selected' : ''}
-              onClick={() => handleComplexityClick(level)}
-            >
-              {level}
-            </button>
-          ))}
+      <form className={`task-form ${getTypeClass(type)}`} onSubmit={handleSubmit}>
+        
+        <div className="form-header">
+          <h2>{type}:</h2>
+          <input
+            type="text"
+            name="title"
+            placeholder="Título"
+            value={taskData.title}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        <div className="buttons">
-          <button type="submit" className="save-btn">Guardar</button>
-          <button type="button" className="cancel-btn" onClick={onClose}>Cancelar</button>
+        <div className="form-body">
+          {type === 'Tarea' && (
+            <>
+              <div className="form-row">
+                <label htmlFor="course">Curso:</label>
+                <input type="text" name="course" placeholder="Curso" value={taskData.course} onChange={handleChange} required />
+              </div>
+              <div className="form-row">
+                <label htmlFor="description">Descripción:</label>
+                <textarea name="description" placeholder="Añade una descripción breve de la tarea" value={taskData.description} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label htmlFor="deliveryDate">F. Entrega:</label>
+                <input type="date" name="deliveryDate" value={taskData.deliveryDate} onChange={handleChange} required />
+              </div>
+              <div className="form-row">
+                <label htmlFor="deliveryTime">H. Entrega:</label>
+                <input type="time" name="deliveryTime" value={taskData.deliveryTime} onChange={handleChange} required />
+              </div>
+              <div className="form-row">
+                <label htmlFor="realizationDate">F. Realización:</label>
+                <input type="date" name="realizationDate" value={taskData.realizationDate} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label htmlFor="startTime">H. Inicio:</label>
+                <input type="time" name="startTime" value={taskData.startTime} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label htmlFor="endTime">H. Fin:</label>
+                <input type="time" name="endTime" value={taskData.endTime} onChange={handleChange} />
+              </div>
+              <div className="complexity">
+                <span>Complejidad:</span>
+                {[1, 2, 3, 4, 5].map((level) => (
+                  <button
+                    type="button"
+                    key={level}
+                    className={taskData.complexity === level ? 'selected' : ''}
+                    onClick={() => handleComplexityClick(level)}
+                  >
+                    {level}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {type === 'Estudio' && (
+            <>
+              <div className="form-row">
+                <label>Curso:</label>
+                <input type="text" name="course" placeholder="Curso" value={taskData.course} onChange={handleChange} required />
+              </div>
+              <div className="form-row">
+                <label>Temas:</label>
+                <input type="text" name="temas" placeholder="Temas a estudiar" value={taskData.temas} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label>Fecha:</label>
+                <input type="date" name="fecha" value={taskData.fecha} onChange={handleChange} required />
+              </div>
+              <div className="form-row">
+                <label>H. Inicio:</label>
+                <input type="time" name="hInicio" value={taskData.hInicio} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label>H. Fin:</label>
+                <input type="time" name="hFin" value={taskData.hFin} onChange={handleChange} />
+              </div>
+            </>
+          )}
+
+          {type === 'Clase' && (
+            <>
+              <div className="form-row">
+                <label>Curso:</label>
+                <input type="text" name="course" placeholder="Curso" value={taskData.course} onChange={handleChange} required />
+              </div>
+              <div className="form-row">
+                <label>Descripción:</label>
+                <textarea name="description" placeholder="Descripción" value={taskData.description} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label>Fecha:</label>
+                <input type="date" name="fecha" value={taskData.fecha} onChange={handleChange} required />
+              </div>
+              <div className="form-row">
+                <label>H. Inicio:</label>
+                <input type="time" name="hInicio" value={taskData.hInicio} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label>H. Fin:</label>
+                <input type="time" name="hFin" value={taskData.hFin} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label>¿Repetir semanalmente?</label>
+                <input type="checkbox" name="repetir" checked={taskData.repetir} onChange={handleChange} />
+              </div>
+              {taskData.repetir && (
+                <div className="form-row">
+                  <label>Nº semanas:</label>
+                  <input type="number" name="semanas" min="1" value={taskData.semanas} onChange={handleChange} />
+                </div>
+              )}
+            </>
+          )}
+
+          {type === 'Act. no académica' && (
+            <>
+              <div className="form-row">
+                <label>Descripción:</label>
+                <textarea name="description" placeholder="Descripción" value={taskData.description} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label>Fecha:</label>
+                <input type="date" name="fecha" value={taskData.fecha} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label>H. Inicio:</label>
+                <input type="time" name="hInicio" value={taskData.hInicio} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label>H. Fin:</label>
+                <input type="time" name="hFin" value={taskData.hFin} onChange={handleChange} />
+              </div>
+              <div className="form-row">
+                <label>¿Repetir semanalmente?</label>
+                <input type="checkbox" name="repetir" checked={taskData.repetir} onChange={handleChange} />
+              </div>
+              {taskData.repetir && (
+                <div className="form-row">
+                  <label>Nº semanas:</label>
+                  <input type="number" name="semanas" min="1" value={taskData.semanas} onChange={handleChange} />
+                </div>
+              )}
+            </>
+          )}
+
+          <div className="buttons">
+            <button type="submit" className="save-btn">Guardar</button>
+            <button type="button" className="cancel-btn" onClick={onClose}>Cancelar</button>
+          </div>
         </div>
       </form>
     </div>

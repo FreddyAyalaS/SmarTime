@@ -1,4 +1,3 @@
-
 // CalendarPage.jsx
 import React, { useState } from 'react';
 import TaskForm from '../components/TaskForm';
@@ -86,7 +85,7 @@ const Calendar = () => {
             <div className="activity-options">
               <button className="option blue" onClick={() => handleOptionClick("Tarea")}>Tarea</button>
               <button className="option green" onClick={() => handleOptionClick("Estudio")}>Estudio</button>
-              <button className="option orange" onClick={() => handleOptionClick("Evento")}>Evento</button>
+              <button className="option orange" onClick={() => handleOptionClick("Clase")}>Clase</button>
               <button className="option gray" onClick={() => handleOptionClick("Act. no académica")}>Act. no académica</button>
             </div>
           )}
