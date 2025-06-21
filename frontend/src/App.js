@@ -6,11 +6,12 @@ import './App.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import LandingPageScroll from './pages/LandingPageScroll'; // 👉 nueva landing con scroll
+import LandingPageScroll from './pages/LandingPageScroll'; 
 import SettingsPage from './pages/SettingsPage';
 import DashboardPage from './pages/DashboardPage';
 import CalendarPage from './pages/CalendarPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import TasksPage from './pages/TaskPage';
 // Layout
 import Layout from './components/Layout';
 
@@ -22,13 +23,17 @@ const NotFoundPagePlaceholder = () => (
   </div>
 );
 
-// ✅ Verifica si el usuario está autenticado por presencia del token
-const isAuthenticated = () => {
-  const token = localStorage.getItem('authToken');
-  return !!token; // true si existe token
-};
+//            CAMBIAR SEGÚN MODO DE TRABAJO:
+// ====> BACKEND:
+// const isAuthenticated = () => {
+//   const token = localStorage.getItem('authToken');
+//   return !!token; // true si existe token
+// };
 
-// ✅ Componente para proteger rutas privadas
+// ====> FRONTEND (desarrollo sin backend):
+const isAuthenticated = () => true; // <-- Simula usuario autenticado
+
+// Componente para proteger rutas privadas
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   if (!isAuthenticated()) {
@@ -53,6 +58,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/tasks" element={<TasksPage/>} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 

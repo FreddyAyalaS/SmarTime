@@ -1,4 +1,4 @@
-// src/pages/RegisterPage/RegisterPage.jsx
+// src/pages/RegisterPage.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 

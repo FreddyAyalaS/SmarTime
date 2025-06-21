@@ -153,10 +153,11 @@ body {
 }
 
 .about-us-description p {
-    font-size: 18px;
+    font-size: 35px;
     line-height: 1.6;
     margin-bottom: 0;
     color: #555;
+    text-decoration: underline;
 }
 
 .about-us-image {
@@ -491,4 +492,11 @@ body {
 .text-and-image-section{
     display: flex;
     justify-content: center;
+
+}
+.text-and-image-section h1{
+    font-size: 45px;
+}
+.text-and-image-section p{
+    margin-right: 50px;
 }
