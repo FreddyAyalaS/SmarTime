@@ -1,20 +1,26 @@
 // src/pages/TasksPage/TasksPage.jsx
 import React, { useState, useEffect } from 'react';
-import '../styles/TaskPage.css'; // O .module.css
+import '../styles/TaskPage.css';
 
-// Importa tus componentes REALES
-import TaskItem from '../components/TaskItem';
+// Componentes
+import TaskItem from '../components/TaskItemT';
 import TaskFormModal from '../components/TaskFormModal';
 import Button from '../components/Button';
 
-import { getTasks, createTask, updateTask, deleteTask, updateTaskStatus } from '../services/taskService';
-
+// ⚙️ Cambiar esta línea según entorno:
+import {
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask,
+  updateTaskStatus,
+} from '../services/taskServiceSelector'; // ← este decide qué versión usar
 const TasksPage = () => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [showTaskModal, setShowTaskModal] = useState(false);
-  const [editingTask, setEditingTask] = useState(null); // Para editar una tarea
+  const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -34,7 +40,7 @@ const TasksPage = () => {
   }, []);
 
   const handleOpenNewTaskModal = () => {
-    setEditingTask(null); // Asegura que no haya datos de edición
+    setEditingTask(null);
     setShowTaskModal(true);
   };
 
@@ -44,13 +50,13 @@ const TasksPage = () => {
   };
 
   const handleFormSubmit = async (taskData) => {
-    setIsLoading(true); // O un isLoading específico para el modal
+    setIsLoading(true);
     setError('');
     try {
-      if (editingTask && editingTask.id) { // Si estamos editando
+      if (editingTask && editingTask.id) {
         const updatedTask = await updateTask(editingTask.id, taskData);
         setTasks(prevTasks => prevTasks.map(t => t.id === editingTask.id ? updatedTask : t));
-      } else { // Si estamos creando
+      } else {
         const createdTask = await createTask(taskData);
         setTasks(prevTasks => [...prevTasks, createdTask]);
       }
@@ -58,7 +64,6 @@ const TasksPage = () => {
       setEditingTask(null);
     } catch (err) {
       setError(err.message || (editingTask ? 'Error al actualizar la tarea.' : 'Error al crear la tarea.'));
-      // No cerrar el modal en caso de error para que el usuario pueda corregir
     } finally {
       setIsLoading(false);
     }
@@ -76,12 +81,9 @@ const TasksPage = () => {
   };
 
   const handleToggleComplete = async (taskId, isCompleted) => {
-    // Esta función ahora debería cambiar el 'estado' a 'finalizado' o 'en_desarrollo'
-    const newStatus = isCompleted ? 'en_desarrollo' : 'finalizado'; // Invierte el estado de completado
+    const newStatus = isCompleted ? 'en_desarrollo' : 'finalizado';
     try {
       const updatedTask = await updateTaskStatus(taskId, newStatus);
-      // También actualizamos el campo 'completado' para el check visual,
-      // asumiendo que 'finalizado' implica 'completado: true'
       updatedTask.completado = newStatus === 'finalizado';
       setTasks(prevTasks => prevTasks.map(t => t.id === taskId ? updatedTask : t));
     } catch (err) {
@@ -92,14 +94,14 @@ const TasksPage = () => {
   const handleSetStatus = async (taskId, newStatus) => {
     try {
       const updatedTask = await updateTaskStatus(taskId, newStatus);
-      updatedTask.completado = newStatus === 'finalizado'; // Sincroniza 'completado'
+      updatedTask.completado = newStatus === 'finalizado';
       setTasks(prevTasks => prevTasks.map(t => t.id === taskId ? updatedTask : t));
     } catch (err) {
       setError(err.message || 'Error al cambiar el estado de la tarea.');
     }
   };
 
-  // Clases (como las tenías)
+  // Clases
   const pageContainerClasses = "tasks-page-container";
   const pageHeaderClasses = "tasks-page-header";
   const pageTitleClasses = "tasks-page-title";
@@ -139,13 +141,13 @@ const TasksPage = () => {
             </thead>
             <tbody>
               {tasks.map(task => (
-                <TaskItem // Usa el componente real
+                <TaskItem
                   key={task.id}
                   task={task}
                   onToggleComplete={handleToggleComplete}
                   onDelete={handleDeleteTask}
                   onSetStatus={handleSetStatus}
-                  onEdit={handleOpenEditTaskModal} // Pasa la función para editar
+                  onEdit={handleOpenEditTaskModal}
                 />
               ))}
             </tbody>

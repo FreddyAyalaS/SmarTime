@@ -7,9 +7,11 @@
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Alinea arriba */
   justify-content: center;
-  z-index: 1000; /* Asegura que esté por encima de otros contenidos */
+  z-index: 1000;
+  overflow-y: auto; /* Scroll sobre la página */
+  padding: 40px 20px; /* Espacio alrededor del modal */
 }
 
 .task-form-modal-content {
@@ -18,8 +20,7 @@
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 500px; /* Ancho del modal */
-  max-height: 90vh; /* Altura máxima, con scroll interno si es necesario */
+  max-width: 500px;
   display: flex;
   flex-direction: column;
 }
@@ -28,15 +29,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e5e7eb; /* Línea separadora */
+  border-bottom: 1px solid #e5e7eb;
   padding-bottom: 15px;
   margin-bottom: 20px;
 }
 
 .task-form-modal-title {
-  font-size: 1.25rem; /* text-xl */
+  font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937; /* gray-800 */
+  color: #1f2937;
   margin: 0;
 }
 
@@ -45,34 +46,32 @@
   border: none;
   font-size: 1.8rem;
   font-weight: 300;
-  color: #6b7280; /* gray-500 */
+  color: #6b7280;
   cursor: pointer;
   padding: 0 5px;
   line-height: 1;
 }
 .task-form-modal-close-button:hover {
-  color: #1f2937; /* gray-800 */
+  color: #1f2937;
 }
 
 .task-form-modal-body {
-  overflow-y: auto; /* Scroll si el formulario es muy largo */
   flex-grow: 1;
 }
 
 .task-form-actual-form {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Espacio entre los campos del formulario */
+  gap: 15px;
 }
 
-/* Estilos para el select (puedes usar las clases de tu Input.css si son compatibles) */
-/* Si no, define aquí: */
-.task-form-actual-form .input-label { /* Asumiendo que usas .input-label de Input.css */
+/* Estilos para el select */
+.task-form-actual-form .input-label {
   display: block;
   margin-bottom: 5px;
   font-weight: 500;
 }
-.task-form-actual-form .input-field { /* Asumiendo que usas .input-field de Input.css */
+.task-form-actual-form .input-field {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -80,20 +79,15 @@
   box-sizing: border-box;
 }
 
-
 .task-form-modal-footer {
   display: flex;
-  justify-content: flex-end; /* Botones a la derecha */
-  gap: 10px; /* Espacio entre botones */
-  border-top: 1px solid #e5e7eb; /* Línea separadora */
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #e5e7eb;
   padding-top: 20px;
   margin-top: 25px;
 }
 
-/* Clases adicionales para los botones del modal si es necesario */
-.task-form-cancel-button {
-  /* Tu componente Button con variant="secondary" debería manejar esto */
-}
-.task-form-submit-button {
-  /* Tu componente Button con variant="primary" debería manejar esto */
-}
+/* Puedes dejar vacíos estos si ya usas variant="secondary"/"primary" */
+.task-form-cancel-button {}
+.task-form-submit-button {}
