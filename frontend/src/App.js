@@ -22,11 +22,15 @@ const NotFoundPagePlaceholder = () => (
   </div>
 );
 
-// ✅ Verifica si el usuario está autenticado por presencia del token
-const isAuthenticated = () => {
-  const token = localStorage.getItem('authToken');
-  return !!token; // true si existe token
-};
+// 🔁 CAMBIAR SEGÚN MODO DE TRABAJO:
+// ====> ✅ USAR BACKEND:
+// const isAuthenticated = () => {
+//   const token = localStorage.getItem('authToken');
+//   return !!token; // true si existe token
+// };
+
+// ====> ✅ SOLO FRONTEND (desarrollo sin backend):
+const isAuthenticated = () => true; // <-- Simula usuario autenticado
 
 // ✅ Componente para proteger rutas privadas
 const ProtectedRoute = ({ children }) => {
