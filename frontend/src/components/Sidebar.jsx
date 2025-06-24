@@ -1,78 +1,88 @@
-
+// src/components/Sidebar/Sidebar.jsx
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
+import '../styles/Sidebar.css';
+import homeIcon from '../assets/Icons/home.svg';
+import calendarIcon from '../assets/Icons/calendar.svg';
+import logoutIcon from '../assets/Icons/logout.svg';
+import settingsIcon from '../assets/Icons/settings.svg';
+import statsIcon from '../assets/Icons/stats.svg';
+import tasksIcon from '../assets/Icons/tasks.svg';
+import antiProcrastinationIcon from '../assets/Icons/anti-procrastination.svg';
+import AppLogo from '../assets/Icons/Logo.png';
 
-// Asume que crearás 'Sidebar.module.css' o 'Sidebar.css' e importarás los estilos
-// import styles from './Sidebar.module.css'; // Si usas CSS Modules
-// import './Sidebar.css'; // Si usas CSS global
+import { logoutUser } from '../services/authService';
 
-// Placeholder para íconos de navegación
-// Deberías reemplazarlos con SVGs o íconos de una librería más adelante
-const DashboardIcon = () => <span></span>;
-const CalendarIcon = () => <span></span>;
-const TasksIcon = () => <span></span>;
-const AnalyticsIcon = () => <span></span>;
-const AntiProcrastinationIcon = () => <span></span>;
-const SettingsIcon = () => <span></span>;
-
-
-const navItems = [
-  { name: 'Dashboard', path: '/dashboard', icon: DashboardIcon },
-  { name: 'Calendario', path: '/calendar', icon: CalendarIcon },
-  { name: 'Tareas', path: '/tasks', icon: TasksIcon },
-  { name: 'Analíticas', path: '/analytics', icon: AnalyticsIcon },
-  { name: 'Modo Anti-Procrastinación', path: '/anti-procrastination', icon: AntiProcrastinationIcon },
-  { name: 'Configuración', path: '/settings', icon: SettingsIcon },
+const navItemsData = [
+  { id: 'dashboard', text: 'Dashboard', icon: homeIcon, path: '/dashboard' },
+  { id: 'calendario', text: 'Calendario', icon: calendarIcon, path: '/calendar' },
+  { id: 'tareas', text: 'Tareas', icon: tasksIcon, path: '/tasks' },
+  { id: 'modo', text: 'Modo Antiprocrastinación', icon: antiProcrastinationIcon, path: '/anti-procrastination' },
+  { id: 'estadistica', text: 'Estadística', icon: statsIcon, path: '/analytics' },
+  { id: 'configuracion', text: 'Configuración', icon: settingsIcon, path: '/settings' },
 ];
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Nombres de clase que definirás en tu archivo CSS para Sidebar
-  const sidebarContainerClasses = "app-sidebar-container";
-  const logoSectionClasses = "app-sidebar-logo-section";
-  const logoTextClasses = "app-sidebar-logo-text"; // "SmartTime" en el sidebar
-  const navClasses = "app-sidebar-nav";
-  const navItemClasses = "app-sidebar-nav-item";
-  const navItemActiveClasses = "app-sidebar-nav-item-active"; // Para el ítem activo
-  const navItemIconClasses = "app-sidebar-nav-item-icon";
-  const navItemTextClasses = "app-sidebar-nav-item-text";
-  const footerSectionClasses = "app-sidebar-footer";
-  const logoutButtonClasses = "app-sidebar-logout-button";
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      alert('Has cerrado sesión.');
+      navigate('/login');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error.message);
+      alert('Error al cerrar sesión, pero se ha limpiado la sesión local.');
+      navigate('/login');
+    }
+  };
 
+  const allNavItems = [
+    ...navItemsData,
+    { id: 'logout', text: 'Cerrar Sesión', icon: logoutIcon, action: handleLogout, isLogout: true }
+  ];
 
   return (
-    <aside className={sidebarContainerClasses}>
-      <div className={logoSectionClasses}>
-        {/* Podrías tener un logo más pequeño o solo texto aquí */}
-        <span className={logoTextClasses}>SmartTime</span>
+    <aside className="app-sidebar-container">
+      <div className="app-sidebar-logo-section">
+        <img src={AppLogo} alt="SmartTime Logo" className="app-sidebar-logo-image" />
+        <span className="app-sidebar-logo-text">SmartTime</span>
       </div>
 
-      <nav className={navClasses}>
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          // Comprueba si la ruta actual comienza con la ruta del ítem para resaltarlo
-          const isActive = location.pathname === item.path || (item.path !== "/" && location.pathname.startsWith(item.path));
+      <nav className="app-sidebar-nav">
+        {allNavItems.map((item) => {
+          const isActive = !item.isLogout && (location.pathname === item.path || (item.path && item.path !== "/" && location.pathname.startsWith(item.path)));
+
+          if (item.isLogout) {
+            return (
+              <div
+                key={item.id}
+                className="app-sidebar-nav-item app-sidebar-footer"
+                onClick={item.action}
+                role="button"
+                tabIndex={0}
+                onKeyPress={(e) => e.key === 'Enter' && item.action()}
+              >
+                <img src={item.icon} alt={`${item.text} icon`} className="app-sidebar-nav-item-icon" />
+                <span className="app-sidebar-nav-item-text">{item.text}</span>
+              </div>
+            );
+          }
+
           return (
             <Link
-              key={item.name}
+              key={item.id}
               to={item.path}
-              className={`${navItemClasses} ${isActive ? navItemActiveClasses : ''}`}
+              className={`app-sidebar-nav-item ${isActive ? 'app-sidebar-nav-item-active' : ''}`}
             >
-              {Icon && <Icon className={navItemIconClasses} />}
-              <span className={navItemTextClasses}>{item.name}</span>
+              <img src={item.icon} alt={`${item.text} icon`} className="app-sidebar-nav-item-icon" />
+              <span className="app-sidebar-nav-item-text">{item.text}</span>
             </Link>
           );
         })}
       </nav>
-
-      <div className={footerSectionClasses}>
-        {/* Podrías tener info de usuario o un botón de cerrar sesión */}
-        <button type="button" className={logoutButtonClasses}>
-          Cerrar Sesión
-        </button>
-      </div>
     </aside>
   );
 };

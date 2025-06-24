@@ -1,17 +1,18 @@
-// src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Outlet, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
+
+// Pages
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import Layout from './components/Layout'; // NUEVO
-
-// Placeholder temporal para dashboard (puedes reemplazarlo por DashboardPage)
-const DashboardPagePlaceholder = () => (
-  <div className="page-placeholder">
-    <h1>Dashboard</h1>
-  </div>
-);
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import LandingPageScroll from './pages/LandingPageScroll'; // 👉 nueva landing con scroll
+import SettingsPage from './pages/SettingsPage';
+import DashboardPage from './pages/DashboardPage';
+import CalendarPage from './pages/CalendarPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+// Layout
+import Layout from './components/Layout';
 
 // Página para rutas no encontradas
 const NotFoundPagePlaceholder = () => (
@@ -21,10 +22,17 @@ const NotFoundPagePlaceholder = () => (
   </div>
 );
 
-// Función que simula autenticación
-const isAuthenticated = () => true;
+// 🔁 CAMBIAR SEGÚN MODO DE TRABAJO:
+// ====> ✅ USAR BACKEND:
+// const isAuthenticated = () => {
+//   const token = localStorage.getItem('authToken');
+//   return !!token; // true si existe token
+// };
 
-// Ruta protegida: redirige si no está autenticado
+// ====> ✅ SOLO FRONTEND (desarrollo sin backend):
+const isAuthenticated = () => true; // <-- Simula usuario autenticado
+
+// ✅ Componente para proteger rutas privadas
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   if (!isAuthenticated()) {
@@ -40,10 +48,15 @@ function App() {
         {/* Rutas públicas */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password/:uidb64/:token" element={<ResetPasswordPage />} />
+        <Route path="/landing" element={<LandingPageScroll />} />
 
-        {/* Rutas privadas dentro del layout */}
+        {/* Rutas protegidas (requieren login) */}
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-          <Route path="/dashboard" element={<DashboardPagePlaceholder />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 

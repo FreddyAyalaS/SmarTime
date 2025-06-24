@@ -1,0 +1,18 @@
+/* src/pages/DashboardPage/DashboardPage.css */
+.dashboard-page {
+  padding: 20px; /* Padding general para la página del dashboard */
+  width: 400px;
+}
+
+.dashboard-welcome-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #2c3e50;
+}
+
+.dashboard-summary-section {
+  /* Puedes usar esto para limitar el ancho de las tarjetas de resumen si es necesario,
+     o para ponerlas en un layout de columnas si tienes varias. */
+   width: 200px; 
+}

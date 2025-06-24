@@ -1,103 +1,119 @@
-// src/pages/LoginPage/LoginPage.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-// Asume que crearás 'LoginPage.module.css' o 'LoginPage.css' e importarás los estilos
-// import styles from './LoginPage.module.css'; // Si usas CSS Modules
-// import './LoginPage.css'; // Si usas CSS global para esta página
-
-// Importa tus componentes
-import Input from '../components/Input'; // Ajusta la ruta si es necesario
+import Input from '../components/Input';
 import Button from '../components/Button';
 import Card from '../components/Card';
+import '../styles/LoginPage.css';
+import AppLogo from '../assets/Icons/Logo.png';
 
-// Asume que tienes un logo en src/assets/ si lo usas como imagen
-// import AppLogo from '../../assets/logo-smart-time.svg';
+import { loginUser } from '../services/authService';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Login con:', { email, password });
-    navigate('/dashboard'); // Simulación
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const responseData = await loginUser({ username, password });
+
+      if (responseData.access) {
+        // Guardamos el token de acceso en localStorage
+        localStorage.setItem('authToken', responseData.access);
+        // También el refresh token si lo quieres usar más adelante
+        localStorage.setItem('refreshToken', responseData.refresh);
+
+        alert('¡Inicio de sesión exitoso!');
+        navigate('/dashboard');
+      } else {
+        setError(responseData.mensaje || 'Respuesta inesperada del servidor.');
+      }
+    } catch (err) {
+      console.error('Error en handleLogin:', err.message);
+      setError(err.message || 'Error al iniciar sesión. Verifica tu usuario y contraseña.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // Nombres de clase que definirás en tu archivo CSS para LoginPage
-  const pageContainerClasses = "login-page-container";
-  const formCardClasses = "login-form-card"; // Puedes pasar esta como className a Card si es necesario
-  const logoContainerClasses = "login-logo-container";
-  const appNameClasses = "login-app-name"; // Para el texto "SmartTime"
-  const pageTitleClasses = "login-page-title"; // Para "Iniciar Sesión"
-  const googleButtonClasses = "login-google-button"; // Clase adicional para el botón de Google si es necesario
-  const dividerContainerClasses = "login-divider-container";
-  const dividerLineClasses = "login-divider-line";
-  const dividerTextClasses = "login-divider-text";
-  const formClasses = "login-form";
-  const forgotPasswordClasses = "login-forgot-password";
-  const linkClasses = "login-link"; // Para enlaces genéricos dentro de la página de login
-  const submitButtonClasses = "login-submit-button"; // Clase adicional para el botón de login si es necesario
-  const signupPromptClasses = "login-signup-prompt";
-
-
   return (
-    <div className={pageContainerClasses}>
-      <Card title="SmartTime" className={formCardClasses} titleClassName={appNameClasses}> {/* Pasando titleClassName */}
-        <h2 className={pageTitleClasses}>Iniciar Sesión</h2>
+    <div className="login-page-container">
+      <div className="login-form-section">
+        <Card
+          title={
+            <div className="login-logo-container">
+              <img src={AppLogo} alt="SmartTime Logo" className="login-logo-image" />
+              <span className="login-app-name">SmartTime</span>
+            </div>
+          }
+          className="login-form-card"
+        >
+          <h2 className="login-page-title">Iniciar Sesión</h2>
 
-        <Button variant="google" fullWidth className={googleButtonClasses}>
-          {/* Si tienes un ícono SVG para Google:
-          <svg className="google-icon" ...></svg>
-          */}
-          Continuar con Google
-        </Button>
-
-        <div className={dividerContainerClasses}>
-          <hr className={dividerLineClasses} />
-          <span className={dividerTextClasses}>O con su cuenta</span>
-          <hr className={dividerLineClasses} />
-        </div>
-
-        <form onSubmit={handleLogin} className={formClasses}>
-          <Input
-            label="Correo"
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            // Puedes pasar classNames a Input si su CSS lo permite
-            // className="login-input-group"
-            // labelClassName="login-input-label"
-            // inputClassName="login-input-field"
-          />
-          <Input
-            label="Contraseña"
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <div className={forgotPasswordClasses}>
-            <Link to="/forgot-password" className={linkClasses}>
-              ¿Olvidó su contraseña?
-            </Link>
-          </div>
-          <Button type="submit" variant="primary" fullWidth className={submitButtonClasses}>
-            Iniciar Sesión
+          <Button variant="google" fullWidth className="login-google-button">
+            Continuar con Google
           </Button>
-        </form>
 
-        <p className={signupPromptClasses}>
-          ¿Aún no eres miembro?{' '}
-          <Link to="/register" className={linkClasses}>
-            Regístrate
-          </Link>
-        </p>
-      </Card>
+          <div className="login-divider-container">
+            <hr className="login-divider-line" />
+            <span className="login-divider-text">O con su cuenta</span>
+            <hr className="login-divider-line" />
+          </div>
+
+          <form onSubmit={handleLogin} className="login-form">
+            <Input
+              label="Usuario"
+              type="text"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Ingresa tu nombre de usuario"
+              required
+            />
+            <Input
+              label="Contraseña"
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            {error && <p className="login-form-error-message">{error}</p>}
+
+            <div className="login-forgot-password">
+              <Link to="/forgot-password" className="login-link">
+                ¿Olvidó su contraseña?
+              </Link>
+            </div>
+
+            <Button
+              type="submit"
+              variant="primary"
+              fullWidth
+              className="login-submit-button"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Ingresando...' : 'Iniciar Sesión'}
+            </Button>
+          </form>
+
+          <p className="login-signup-prompt">
+            ¿Aún no eres miembro?{' '}
+            <Link to="/register" className="login-link">
+              Regístrate
+            </Link>
+          </p>
+        </Card>
+      </div>
+      <div className="login-image-section"></div>
     </div>
   );
 };

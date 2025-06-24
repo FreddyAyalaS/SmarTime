@@ -1,45 +1,133 @@
 // src/components/Header/Header.jsx
-import React from 'react';
-import { Link } from 'react-router-dom'; // Para el logo si es un enlace a la home/dashboard
+import React, { useState, useEffect, useRef } from 'react'; // Hooks añadidos
+import { Link, useNavigate } from 'react-router-dom';
+import UserIconSVG from '../assets/Icons/user-profile.svg'; // Renombrado para claridad
+import BellIconSVG from '../assets/Icons/notification-bell.svg'; // Renombrado para claridad
+import '../styles/Header.css'; // Asegúrate que la ruta es correcta
 
-// Asume que crearás 'Header.module.css' o 'Header.css' e importarás los estilos
-// import styles from './Header.module.css'; // Si usas CSS Modules
-// import './Header.css'; // Si usas CSS global
+// Importa los componentes de notificación y los datos mock
+// Asegúrate que estas rutas sean correctas según tu estructura
+import NotificationPanel from '../components/NotificationPanel';
+import { notificationsData as initialNotifications } from '../data/notificationsData';
 
-// Placeholder para íconos (podrías usar SVGs o una librería más adelante)
-const UserIconPlaceholder = () => <span className="header-icon"></span>;
-const BellIconPlaceholder = () => <span className="header-icon"></span>;
+const Header = ({ pageTitle = "Enfocado en Mejorar" }) => { // Título por defecto de ejemplo
+  const navigate = useNavigate();
+  const [notifications, setNotifications] = useState(initialNotifications);
+  const [showNotificationPanel, setShowNotificationPanel] = useState(false);
+  const notificationTriggerRef = useRef(null); // Para el botón de la campana
+  const notificationPanelRef = useRef(null);   // Para el panel
 
-const Header = ({ pageTitle = "SmartTime" }) => {
-  // Nombres de clase que definirás en tu archivo CSS para Header
+  // Nombres de clase (los que ya tenías)
   const headerContainerClasses = "app-header-container";
   const leftSectionClasses = "app-header-left";
-  const logoLinkClasses = "app-header-logo-link";
-  const logoTextClasses = "app-header-logo-text"; // Para "SmartTime"
-  // const logoIconClasses = "app-header-logo-icon"; // Si tienes un ícono SVG
+  const logoLinkClasses = "app-header-logo-link"; // Lo mantenemos por si lo reactivas
+  const logoTextClasses = "app-header-logo-text"; // Lo mantenemos por si lo reactivas
   const pageTitleClasses = "app-header-page-title";
   const rightSectionClasses = "app-header-right";
   const iconButtonClasses = "app-header-icon-button";
-  const userMenuClasses = "app-header-user-menu"; // Contenedor para el ícono de usuario/dropdown
+  const userMenuClasses = "app-header-user-menu";
+
+  // Nuevas clases para la campana de notificación
+  const notificationBellContainerClasses = "notification-bell-container"; // Contenedor para campana + punto + panel
+  const unreadDotClasses = "notification-unread-dot";
+
+  const unreadCount = notifications.filter(n => !n.isRead).length;
+
+  const toggleNotificationPanel = () => {
+    setShowNotificationPanel(prev => !prev);
+  };
+
+  const handleMarkAsRead = (notificationId) => {
+    setNotifications(prevNotifications =>
+      prevNotifications.map(n =>
+        n.id === notificationId ? { ...n, isRead: true } : n
+      )
+    );
+  };
+
+  const handleClearAll = () => {
+    setNotifications(prevNotifications =>
+      prevNotifications.map(n => ({ ...n, isRead: true }))
+    );
+  };
+
+  const handleUserProfileClick = () => {
+    navigate('/settings');
+  };
+
+  // Efecto para cerrar el panel si se hace clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        notificationPanelRef.current &&
+        !notificationPanelRef.current.contains(event.target) &&
+        notificationTriggerRef.current && // También verifica que no se haya hecho clic en el botón de la campana
+        !notificationTriggerRef.current.contains(event.target)
+      ) {
+        setShowNotificationPanel(false);
+      }
+    };
+
+    if (showNotificationPanel) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showNotificationPanel]);
 
   return (
     <header className={headerContainerClasses}>
       <div className={leftSectionClasses}>
-        <Link to="/dashboard" className={logoLinkClasses}>
-          {/* <img src={logoUrl} alt="SmartTime Logo" className={logoIconClasses} /> */}
+        {/* Logo y título de la aplicación (puedes ocultar el logo si el sidebar ya lo tiene) */}
+        <Link to="/dashboard" className={logoLinkClasses} style={{ display: 'none' }}> {/* Oculto por defecto */}
           <span className={logoTextClasses}>SmartTime</span>
         </Link>
+        {/* Título de la página actual */}
         {pageTitle && <h1 className={pageTitleClasses}>{pageTitle}</h1>}
       </div>
 
       <div className={rightSectionClasses}>
-        <button type="button" className={iconButtonClasses} aria-label="Notifications">
-          <BellIconPlaceholder />
-        </button>
+        {/* Contenedor de la campana de notificación */}
+        <div className={notificationBellContainerClasses}>
+          <button
+            ref={notificationTriggerRef} // Ref para el botón de la campana
+            type="button"
+            className={iconButtonClasses}
+            aria-label="Notificaciones"
+            onClick={toggleNotificationPanel}
+          >
+            <img src={BellIconSVG} alt="Notificaciones" />
+            {unreadCount > 0 && (
+              <span className={unreadDotClasses}>
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </button>
+          {/* El panel se renderiza aquí, y su visibilidad se controla con CSS o condicionalmente */}
+          {/* Pasamos la ref al panel también */}
+          <div ref={notificationPanelRef}>
+            <NotificationPanel
+              notifications={notifications}
+              onMarkAsRead={handleMarkAsRead}
+              onClearAll={handleClearAll}
+              isVisible={showNotificationPanel} // El panel maneja su propia renderización basada en esto
+            />
+          </div>
+        </div>
+
+        {/* Menú de Usuario */}
         <div className={userMenuClasses}>
-          <button type="button" className={iconButtonClasses} aria-label="User menu">
-            <UserIconPlaceholder />
-            {/* Aquí podría ir un nombre de usuario o un dropdown más complejo */}
+          <button
+            type="button"
+            className={iconButtonClasses}
+            aria-label="Menú de usuario"
+            onClick={handleUserProfileClick}
+          >
+            <img src={UserIconSVG} alt="Usuario" />
           </button>
         </div>
       </div>

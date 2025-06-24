@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,8 +39,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Apps externas
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
+
+    # Tus apps
+    'Apps.Autenticacion',
+    'Apps.Calendario',
+    
 ]
+
+AUTH_USER_MODEL = 'Autenticacion.UsuarioPersonalizado'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -48,6 +61,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    #CORS
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'SmarTime.urls'
@@ -121,3 +138,44 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Agregado para autentificar con JWT
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # 30 minutos de vigencia del access token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),    # 1 día de vigencia del refresh token
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
+
+
+
+#SMTP-Correo
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'smartime.ux@gmail.com'
+EMAIL_HOST_PASSWORD = 'irushwniqnjmibws'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
+#CORS
+CORS_ALLOW_ALL_ORIGINS = True  # Solo en desarrollo
+CORS_ALLOW_CREDENTIALS = True
+
+
+
+#CORS_ALLOWED_ORIGINS = [
+#    "http://localhost:3000",  # React por defecto
+#]
+
+# El email se mostrará en la consola, simulando el envío
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
