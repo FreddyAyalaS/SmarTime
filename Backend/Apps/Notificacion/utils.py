@@ -3,7 +3,7 @@ from django.template.loader import render_to_string
 from datetime import date
 
 
-def enviar_recordatorios_actividades(usuario_actividades):
+def enviar_recordatorios_tareas(usuario_actividades):
     connection = get_connection()
     connection.open()
 
@@ -37,7 +37,7 @@ def enviar_recordatorios_expiracion(usuarios_actividades):
             {
                 "nombre": usuario.nombre,
                 "titulo": actividad.titulo,
-                "hora_fin": actividad.hora_fin,
+                "horaEntrega": actividad.horaEntrega,
             },
         )
         email = EmailMessage(subject, message, to=[usuario.correo])

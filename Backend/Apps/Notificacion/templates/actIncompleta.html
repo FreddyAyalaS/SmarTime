@@ -3,7 +3,8 @@
 <ul>
   {% for actividad in actividades %}
   <li>
-    {{ actividad.titulo }} - {{ actividad.hora_ini }} - {{actividad.fecha}}
+    {{ actividad.titulo}} - {{ actividad.horaFin }} -
+    {{actividad.fechaRealizacion}}
   </li>
   {% endfor %}
 </ul>

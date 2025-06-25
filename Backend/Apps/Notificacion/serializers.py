@@ -1,8 +1,26 @@
 from rest_framework import serializers
-from .models import Actividad
+from .models import Tarea, Clase, Estudio, ActividadNoAcademica
 
-class ActividadSerializer(serializers.ModelSerializer):
 
+class TareaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Actividad
-        fields = '__all__'
+        model = Tarea
+        fields = "__all__"
+
+
+class ClaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Clase
+        fields = "__all__"
+
+
+class EstudioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Estudio
+        fields = "__all__"
+
+
+class ActividadNoAcademicaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ActividadNoAcademica
+        fields = "__all__"

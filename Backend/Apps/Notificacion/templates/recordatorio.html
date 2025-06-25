@@ -2,6 +2,9 @@
 <p>Estas son tus actividades para hoy:</p>
 <ul>
   {% for actividad in actividades %}
-  <li>{{ actividad.titulo }} - {{ actividad.hora_ini }}</li>
+  <li>
+    {% if actividad.titulo %} {{ actividad.titulo }} {% else %}
+    {{actividad.curso }} {% endif %} - {{ actividad.horaInicio|date:"g:i A" }}
+  </li>
   {% endfor %}
 </ul>

@@ -1,8 +1,8 @@
 from collections import defaultdict
 from django.http import JsonResponse
-from .models import Actividad
+from .models import Tarea, Clase, Estudio
 from .utils import (
-    enviar_recordatorios_actividades,
+    enviar_recordatorios_tareas,
     enviar_recordatorios_expiracion,
     enviar_recordatorios_pendientes,
 )
@@ -13,73 +13,87 @@ from datetime import date, datetime, timedelta
 def enviar_recordatorios(request):
     hoy = date.today()
 
-    actividades = Actividad.objects.select_related("usuario").filter(fecha=hoy)
+    tarea = Tarea.objects.select_related("usuario").filter(
+        fechaRealizacion=hoy, usuario__notificacion=True
+    )
+    clase = Clase.objects.select_related("usuario").filter(
+        fecha=hoy, usuario__notificacion=True
+    )
+    estudio = Estudio.objects.select_related("usuario").filter(
+        fecha=hoy, usuario__notificacion=True
+    )
 
-    if not actividades:
-        return JsonResponse({"mensaje": "No hay actividades para hoy."})
+    act_academicas = list(tarea) + list(clase) + list(estudio)
 
-    actividades_por_usuario = defaultdict(list)
-    for actividad in actividades:
-        actividades_por_usuario[actividad.usuario].append(actividad)
+    if not act_academicas:
+        return JsonResponse({"mensaje": "No hay tareas para hoy."})
 
-    if actividades_por_usuario:
-        enviar_recordatorios_actividades(actividades_por_usuario)
+    act_academica_por_usuario = defaultdict(list)
+    for act_academica in act_academicas:
+        act_academica_por_usuario[act_academica.usuario].append(act_academica)
+
+    if act_academica_por_usuario:
+        enviar_recordatorios_tareas(act_academica_por_usuario)
 
     return JsonResponse(
         {
-            "mensaje": f"Se enviaron recordatorios a {len(actividades_por_usuario)} usuario(s).",
+            "mensaje": "Se enviaron los recordatorios satisfactoriamente.",
         }
     )
 
 
-def notificar_actividades_fin(request):
+def notificar_tareas_fin(request):
     ahora = localtime(now()).replace(second=0, microsecond=0)
     hoy = ahora.date()
 
-    actividades = Actividad.objects.select_related("usuario").filter(fecha=hoy)
+    tareas = Tarea.objects.select_related("usuario").filter(
+        fechaEntrega=hoy, usuario__notificacion=True
+    )
 
-    if not actividades:
-        return JsonResponse({"mensaje": "No hay actividades para hoy."})
+    print(f"Tareas encontradas: {tareas}")
 
-    usuarios_actividades = []
+    if not tareas:
+        return JsonResponse({"mensaje": "No hay tareas para hoy."})
 
-    for actividad in actividades:
-        hora_actividad = actividad.hora_fin.replace(second=0, microsecond=0)
-        fecha_actividad = hoy
+    usuarios_tareas = []
 
-        if hora_actividad < ahora.time():
-            fecha_actividad = hoy + timedelta(days=1)
+    for tarea in tareas:
+        hora_tarea = tarea.horaEntrega.replace(second=0, microsecond=0)
+        fecha_tarea = hoy
 
-        hora_fin_datetime = make_aware(
-            datetime.combine(fecha_actividad, hora_actividad)
-        )
+        hora_fin_datetime = make_aware(datetime.combine(fecha_tarea, hora_tarea))
         diferencia = hora_fin_datetime - ahora
 
         if diferencia == timedelta(hours=2):
-            usuarios_actividades.append((actividad.usuario, actividad))
+            usuarios_tareas.append((tarea.usuario, tarea))
 
-    if usuarios_actividades:
-        enviar_recordatorios_expiracion(usuarios_actividades)
+    if usuarios_tareas:
+        enviar_recordatorios_expiracion(usuarios_tareas)
 
     return JsonResponse(
-        {"mensaje": f"{len(usuarios_actividades)} recordatorio(s) enviado(s)."}
+        {"mensaje": "Se enviaron los recordatorios satisfactoriamente."}
     )
 
 
-def notificar_actividades_pendientes(request):
-    actividades = Actividad.objects.select_related("usuario").filter(estado="pendiente")
+def notificar_tareas_pendientes(request):
 
-    if not actividades:
-        return JsonResponse({"mensaje": "No hay actividades pendientes para hoy."})
+    hoy = date.today()
 
-    actividades_por_usuario = defaultdict(list)
-    for actividad in actividades:
-        actividades_por_usuario[actividad.usuario].append(actividad)
+    tareas = Tarea.objects.select_related("usuario").filter(
+        estado="pendiente", usuario__notificacion=True, fechaRealizacion__lt=hoy
+    )
 
-    enviar_recordatorios_pendientes(actividades_por_usuario)
+    if not tareas:
+        return JsonResponse({"mensaje": "No hay tareas pendientes para hoy."})
+
+    tareas_por_usuario = defaultdict(list)
+    for tarea in tareas:
+        tareas_por_usuario[tarea.usuario].append(tarea)
+
+    enviar_recordatorios_pendientes(tareas_por_usuario)
 
     return JsonResponse(
         {
-            "mensaje": f"Se enviaron recordatorios de actividades pendientes a {len(actividades_por_usuario)} usuario(s).",
+            "mensaje": "Se enviaron los recordatorios satisfactoriamente.",
         }
     )
