@@ -101,3 +101,32 @@
 .task-action-button.complete-button.completed .task-action-icon {
   color: #10B981; /* Verde para el check cuando está completado */
 }
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-content {
+  visibility: hidden;
+  opacity: 0;
+  width: 250px;
+  background-color: #ffffff;
+  color: #111827;
+  text-align: left;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: absolute;
+  z-index: 999;
+  right: 100%;
+  top: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.3s ease;
+  white-space: normal;
+}
+
+.tooltip-container:hover .tooltip-content {
+  visibility: visible;
+  opacity: 1;
+}

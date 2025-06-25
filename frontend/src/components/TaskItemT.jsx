@@ -4,9 +4,8 @@ import '../styles/TaskItem.css';
 
 const CheckIcon = () => <span className="task-action-icon">✓</span>;
 const TrashIcon = () => <span className="task-action-icon">🗑️</span>;
-const EditIcon = () => <span className="task-action-icon">✏️</span>;
 
-const TaskItemT = ({ task, onToggleComplete, onDelete, onSetStatus, onEdit }) => {
+const TaskItemT = ({ task, onToggleComplete, onDelete, onSetStatus }) => {
   const rowClasses = `task-item-row ${task.completado ? 'task-completed' : ''}`;
   const statusButtonContainerClasses = "task-item-status-buttons";
   const statusButtonClasses = "status-button";
@@ -24,7 +23,7 @@ const TaskItemT = ({ task, onToggleComplete, onDelete, onSetStatus, onEdit }) =>
     <tr className={rowClasses}>
       <td>{task.titulo || 'Sin título'}</td>
       <td>{task.curso || 'N/A'}</td>
-      <td>{task.complejidad || 'N/A'}</td> {/* ✅ Campo actualizado */}
+      <td>{task.complejidad || 'N/A'}</td>
       <td className={statusButtonContainerClasses}>
         <button
           className={`${statusButtonClasses} ${task.estado === 'inicio' ? statusButtonActiveClasses : ''} status-inicio`}
@@ -56,11 +55,12 @@ const TaskItemT = ({ task, onToggleComplete, onDelete, onSetStatus, onEdit }) =>
         >
           <CheckIcon />
         </button>
-        {/* Botón de editar (habilitado si lo necesitas) */}
-        {/* <button onClick={() => onEdit(task)} className={`${actionButtonClasses} edit-button`} aria-label="Editar tarea">
-          <EditIcon />
-        </button> */}
-        <button onClick={() => onDelete(task.id)} className={`${actionButtonClasses} delete-button`} aria-label="Eliminar tarea">
+
+        <button
+          onClick={() => onDelete(task.id)}
+          className={`${actionButtonClasses} delete-button`}
+          aria-label="Eliminar tarea"
+        >
           <TrashIcon />
         </button>
       </td>

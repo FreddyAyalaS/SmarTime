@@ -24,3 +24,45 @@
   width: 500px;
   height: 230px;
 }
+.dashboard-task-box {
+  display: flex; /* ← NUEVO: alineación horizontal */
+  align-items: center; /* ← NUEVO: centra verticalmente */
+  justify-content: space-between; /* ← NUEVO: separa texto e icono */
+  padding: 10px 14px;
+  margin: 5px 0;
+  color: black;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: #4A90E2;
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-no-tasks {
+  color: #555;
+  padding: 10px;
+  font-style: italic;
+}
+.task-status-icon {
+  width: 28px;
+  height: 28px;
+  margin-left: 12px;
+  flex-shrink: 0; /* ← Previene que se reduzca con contenido largo */
+}
+.task-deadline-text {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: black ;
+  font-style: italic;
+}
+.task-title {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.task-deadline-text {
+  font-size: 0.85rem;
+  color: #f4f4f4;
+  font-style: italic;
+  margin-bottom: 6px;
+}

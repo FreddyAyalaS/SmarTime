@@ -50,7 +50,7 @@ const TaskFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
       titulo,
       curso,
       desc,
-      fEntrega,
+      fecha_entrega:fEntrega,
       hEntrega,
       fTarea,
       hInicio,
