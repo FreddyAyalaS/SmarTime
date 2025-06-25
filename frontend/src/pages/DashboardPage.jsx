@@ -1,7 +1,9 @@
+// src/pages/DashboardPage/DashboardPage.jsx
 import React, { useEffect, useState } from 'react';
 import SummaryCard from '../components/SummaryCard';
 import { getTasks } from '../services/taskService.mock';
 import checkIcon from '../assets/Icons/checkcircle.svg';
+import GlobalStatusChart from '../components/GlobalStatusChart'; // 👈 NUEVO IMPORT
 
 const DashboardPage = () => {
   const [todayTasks, setTodayTasks] = useState([]);
@@ -10,7 +12,6 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       const allTasks = await getTasks();
-
       const todayDateStr = new Date().toISOString().split('T')[0];
       const today = new Date(todayDateStr);
       const next7Days = new Date(today);
@@ -35,9 +36,10 @@ const DashboardPage = () => {
   return (
     <div className="dashboard-page">
       <div className="dashboard-summary-section">
-        {/* APARTADO PARA ACTIVIDADES DE HOY  - PARTE SEBASTIAN*/}
-        
-        {/* PROXIMAS TAREAS */}
+
+        {/* ACTIVIDADES DE HOY - Parte de Sebastián */}
+
+        {/* PRÓXIMAS TAREAS */}
         <SummaryCard title="Próximas Tareas (Siguientes 7 días)">
           {upcomingTasks.length > 0 ? (
             upcomingTasks.map((task) => (
@@ -64,6 +66,12 @@ const DashboardPage = () => {
             <p className="dashboard-no-tasks">No hay tareas próximas.</p>
           )}
         </SummaryCard>
+
+        {/* ESTADO GLOBAL DE ACTIVIDADES */}
+        <SummaryCard title="Estado Global de Actividades">
+          <GlobalStatusChart />
+        </SummaryCard>
+
       </div>
     </div>
   );
