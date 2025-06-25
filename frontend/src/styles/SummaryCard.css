@@ -1,15 +1,14 @@
 /* src/components/SummaryCard/SummaryCard.css */
 .summary-card {
-  background-color: #FFFFFF; /* Fondo blanco para la tarjeta de resumen */
-  border: 2px solid #4A90E2; /* Borde azul como en la imagen */
-  border-radius: 16px; /* Bordes redondeados para la tarjeta */
+  background-color: #FFFFFF;
+  border: 2px solid #4A90E2;
+  border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra un poco más pronunciada */
-  margin-bottom: 20px; /* Espacio si hay varias tarjetas de resumen */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
   width: 500px;
-  height: 250px;
-  margin-left: 170px;
-  
+  margin-left: 30px;
+  /* ❌ Quitar height fija */
 }
 .summary-card-title {
   font-size: 1.4rem; /* Tamaño del título "Actividades (Hoy)" */
@@ -21,8 +20,8 @@
   border-bottom: 1px solid #E0E0E0; /* Línea sutil debajo del título (opcional) */
 }
 .summary-card-content {
-  width: 500px;
-  height: 230px;
+  width: 100%; /* o 500px si quieres mantenerlo fijo */
+  /* ❌ Quitar height fija */
 }
 .dashboard-task-box {
   display: flex; /* ← NUEVO: alineación horizontal */
@@ -65,4 +64,16 @@
   color: #f4f4f4;
   font-style: italic;
   margin-bottom: 6px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.dashboard-grid-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px; /* Puedes ajustar esto según el tamaño de tus tarjetas */
 }

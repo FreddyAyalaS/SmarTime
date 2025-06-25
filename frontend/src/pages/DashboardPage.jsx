@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import SummaryCard from '../components/SummaryCard';
 import { getTasks } from '../services/taskService.mock';
 import checkIcon from '../assets/Icons/checkcircle.svg';
-import GlobalStatusChart from '../components/GlobalStatusChart'; // 👈 NUEVO IMPORT
+import GlobalStatusChart from '../components/GlobalStatusChart';
 
 const DashboardPage = () => {
   const [todayTasks, setTodayTasks] = useState([]);
@@ -35,43 +35,57 @@ const DashboardPage = () => {
 
   return (
     <div className="dashboard-page">
-      <div className="dashboard-summary-section">
+      <div className="dashboard-grid">
+        {/* 1. ACTIVIDADES DE HOY */}
+        <div className="dashboard-grid-cell">
+          <SummaryCard title="Actividades de Hoy" className="card-actividades">
+            {/* Aquí se insertarán las actividades de Sebastián */}
+          </SummaryCard>
+        </div>
 
-        {/* ACTIVIDADES DE HOY - Parte de Sebastián */}
+        {/* 2. VISTA SEMANAL */}
+        <div className="dashboard-grid-cell">
+          <SummaryCard title="Vista Semanal" className="card-vista">
+            {/* Aquí se insertará la vista semanal del calendario */}
+          </SummaryCard>
+        </div>
 
-        {/* PRÓXIMAS TAREAS */}
-        <SummaryCard title="Próximas Tareas (Siguientes 7 días)">
-          {upcomingTasks.length > 0 ? (
-            upcomingTasks.map((task) => (
-              <div key={task.id} className="dashboard-task-box">
-                <strong>{task.titulo}</strong><br />
-                <div className="task-deadline-text">
-                  Vence:{' '}
-                  {new Date(task.fecha_entrega).toLocaleDateString('es-PE', {
-                    weekday: 'long',
-                    day: '2-digit',
-                  })}{' '}
-                  {task.hora_entrega || '23:59'}
+        {/* 3. PRÓXIMAS TAREAS */}
+        <div className="dashboard-grid-cell">
+          <SummaryCard title="Próximas Tareas (Siguientes 7 días)" className="card-proximas">
+            {upcomingTasks.length > 0 ? (
+              upcomingTasks.map((task) => (
+                <div key={task.id} className="dashboard-task-box">
+                  <strong>{task.titulo}</strong><br />
+                  <div className="task-deadline-text">
+                    Vence:{' '}
+                    {new Date(task.fecha_entrega).toLocaleDateString('es-PE', {
+                      weekday: 'long',
+                      day: '2-digit',
+                    })}{' '}
+                    {task.hora_entrega || '23:59'}
+                  </div>
+                  <div>
+                    <img
+                      src={checkIcon}
+                      alt="Check"
+                      className="task-status-icon"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <img
-                    src={checkIcon}
-                    alt="Check"
-                    className="task-status-icon"
-                  />
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="dashboard-no-tasks">No hay tareas próximas.</p>
-          )}
-        </SummaryCard>
+              ))
+            ) : (
+              <p className="dashboard-no-tasks">No hay tareas próximas.</p>
+            )}
+          </SummaryCard>
+        </div>
 
-        {/* ESTADO GLOBAL DE ACTIVIDADES */}
-        <SummaryCard title="Estado Global de Actividades">
-          <GlobalStatusChart />
-        </SummaryCard>
-
+        {/* 4. ESTADO GLOBAL */}
+        <div className="dashboard-grid-cell">
+          <SummaryCard title="Estado Global de Actividades" className="card-global">
+            <GlobalStatusChart />
+          </SummaryCard>
+        </div>
       </div>
     </div>
   );
