@@ -81,7 +81,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 6px; /* Aumenta el área clickeable */
+  padding: 1px; /* Aumenta el área clickeable */
   margin-left: 8px;
   color: #6B7280; /* gray-500 */
   display: inline-flex;
