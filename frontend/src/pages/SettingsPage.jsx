@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/SettingsPage.css';
 import Input from '../components/Input';
 import Button from '../components/Button';
-
+import {
+  getUserProfile,
+  updateUserProfile,
+  updateProfilePicture,
+  updateUserPreferences,
+} from '../services/userService';
 
 const EditProfileSection = () => {
-  // css clases
   const sectionClasses = "settings-edit-profile-section";
   const formContainerClasses = "settings-form-container";
   const profilePictureContainerClasses = "settings-profile-picture-container";
@@ -14,18 +18,63 @@ const EditProfileSection = () => {
   const formClasses = "settings-profile-form";
   const saveButtonContainerClasses = "settings-save-button-container";
 
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [career, setCareer] = useState('');
+  const [birthDate, setBirthDate] = useState('');
 
-  const [name, setName] = useState('Sebastian Santiago Ayala Alberca');
-  const [username, setUsername] = useState('Draco');
-  const [password, setPassword] = useState('****************');
-  const [email, setEmail] = useState('sebastianayala1@unmsm.edu.pe');
-  const [career, setCareer] = useState('Ing. de software');
-  const [birthDate, setBirthDate] = useState('25 Diciembre 2004');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleProfileSubmit = (e) => {
+  useEffect(() => {
+    setLoading(true);
+    getUserProfile()
+      .then((data) => {
+        setName(data.name || '');
+        setUsername(data.username || '');
+        setEmail(data.email || '');
+        setCareer(data.career || '');
+        setBirthDate(data.birthDate || '');
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleProfileSubmit = async (e) => {
     e.preventDefault();
-    console.log('Perfil guardado:', { name, username, email, career, birthDate });
-    alert('Perfil guardado (Simulación)');
+    setLoading(true);
+    setError('');
+    try {
+      const data = { name, username, email, career, birthDate };
+      if (password && password !== '****************') {
+        data.password = password;
+      }
+      await updateUserProfile(data);
+      alert('Perfil guardado correctamente');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePhotoChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('profile_picture', file);
+    setLoading(true);
+    setError('');
+    try {
+      await updateProfilePicture(formData);
+      alert('Foto de perfil actualizada');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -44,7 +93,20 @@ const EditProfileSection = () => {
         <div className={profilePictureClasses}>
           <span style={{ fontSize: '5rem' }}>👤</span>
         </div>
-        <Button variant="secondary" className={changePhotoButtonClasses}>Cambiar foto</Button>
+        <Button
+          variant="secondary"
+          className={changePhotoButtonClasses}
+          onClick={() => document.getElementById('profile-photo-input').click()}
+        >
+          Cambiar foto
+        </Button>
+        <input
+          id="profile-photo-input"
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={handlePhotoChange}
+        />
       </div>
       <div className={saveButtonContainerClasses}>
         <Button type="submit" variant="success" onClick={handleProfileSubmit}>Guardar</Button>
@@ -56,9 +118,6 @@ const EditProfileSection = () => {
 const ToggleSwitch = ({ label, checked, onChange, name }) => {
   const switchContainer = "settings-toggle-switch-container";
   const switchLabel = "settings-toggle-label";
-  const switchInput = "settings-toggle-input"; // Hidden
-  const switchSlider = "settings-toggle-slider";
-
   return (
     <div className={switchContainer}>
       <label htmlFor={name} className={switchLabel}>{label}</label>
@@ -79,9 +138,20 @@ const PreferencesSection = () => {
   const [suggestions, setSuggestions] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
-  const handlePreferencesSubmit = (e) => {
-    console.log('Preferencias guardadas:', { antiProcrastination, notifications, suggestions, darkMode });
-    alert('Preferencias guardadas (Simulación)');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handlePreferencesSubmit = async (e) => {
+    setLoading(true);
+    setError('');
+    try {
+      await updateUserPreferences({ antiProcrastination, notifications, suggestions, darkMode });
+      alert('Preferencias guardadas correctamente');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -105,12 +175,9 @@ const PreferencesSection = () => {
   );
 };
 
-
-
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState('profile');
 
-  // css clases
   const pageContainerClasses = "settings-page-container";
   const pageTitleClasses = "settings-page-title";
   const tabsContainerClasses = "settings-tabs-container";
