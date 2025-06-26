@@ -65,13 +65,6 @@ const DashboardPage = () => {
                     })}{' '}
                     {task.hora_entrega || '23:59'}
                   </div>
-                  <div>
-                    <img
-                      src={checkIcon}
-                      alt="Check"
-                      className="task-status-icon"
-                    />
-                  </div>
                 </div>
               ))
             ) : (

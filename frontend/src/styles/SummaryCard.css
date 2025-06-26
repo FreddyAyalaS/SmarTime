@@ -1,4 +1,5 @@
 /* src/components/SummaryCard/SummaryCard.css */
+
 .summary-card {
   background-color: #FFFFFF;
   border: 2px solid #4A90E2;
@@ -6,27 +7,38 @@
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   margin-bottom: 20px;
-  width: 500px;
-  margin-left: 30px;
-  /* ❌ Quitar height fija */
+
+  /* 🔄 CAMBIOS PARA ANCHO AJUSTABLE */
+  width: 100%;
+  max-width: 480px;
+  min-width: 280px;
+
+  /* 🔄 CENTRAR EN CUADRANTE */
+  margin-left: auto;
+  margin-right: auto;
 }
+
 .summary-card-title {
-  font-size: 1.4rem; /* Tamaño del título "Actividades (Hoy)" */
+  font-size: 1.4rem;
   font-weight: bold;
-  color: #333333; /* Color de texto oscuro para el título */
+  color: #333333;
   margin-top: 0;
   margin-bottom: 15px;
-  padding-bottom: 0; /* Espacio debajo del título */
-  border-bottom: 1px solid #E0E0E0; /* Línea sutil debajo del título (opcional) */
+  padding-bottom: 0;
+  border-bottom: 1px solid #E0E0E0;
 }
+
 .summary-card-content {
-  width: 100%; /* o 500px si quieres mantenerlo fijo */
-  /* ❌ Quitar height fija */
+  width: 100%;
+  /* Evitamos fijar height */
 }
+
+/* === ESTILOS DE LAS TAREAS === */
+
 .dashboard-task-box {
-  display: flex; /* ← NUEVO: alineación horizontal */
-  align-items: center; /* ← NUEVO: centra verticalmente */
-  justify-content: space-between; /* ← NUEVO: separa texto e icono */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px 14px;
   margin: 5px 0;
   color: black;
@@ -41,18 +53,14 @@
   padding: 10px;
   font-style: italic;
 }
+
 .task-status-icon {
   width: 28px;
   height: 28px;
   margin-left: 12px;
-  flex-shrink: 0; /* ← Previene que se reduzca con contenido largo */
+  flex-shrink: 0;
 }
-.task-deadline-text {
-  margin-top: 4px;
-  font-size: 0.85rem;
-  color: black ;
-  font-style: italic;
-}
+
 .task-title {
   font-weight: bold;
   font-size: 1rem;
@@ -66,14 +74,18 @@
   margin-bottom: 6px;
 }
 
+/* === GRID DEL DASHBOARD === */
+
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  padding: 20px;
 }
+
 .dashboard-grid-cell {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 300px; /* Puedes ajustar esto según el tamaño de tus tarjetas */
+  min-height: 300px;
 }
