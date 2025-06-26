@@ -7,13 +7,14 @@ import './App.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import LandingPageScroll from './pages/LandingPageScroll'; // 👉 nuevo componente unificado
+import LandingPageScroll from './pages/LandingPageScroll'; 
 import SettingsPage from './pages/SettingsPage';
 import DashboardPage from './pages/DashboardPage';
 import CalendarPage from './pages/CalendarPage';
 
 // Layout
 import Layout from './components/Layout';
+import AntiProPage from './pages/AntiProPage';
 
 // Placeholder temporal para Dashboard
 
@@ -51,7 +52,8 @@ function App() {
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/calendario" element={<CalendarPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/anti-procrastination" element={<AntiProPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 
