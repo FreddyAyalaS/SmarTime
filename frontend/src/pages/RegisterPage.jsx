@@ -1,4 +1,4 @@
-// src/pages/RegisterPage/RegisterPage.jsx
+// src/pages/RegisterPage.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,6 @@ import Card from '../components/Card';
 import '../styles/RegisterPage.css'; // O tu ruta correcta
 import AppLogoIcon from '../assets/Icons/Logo.png';
 
-// --- ADICIÓN 1: Importar el servicio ---
 import { registerUser } from '../services/authService'; // Ajusta la ruta si es necesario
 
 const RegisterPage = () => {
@@ -19,32 +18,57 @@ const RegisterPage = () => {
   const [birthDate, setBirthDate] = useState('');
   const [career, setCareer] = useState('');
   const [password, setPassword] = useState('');
-  // --- ADICIÓN 2: Nuevos estados para carga, error y éxito ---
+  const [confirmPassword, setConfirmPassword] = useState(''); // Estado para confirmar contraseña
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  // --- ADICIÓN 3: Modificar handleRegister para ser async y llamar al servicio ---
   const handleRegister = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     setError('');
     setSuccessMessage('');
 
-    const userData = { name, username, email, birthDate, career, password };
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden.');
+      // No es necesario setIsLoading(false) aquí si la validación es antes de iniciar la carga.
+      return;
+    }
+
+    setIsLoading(true);
+
+    // --- CAMBIO PRINCIPAL: Incluir el campo de confirmación de contraseña ---
+    //    Asegúrate de que el nombre de la propiedad (ej. 'confirmar_password')
+    //    coincida EXACTAMENTE con lo que espera tu backend.
+    const userData = {
+      first_name: name,
+      username,
+      email,
+      fecha_nacimiento: birthDate,
+      escuela_profesional: career,
+      password,
+      confirmar_password: confirmPassword // <--- CAMBIO AQUÍ
+      // Si tu backend espera otro nombre, como 'password_confirmation', cámbialo:
+      // password_confirmation: confirmPassword,
+    };
 
     try {
-      const response = await registerUser(userData);
+      const response = await registerUser(userData); // registerUser en authService.js enviará este objeto userData
       console.log('Registro exitoso desde el componente:', response);
       setSuccessMessage(response.message || '¡Registro exitoso! Serás redirigido.');
-      // alert('¡Registro exitoso! (Simulación con servicio)'); // Puedes quitar el alert si muestras el successMessage
-
-      // Opcional: Limpiar el formulario después de un registro exitoso
-      // setName(''); setUsername(''); setEmail(''); setBirthDate(''); setCareer(''); setPassword('');
+      
+      // Limpiar formulario después de un registro exitoso
+      setName('');
+      setUsername('');
+      setEmail('');
+      setBirthDate('');
+      setCareer('');
+      setPassword('');
+      setConfirmPassword('');
 
       setTimeout(() => {
-        navigate('/login'); // Redirigir después de un breve momento para ver el mensaje
-      }, 2000); // Ajusta el tiempo según prefieras
+        navigate('/login');
+      }, 2000);
     } catch (err) {
       console.error('Error en handleRegister (componente):', err.message);
       setError(err.message || 'Error durante el registro. Inténtalo de nuevo.');
@@ -66,15 +90,12 @@ const RegisterPage = () => {
   const loginPromptClasses = "register-login-prompt";
   const linkClasses = "register-link";
   const imageSectionClasses = "register-image-section";
-
-  // --- ADICIÓN 4: Nombres de clase para los mensajes ---
   const errorMessageClasses = "register-form-error-message";
   const successMessageClasses = "register-form-success-message";
 
   return (
     <div className={pageContainerClasses}>
       <div className={formSectionClasses}>
-        {/* Tu estructura para el logo, asumimos que está dentro del Card o como lo tenías */}
         <Card className={formCardClasses}>
           <div className={logoHeaderContainerClasses}>
             <img src={AppLogoIcon} alt="SmartTime Logo Icono" className={logoImageClasses} />
@@ -84,7 +105,7 @@ const RegisterPage = () => {
 
           <form onSubmit={handleRegister} className={formClasses}>
             <Input
-              label="Nombre" type="text" name="name" placeholder="Ingresa tu nombre completo"
+              label="Nombre" type="text" name="first_name" placeholder="Ingresa tu nombre completo"
               value={name} onChange={(e) => setName(e.target.value)} required
             />
             <Input
@@ -96,23 +117,30 @@ const RegisterPage = () => {
               value={email} onChange={(e) => setEmail(e.target.value)} required
             />
             <Input
-              label="Fecha de nacimiento" type="text" name="birthDate" placeholder="dd/mm/aaaa"
+              label="Fecha de nacimiento" type="date" name="fecha_nacimiento" placeholder="YYYY-MM-DD"
               value={birthDate} onChange={(e) => setBirthDate(e.target.value)} required
             />
             <Input
-              label="Carrera" type="text" name="career" placeholder="Ingresa tu carrera"
+              label="Carrera" type="text" name="escuela_profesional" placeholder="Ingresa tu carrera"
               value={career} onChange={(e) => setCareer(e.target.value)} required
             />
             <Input
               label="Contraseña" type="password" name="password" placeholder="Crea una contraseña"
               value={password} onChange={(e) => setPassword(e.target.value)} required
             />
+            <Input // Este ya lo tenías, solo verificamos que se envíe
+              label="Confirmar Contraseña"
+              type="password"
+              name="confirmPassword"
+              placeholder="Vuelve a escribir tu contraseña"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
 
-            {/* --- ADICIÓN 5: Mostrar mensajes de error y éxito --- */}
             {error && <p className={errorMessageClasses}>{error}</p>}
             {successMessage && <p className={successMessageClasses}>{successMessage}</p>}
 
-            {/* --- ADICIÓN 6: Modificar el botón para estado de carga --- */}
             <Button
               type="submit"
               variant="primary"

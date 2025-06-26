@@ -1,4 +1,3 @@
-// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import './App.css';
@@ -7,16 +6,15 @@ import './App.css';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import LandingPageScroll from './pages/LandingPageScroll'; 
+import LandingPageScroll from './pages/LandingPageScroll';
 import SettingsPage from './pages/SettingsPage';
 import DashboardPage from './pages/DashboardPage';
 import CalendarPage from './pages/CalendarPage';
-
+import ResetPasswordPage from './pages/ResetPasswordPage';
+import TasksPage from './pages/TaskPage';
 // Layout
 import Layout from './components/Layout';
 import AntiProPage from './pages/AntiProPage';
-
-// Placeholder temporal para Dashboard
 
 // Página para rutas no encontradas
 const NotFoundPagePlaceholder = () => (
@@ -26,10 +24,17 @@ const NotFoundPagePlaceholder = () => (
   </div>
 );
 
-// Simulación de autenticación
-const isAuthenticated = () => true;
+//            CAMBIAR SEGÚN MODO DE TRABAJO:
+// ====> BACKEND:
+// const isAuthenticated = () => {
+//   const token = localStorage.getItem('authToken');
+//   return !!token; // true si existe token
+// };
 
-// Ruta protegida
+// ====> FRONTEND (desarrollo sin backend):
+const isAuthenticated = () => true; // <-- Simula usuario autenticado
+
+// Componente para proteger rutas privadas
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
   if (!isAuthenticated()) {
@@ -46,14 +51,17 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/landing" element={<LandingPageScroll />} /> {/* 👈 nueva landing con scroll */}
+        <Route path="/reset-password/:uidb64/:token" element={<ResetPasswordPage />} />
+        <Route path="/landing" element={<LandingPageScroll />} />
 
-        {/* Rutas protegidas dentro del layout */}
+        {/* Rutas protegidas (requieren login) */}
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/tasks" element={<TasksPage />} />
           <Route path="/anti-procrastination" element={<AntiProPage />} />
+
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 
