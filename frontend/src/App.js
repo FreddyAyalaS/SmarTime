@@ -24,6 +24,7 @@ const NotFoundPagePlaceholder = () => (
 
 // 🔁 CAMBIAR SEGÚN MODO DE TRABAJO:
 // ====> ✅ USAR BACKEND:
+<<<<<<< HEAD
  const isAuthenticated = () => {
    const token = localStorage.getItem('authToken');
    return !!token; // true si existe token
@@ -31,6 +32,15 @@ const NotFoundPagePlaceholder = () => (
 
 // ====> ✅ SOLO FRONTEND (desarrollo sin backend):
 //const isAuthenticated = () => true; // <-- Simula usuario autenticado
+=======
+// const isAuthenticated = () => {
+//   const token = localStorage.getItem('authToken');
+//   return !!token; // true si existe token
+// };
+
+// ====> ✅ SOLO FRONTEND (desarrollo sin backend):
+const isAuthenticated = () => true; // <-- Simula usuario autenticado
+>>>>>>> 6a11a41f344a5223d06bb06fabd17f650b0a4079
 
 // ✅ Componente para proteger rutas privadas
 const ProtectedRoute = ({ children }) => {

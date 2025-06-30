@@ -51,11 +51,10 @@ class PasswordResetRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
 class SetNewPasswordSerializer(serializers.Serializer):
-    password = serializers.CharField(min_length=8, max_length=20, write_only=True)
-    confirmar_password = serializers.CharField(min_length=8, max_length=20, write_only=True)
+    password = serializers.CharField(min_length=8, max_length=64, write_only=True)
+    confirmar_password = serializers.CharField(min_length=8, max_length=64, write_only=True)
     token = serializers.CharField(write_only=True)
     uidb64 = serializers.CharField(write_only=True)
-
     def validate(self, data):
         if data['password'] != data['confirmar_password']:
             raise serializers.ValidationError({"confirmar_password": "Las contraseñas no coinciden."})
