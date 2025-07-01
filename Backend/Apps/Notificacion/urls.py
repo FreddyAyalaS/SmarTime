@@ -6,7 +6,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path("probar-correo/", enviar_recordatorios),
-    path("correo-expiracion/", notificar_tareas_fin),
-    path("correo-pendientes/", notificar_tareas_pendientes),
+    path("recordatorio-matutino/", enviar_recordatorios),
+    path("recordatorio-2h/", notificar_tareas_fin),
+    path("tarea-expirada/", notificar_tareas_pendientes),
 ]

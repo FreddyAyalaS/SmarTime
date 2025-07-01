@@ -1,6 +1,6 @@
 from collections import defaultdict
 from django.http import JsonResponse
-from .models import Tarea, Clase, Estudio
+from Apps.Calendario.models import Tarea, Clase, Estudio
 from .utils import (
     enviar_recordatorios_tareas,
     enviar_recordatorios_expiracion,
@@ -79,8 +79,10 @@ def notificar_tareas_pendientes(request):
 
     hoy = date.today()
 
-    tareas = Tarea.objects.select_related("usuario").filter(
-        estado="pendiente", usuario__notificacion=True, fechaRealizacion__lt=hoy
+    tareas = Tarea.objects.select_related("usuario", "estado_actual").filter(
+        estado_actual__estado__in=["inicio", "en_desarrollo"],
+        usuario__notificacion=True,
+        fechaRealizacion__lt=hoy,
     )
 
     if not tareas:

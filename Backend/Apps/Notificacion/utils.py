@@ -16,11 +16,11 @@ def enviar_recordatorios_tareas(usuario_actividades):
         message = render_to_string(
             "recordatorio.html",
             {
-                "nombre": usuario.nombre,
+                "nombre": usuario.first_name,
                 "actividades": actividades,
             },
         )
-        email = EmailMessage(subject, message, to=[usuario.correo])
+        email = EmailMessage(subject, message, to=[usuario.email])
         email.content_subtype = "html"
         emails.append(email)
 
@@ -38,12 +38,12 @@ def enviar_recordatorios_expiracion(usuarios_actividades):
         message = render_to_string(
             "expiracion.html",
             {
-                "nombre": usuario.nombre,
+                "nombre": usuario.first_name,
                 "titulo": actividad.titulo,
                 "horaEntrega": actividad.horaEntrega,
             },
         )
-        email = EmailMessage(subject, message, to=[usuario.correo])
+        email = EmailMessage(subject, message, to=[usuario.email])
         email.content_subtype = "html"
         email.connection = connection
         emails.append(email)
@@ -62,11 +62,11 @@ def enviar_recordatorios_pendientes(usuario_actividades):
         message = render_to_string(
             "actIncompleta.html",
             {
-                "nombre": usuario.nombre,
+                "nombre": usuario.first_name,
                 "actividades": actividades,
             },
         )
-        email = EmailMessage(subject, message, to=[usuario.correo])
+        email = EmailMessage(subject, message, to=[usuario.email])
         email.content_subtype = "html"
         emails.append(email)
 
@@ -96,7 +96,7 @@ def verificar_sobrecarga(usuario, actividad):
     estudios = usuario.estudios.filter(fecha=fecha)
 
     print(
-        f"Verificando sobrecarga para {usuario.nombre} correo: {usuario.correo} en {fecha} tareas: {tareas}, clases: {clases}, estudios: {estudios}"
+        f"Verificando sobrecarga para {usuario.first_name} email: {usuario.email} en {fecha} tareas: {tareas}, clases: {clases}, estudios: {estudios}"
     )
 
     for act in list(tareas) + list(clases) + list(estudios):
@@ -107,7 +107,7 @@ def verificar_sobrecarga(usuario, actividad):
 
     if total_horas > 10:
         enviar_sugerencia(
-            usuario.correo,
+            usuario.email,
             "Sugerencia de optimización",
             f"Se tiene sobrecarga de actividades académicas programadas para el día {fecha}. Se sugiere reprogramar alguna(s) actividad(es).",
         )
@@ -123,7 +123,7 @@ def verificar_orden_tareas(usuario, tarea_nueva):
         ):
             # tarea_nueva se hace primero pero se entrega después = mal
             enviar_sugerencia(
-                usuario.correo,
+                usuario.email,
                 "Sugerencia de optimización",
                 f'La tarea "{otra.titulo}" es más urgente que la tarea "{tarea_nueva.titulo}". '
                 f"Se sugiere priorizar aquella cuya fecha de entrega es más próxima.",
@@ -136,7 +136,7 @@ def verificar_orden_tareas(usuario, tarea_nueva):
         ):
             # tarea_nueva se hace después pero se entrega antes = mal
             enviar_sugerencia(
-                usuario.correo,
+                usuario.email,
                 "Sugerencia de optimización",
                 f'La tarea "{tarea_nueva.titulo}" es más urgente que la tarea "{otra.titulo}". '
                 f"Se sugiere priorizar aquella cuya fecha de entrega es más próxima.",
@@ -144,10 +144,10 @@ def verificar_orden_tareas(usuario, tarea_nueva):
             break
 
 
-def enviar_sugerencia(correo, asunto, mensaje):
+def enviar_sugerencia(email, asunto, mensaje):
     send_mail(
         asunto,
         mensaje,
         settings.EMAIL_HOST_USER,
-        [correo],
+        [email],
     )
