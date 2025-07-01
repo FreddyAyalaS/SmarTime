@@ -48,12 +48,18 @@ INSTALLED_APPS = [
     # Tus apps
     'Apps.Autenticacion',
     'Apps.Calendario',
+    'Apps.Tareas',
+
     
 ]
 
 AUTH_USER_MODEL = 'Autenticacion.UsuarioPersonalizado'
 
 MIDDLEWARE = [
+        #CORS
+    'corsheaders.middleware.CorsMiddleware',
+    
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -62,9 +68,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
-    #CORS
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+
 ]
 
 ROOT_URLCONF = 'SmarTime.urls'
@@ -147,7 +151,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # 30 minutos de vigencia del access token
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=90),  # 90 minutos de vigencia del access token
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),    # 1 día de vigencia del refresh token
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -168,9 +172,11 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 #CORS
-CORS_ALLOW_ALL_ORIGINS = True  # Solo en desarrollo
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React dev server
+]
 
 
 #CORS_ALLOWED_ORIGINS = [

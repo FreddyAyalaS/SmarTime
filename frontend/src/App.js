@@ -23,12 +23,19 @@ const NotFoundPagePlaceholder = () => (
   </div>
 );
 
-//            CAMBIAR SEGÚN MODO DE TRABAJO:
-// ====> BACKEND:
+
+
+// ====> ✅ SOLO FRONTEND (desarrollo sin backend):
+//const isAuthenticated = () => true; // <-- Simula usuario autenticado
+
 // const isAuthenticated = () => {
 //   const token = localStorage.getItem('authToken');
 //   return !!token; // true si existe token
 // };
+
+
+// ====> ✅ SOLO FRONTEND (desarrollo sin backend):
+
 
 // ====> FRONTEND (desarrollo sin backend):
 const isAuthenticated = () => true; // <-- Simula usuario autenticado
