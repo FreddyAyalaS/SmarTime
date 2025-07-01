@@ -1,7 +1,7 @@
 // src/components/GlobalStatusChart.jsx
 import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { getTasks } from '../services/taskService.mock';
+import { getTasks } from '../services/taskService';
 import '../styles/GlobalStatusChart.css';
 
 const COLORS = {

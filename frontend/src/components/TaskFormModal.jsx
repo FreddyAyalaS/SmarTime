@@ -49,16 +49,20 @@ const TaskFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
     const taskData = {
       titulo,
       curso,
-      desc,
-      fecha_entrega:fEntrega,
-      hEntrega,
-      fTarea,
-      hInicio,
-      hFin,
+      descripcipon:desc,
+      fechaEntrega: fEntrega,
+      horaEntrega: hEntrega,
+      fechaRealizacion: fTarea,
+      horaInicio: hInicio,
+      horaFin: hFin,
       complejidad: complejidadNormalizada,
       estado,
       ...(initialData && { id: initialData.id }),
     };
+    if (!titulo || !fEntrega || !hEntrega || !fTarea || !hInicio || !hFin) {
+      alert("Por favor completa todos los campos obligatorios");
+      return;
+    }
     onSubmit(taskData);
   };
 

@@ -1,7 +1,7 @@
 // src/services/taskService.js
 import apiClient from './apiClient'; // Asume que apiClient está configurado con baseURL y manejo de token
 
-const TASKS_BASE_PATH = '/tareas'; // Ajusta si tu backend tiene otro prefijo para tareas, ej. '/api/tareas'
+const TASKS_BASE_PATH = '/calendario/api/tareas'; // Ajusta si tu backend tiene otro prefijo para tareas, ej. '/api/tareas'
 
 /**
  * Obtiene todas las tareas del usuario.
@@ -43,7 +43,7 @@ export const createTask = async (taskData) => {
 
 /**
  * Actualiza una tarea existente.
- * Endpoint: PUT /tareas/{taskId}/
+ * Endpoint: PATCH /tareas/{taskId}/
  * @param {string|number} taskId - ID de la tarea a actualizar.
  * @param {object} taskUpdateData - Datos a actualizar en la tarea.
  * @returns {Promise<object>} Promesa que resuelve con la tarea actualizada.
@@ -51,7 +51,7 @@ export const createTask = async (taskData) => {
 export const updateTask = async (taskId, taskUpdateData) => {
   console.log(`taskService: Actualizando tarea ${taskId} con:`, taskUpdateData);
   try {
-    const response = await apiClient.put(`${TASKS_BASE_PATH}/${taskId}/`, taskUpdateData);
+    const response = await apiClient.patch(`${TASKS_BASE_PATH}/${taskId}/`, taskUpdateData);
     console.log('taskService: Tarea actualizada:', response.data);
     return response.data;
   } catch (error) {
