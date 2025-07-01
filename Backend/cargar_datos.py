@@ -7,7 +7,7 @@ from Apps.Notificacion.models import (
 )
 from datetime import date, time, timedelta
 
-# Crear 5 usuarios
+# Crear 2 usuarios
 usuarios = []
 for i in range(1, 3):
     usuario = Usuario.objects.create(
