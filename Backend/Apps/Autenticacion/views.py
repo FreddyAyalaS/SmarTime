@@ -84,6 +84,8 @@ class PasswordResetRequestAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
 class SetNewPasswordAPIView(APIView):
     permission_classes = [AllowAny]
 

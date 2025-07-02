@@ -25,5 +25,4 @@ urlpatterns = [
     path("tareas/", include("Apps.Tareas.urls")),
     path("estadisticas/", include("Apps.Estadisticas.urls")),
     path("notificacion/", include("Apps.Notificacion.urls")),
-    path('usuarios/', include('Apps.Usuarios.urls')),  # <--- AGREGA ESTA LÍNEA
 ]
