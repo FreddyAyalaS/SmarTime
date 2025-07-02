@@ -18,7 +18,7 @@ urlpatterns = [
     path('logout/', LogoutUsuarioAPIView.as_view(), name='logout'),
     path('solicitarNuevaContrasena/', PasswordResetRequestAPIView.as_view(), name='solicitarNuevaContrasena'),
     path('generarNuevaContrasena/', SetNewPasswordAPIView.as_view(), name='generarNuevaContrasena'),
-    
+
     # Login (obtiene token de acceso y refresh)
     # url completa:  http://localhost:8000/autenticacion/token/
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

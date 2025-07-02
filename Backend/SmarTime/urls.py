@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('autenticacion/', include('Apps.Autenticacion.urls')), 
     path('calendario/', include('Apps.Calendario.urls')), 
+    path('usuarios/', include('Apps.Usuarios.urls')),  # <--- AGREGA ESTA LÍNEA
+
 ]
