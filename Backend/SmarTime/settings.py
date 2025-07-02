@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "Apps.Calendario",
     "Apps.Tareas",
     "Apps.Notificacion",
+    "Apps.Usuarios",
 ]
 
 AUTH_USER_MODEL = "Autenticacion.UsuarioPersonalizado"
@@ -187,3 +188,5 @@ CORS_ALLOWED_ORIGINS = [
 
 # El email se mostrará en la consola, simulando el envío
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

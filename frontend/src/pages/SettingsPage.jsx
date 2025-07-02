@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/SettingsPage.css';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import config from '../config';
 
+const userService = config.USE_MOCK_USER_SERVICE
+  ? require('../services/userService.mock')
+  : require('../services/userService');
+
+const {
+  getUserProfile,
+  updateUserProfile,
+  // updateUserPreferences, // ❌ Eliminado, ya no usamos backend para preferencias
+} = userService;
 
 const EditProfileSection = () => {
-  // css clases
   const sectionClasses = "settings-edit-profile-section";
   const formContainerClasses = "settings-form-container";
   const profilePictureContainerClasses = "settings-profile-picture-container";
@@ -14,18 +23,41 @@ const EditProfileSection = () => {
   const formClasses = "settings-profile-form";
   const saveButtonContainerClasses = "settings-save-button-container";
 
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [career, setCareer] = useState('');
+  const [birthDate, setBirthDate] = useState('');
 
-  const [name, setName] = useState('Sebastian Santiago Ayala Alberca');
-  const [username, setUsername] = useState('Draco');
-  const [password, setPassword] = useState('****************');
-  const [email, setEmail] = useState('sebastianayala1@unmsm.edu.pe');
-  const [career, setCareer] = useState('Ing. de software');
-  const [birthDate, setBirthDate] = useState('25 Diciembre 2004');
+  useEffect(() => {
+    getUserProfile()
+      .then((data) => {
+        setName(data.first_name || '');
+        setUsername(data.username || '');
+        setEmail(data.email || '');
+        setCareer(data.escuela_profesional || '');
+        setBirthDate(data.fecha_nacimiento || '');
+      })
+      .catch((err) => console.error('Error al obtener perfil:', err));
+  }, []);
 
-  const handleProfileSubmit = (e) => {
+  const handleProfileSubmit = async (e) => {
     e.preventDefault();
-    console.log('Perfil guardado:', { name, username, email, career, birthDate });
-    alert('Perfil guardado (Simulación)');
+    try {
+      await updateUserProfile({
+        first_name: name,
+        username,
+        email,
+        escuela_profesional: career,
+        fecha_nacimiento: birthDate,
+        ...(password && { password }),
+      });
+      alert('Perfil actualizado con éxito');
+    } catch (err) {
+      console.error('Error al actualizar perfil:', err);
+      alert('Error al guardar los cambios');
+    }
   };
 
   return (
@@ -38,6 +70,9 @@ const EditProfileSection = () => {
           <Input label="Email:   " name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <Input label="Carrera:   " name="career" value={career} onChange={(e) => setCareer(e.target.value)} />
           <Input label="Fecha de nacimiento:   " name="birthDate" value={birthDate} onChange={(e) => setBirthDate(e.target.value)} />
+          <div className={saveButtonContainerClasses}>
+            <Button type="submit" variant="success">Guardar</Button>
+          </div>
         </form>
       </div>
       <div className={profilePictureContainerClasses}>
@@ -46,9 +81,6 @@ const EditProfileSection = () => {
         </div>
         <Button variant="secondary" className={changePhotoButtonClasses}>Cambiar foto</Button>
       </div>
-      <div className={saveButtonContainerClasses}>
-        <Button type="submit" variant="success" onClick={handleProfileSubmit}>Guardar</Button>
-      </div>
     </div>
   );
 };
@@ -56,14 +88,13 @@ const EditProfileSection = () => {
 const ToggleSwitch = ({ label, checked, onChange, name }) => {
   const switchContainer = "settings-toggle-switch-container";
   const switchLabel = "settings-toggle-label";
-  const switchInput = "settings-toggle-input"; // Hidden
-  const switchSlider = "settings-toggle-slider";
 
   return (
     <div className={switchContainer}>
       <label htmlFor={name} className={switchLabel}>{label}</label>
       <label className="relative inline-flex items-center cursor-pointer">
         <input type="checkbox" id={name} name={name} checked={checked} onChange={onChange} className="sr-only peer" />
+        <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-checked:bg-blue-600"></div>
       </label>
     </div>
   );
@@ -79,9 +110,23 @@ const PreferencesSection = () => {
   const [suggestions, setSuggestions] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
-  const handlePreferencesSubmit = (e) => {
-    console.log('Preferencias guardadas:', { antiProcrastination, notifications, suggestions, darkMode });
-    alert('Preferencias guardadas (Simulación)');
+  useEffect(() => {
+    const storedPrefs = JSON.parse(localStorage.getItem('userPreferences')) || {};
+    setAntiProcrastination(storedPrefs.antiProcrastination ?? false);
+    setNotifications(storedPrefs.notifications ?? true);
+    setSuggestions(storedPrefs.suggestions ?? false);
+    setDarkMode(storedPrefs.darkMode ?? false);
+  }, []);
+
+  const handlePreferencesSubmit = () => {
+    const preferences = {
+      antiProcrastination,
+      notifications,
+      suggestions,
+      darkMode
+    };
+    localStorage.setItem('userPreferences', JSON.stringify(preferences));
+    alert('Preferencias guardadas');
   };
 
   return (
@@ -105,14 +150,10 @@ const PreferencesSection = () => {
   );
 };
 
-
-
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState('profile');
 
-  // css clases
   const pageContainerClasses = "settings-page-container";
-  const pageTitleClasses = "settings-page-title";
   const tabsContainerClasses = "settings-tabs-container";
   const tabButtonClasses = "settings-tab-button";
   const tabButtonActiveClasses = "settings-tab-button-active";

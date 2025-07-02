@@ -15,3 +15,10 @@ root.render(
     </DndProvider>
   </React.StrictMode>
 );
+const userPreferences = JSON.parse(localStorage.getItem('userPreferences'));
+
+if (userPreferences?.darkMode) {
+  document.body.classList.add('dark');
+} else {
+  document.body.classList.remove('dark');
+}
