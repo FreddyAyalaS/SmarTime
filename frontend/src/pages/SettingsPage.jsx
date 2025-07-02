@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 import '../styles/SettingsPage.css';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import {
+import config from '../config';
+
+const userService = config.USE_MOCK_USER_SERVICE
+  ? require('../services/userService.mock')
+  : require('../services/userService');
+
+const {
   getUserProfile,
   updateUserProfile,
   updateProfilePicture,
   updateUserPreferences,
-} from '../services/userService';
+} = userService;
 
 const EditProfileSection = () => {
   const sectionClasses = "settings-edit-profile-section";
@@ -32,11 +38,11 @@ const EditProfileSection = () => {
     setLoading(true);
     getUserProfile()
       .then((data) => {
-        setName(data.name || '');
+        setName(data.first_name || ''); // <-- Cambia a first_name
         setUsername(data.username || '');
         setEmail(data.email || '');
-        setCareer(data.career || '');
-        setBirthDate(data.birthDate || '');
+        setCareer(data.escuela_profesional || ''); // <-- Cambia a escuela_profesional
+        setBirthDate(data.fecha_nacimiento || ''); // <-- Cambia a fecha_nacimiento
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
