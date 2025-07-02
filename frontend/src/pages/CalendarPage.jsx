@@ -4,12 +4,7 @@ import TaskForm from '../components/TaskForm';
 import CalendarDay from '../components/CalendarDay';
 import ActivityModal from '../components/ActivityModal';
 import '../styles/Calendar.css';
-import {
-  createTarea,
-  createClase,
-  createEstudio,
-  createActividadNoAcademica,
-} from '../services/calendarService';
+
 
 
 const Calendar = () => {
@@ -30,22 +25,23 @@ const Calendar = () => {
   };
 
   // En handleSaveTask:
-  const handleSaveTask = async (taskData) => {
+  const handleSaveTask = (taskData) => {
     const taskWithType = {
       ...taskData,
       type: selectedType,
       id: generateId(),
     };
 
-    // 🟢 Agrega a frontend las repeticiones si aplica
-    const allTasks = [taskWithType];
+    const repeatedTasks = [];
 
     if ((selectedType === 'Clase' || selectedType === 'Act. no académica') && taskData.repetir) {
       const weeks = parseInt(taskData.semanas) || 1;
+
       for (let i = 1; i < weeks; i++) {
         const repeatedDate = new Date(taskData.fecha);
         repeatedDate.setDate(repeatedDate.getDate() + 7 * i);
-        allTasks.push({
+
+        repeatedTasks.push({
           ...taskWithType,
           id: generateId(),
           fecha: repeatedDate.toISOString().split('T')[0],
@@ -53,70 +49,7 @@ const Calendar = () => {
       }
     }
 
-    // Solo para mostrar en el calendario
-    setTasks(prev => [...prev, ...allTasks]);
-
-    // 🛑 Solo se envía al backend el primero
-    try {
-      switch (selectedType) {
-        case 'Tarea':
-          await createTarea({
-            titulo: taskData.title,
-            curso: taskData.course,
-            descripcion: taskData.description,
-            fechaEntrega: taskData.deliveryDate,      // ✅ corregido
-            horaEntrega: taskData.deliveryTime,       // ✅ corregido
-            fechaRealizacion: taskData.realizationDate, // ✅ corregido
-            horaInicio: taskData.startTime,           // ✅ corregido
-            horaFin: taskData.endTime,                // ✅ corregido
-            complejidad: taskData.complexity,
-          });
-
-          break;
-
-        case 'Estudio':
-          await createEstudio({
-            titulo: taskData.title,
-            curso: taskData.course,
-            temas: taskData.temas,
-            fecha: taskData.fecha,
-            horaInicio: taskData.hInicio,
-            horaFin: taskData.hFin,
-          });
-
-          break;
-
-        case 'Clase':
-          await createClase({
-            curso: taskData.course,
-            descripcion: taskData.description,
-            fecha: taskData.fecha,
-            horaInicio: taskData.hInicio,
-            horaFin: taskData.hFin,
-            repetir: taskData.repetir,
-            semanas: taskData.semanas,
-          });
-          break;
-
-        case 'Act. no académica':
-          await createActividadNoAcademica({
-            titulo: taskData.title,
-            descripcion: taskData.description,
-            fecha: taskData.fecha,
-            horaInicio: taskData.hInicio,
-            horaFin: taskData.hFin,
-            repetir: taskData.repetir,
-            semanas: taskData.semanas,
-          });
-          break;
-
-        default:
-          console.warn("Tipo no manejado:", selectedType);
-      }
-    } catch (error) {
-      console.error("Error al guardar en backend:", error.message);
-      alert("Ocurrió un error al guardar en el backend: " + error.message);
-    }
+    setTasks(prev => [...prev, taskWithType, ...repeatedTasks]);
   };
 
 

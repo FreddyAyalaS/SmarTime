@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class NotificacionConfig(AppConfig):
+class GamificacionConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "Apps.Notificacion"
+    name = "Gamificacion"

@@ -10,28 +10,18 @@ const apiClient = axios.create({
   },
 });
 
-// Interceptor para añadir el token JWT a las peticiones (excepto login/registro)
+// Interceptor para añadir el token JWT a las peticiones 
 apiClient.interceptors.request.use(
   (config) => {
-    const excludedPaths = [
-      '/autenticacion/login/',
-      '/autenticacion/registro/',
-    ];
-
-    const isExcluded = excludedPaths.some(path =>
-      config.url.endsWith(path) || config.url.includes(path)
-    );
-
-    if (!isExcluded) {
-      const token = localStorage.getItem('authToken');
-      if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
-      }
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
-
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 export default apiClient;

@@ -13,7 +13,6 @@ class Tarea(models.Model):
     horaInicio = models.TimeField()
     horaFin = models.TimeField()
     complejidad = models.IntegerField()
-    visible = models.BooleanField(default=True) 
 
     def __str__(self):
         return f"{self.titulo} - {self.usuario.username}"

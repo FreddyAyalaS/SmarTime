@@ -1,36 +1,34 @@
 // src/components/GlobalStatusChart.jsx
 import React, { useEffect, useState } from 'react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { getTasks } from '../services/taskService';
-import '../styles/GlobalStatusChart.css';
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { getTasks } from '../services/taskService.mock';
+import '../styles/GlobalStatusChart.css'; // Make sure this import is correct
 
 const COLORS = {
-  por_hacer: '#F44336',                // Rojo
-  en_proceso_dentro: '#FDD835',        // Amarillo
-  en_proceso_fuera: '#FB8C00',         // Naranja
-  finalizado_dentro: '#4CAF50',        // Verde
-  finalizado_fuera: '#42A5F5',         // Azul
+  inicio: '#F16868', // Naranja claro
+  en_desarrollo: '#F6B03B', // Azul claro
+  finalizado: '#3FC699', // Verde
 };
 
-const LABELS = {
-  por_hacer: 'Por hacer',
-  en_proceso_dentro: 'En proceso dentro de la fecha',
-  en_proceso_fuera: 'En proceso afuera de la fecha',
-  finalizado_dentro: 'Finalizado dentro de la fecha',
-  finalizado_fuera: 'Finalizado afuera de la fecha',
+// Custom Legend Component - Make sure this is defined OUTSIDE the main component
+const CustomLegend = (props) => {
+  const { payload } = props;
+
+  return (
+    <ul className="custom-legend">
+      {
+        payload.map((entry, index) => (
+          <li key={`item-${index}`}>
+            <span className="legend-dot" style={{ backgroundColor: entry.color }}></span>
+            {/* The 'name' from your chartData is in entry.value when using dataKey="name" in Pie */}
+            {entry.value}
+          </li>
+        ))
+      }
+    </ul>
+  );
 };
 
-const CustomLegend = ({ payload }) => (
-  <ul className="custom-legend">
-    {payload.map((entry, index) => (
-      <li key={`item-${index}`}>
-        <span className="legend-dot" style={{ backgroundColor: entry.color }}></span>
-        <span className="legend-label">{entry.label}</span>
-        <span className="legend-percent">{entry.percent} %</span>
-      </li>
-    ))}
-  </ul>
-);
 
 const GlobalStatusChart = () => {
   const [statusData, setStatusData] = useState([]);
@@ -38,38 +36,22 @@ const GlobalStatusChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       const allTasks = await getTasks();
-      const today = new Date().toISOString().split('T')[0];
-
-      const counters = {
-        por_hacer: 0,
-        en_proceso_dentro: 0,
-        en_proceso_fuera: 0,
-        finalizado_dentro: 0,
-        finalizado_fuera: 0,
+      const counts = {
+        inicio: 0,
+        en_desarrollo: 0,
+        finalizado: 0,
       };
 
-      allTasks.forEach(task => {
-        const { fecha_entrega, estado } = task;
-
-        if (estado === 'inicio') {
-          counters.por_hacer++;
-        } else if (estado === 'en_desarrollo') {
-          fecha_entrega >= today
-            ? counters.en_proceso_dentro++
-            : counters.en_proceso_fuera++;
-        } else if (estado === 'finalizado') {
-          fecha_entrega >= today
-            ? counters.finalizado_dentro++
-            : counters.finalizado_fuera++;
+      allTasks.forEach((task) => {
+        if (counts[task.estado] !== undefined) {
+          counts[task.estado]++;
         }
       });
 
-      const total = Object.values(counters).reduce((sum, val) => sum + val, 0);
-      const chartData = Object.entries(counters).map(([key, value]) => ({
-        label: LABELS[key],
-        value,
+      const chartData = Object.entries(counts).map(([key, value]) => ({
+        name: key.replace('_', ' ').toUpperCase(), // This is the 'name'
+        value, // This is the numerical value for the pie slice
         color: COLORS[key],
-        percent: total ? Math.round((value / total) * 100) : 0,
       }));
 
       setStatusData(chartData);
@@ -79,28 +61,30 @@ const GlobalStatusChart = () => {
   }, []);
 
   return (
+    // This is the key change: global-status-chart-container now wraps PieChart AND CustomLegend
     <div className="global-status-chart-container">
-      <div className="responsive-chart">
-        <ResponsiveContainer width="100%" height={250}>
-          <PieChart>
-            <Pie
-              data={statusData}
-              dataKey="value"
-              nameKey="label"
-              cx="50%"
-              cy="50%"
-              outerRadius="80%"
-              label={({ index }) => `${statusData[index].percent}%`}
-            >
-              {statusData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-      {statusData.length > 0 && <CustomLegend payload={statusData} />}
+      <PieChart width={250} height={250}>
+        <Pie
+          data={statusData}
+          dataKey="value" // This is the numerical value for the slice size
+          nameKey="name"  // This is the label for the slice and for the legend item name
+          cx="50%"
+          cy="50%"
+          outerRadius={80}
+          label
+        >
+          {statusData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.color} />
+          ))}
+        </Pie>
+        <Tooltip />
+        {/* Remove the Recharts Legend component entirely here.
+            We will render our CustomLegend component directly as a sibling to PieChart. */}
+        {/* <Legend content={<CustomLegend />} />  <-- REMOVE THIS LINE */}
+      </PieChart>
+
+      {/* Render your custom legend directly here, as a sibling to the PieChart */}
+      {statusData.length > 0 && <CustomLegend payload={statusData.map(d => ({ value: d.name, color: d.color }))} />}
     </div>
   );
 };
