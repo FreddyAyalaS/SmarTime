@@ -40,6 +40,14 @@ class TareaViewSet(viewsets.ModelViewSet):
                 {"detail": "Método PUT no permitido, usa PATCH para actualizaciones"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
+
+        fecha_modificada = "fechaRealizacion" in request.data
+        inicio_modificado = "horaInicio" in request.data
+        fin_modificado = "horaFin" in request.data
+
+        if fecha_modificada or inicio_modificado or fin_modificado:
+            sugerencia_actividad(self.request.user, self.get_object())
+
         return super().update(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
@@ -88,6 +96,14 @@ class ClaseViewSet(viewsets.ModelViewSet):
                 {"detail": "Método PUT no permitido, usa PATCH para actualizaciones"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
+
+        fecha_modificada = "fecha" in request.data
+        inicio_modificado = "horaInicio" in request.data
+        fin_modificado = "horaFin" in request.data
+
+        if fecha_modificada or inicio_modificado or fin_modificado:
+            sugerencia_actividad(self.request.user, self.get_object())
+
         return super().update(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
@@ -136,6 +152,14 @@ class EstudioViewSet(viewsets.ModelViewSet):
                 {"detail": "Método PUT no permitido, usa PATCH para actualizaciones"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
+
+        fecha_modificada = "fecha" in request.data
+        inicio_modificado = "horaInicio" in request.data
+        fin_modificado = "horaFin" in request.data
+
+        if fecha_modificada or inicio_modificado or fin_modificado:
+            sugerencia_actividad(self.request.user, self.get_object())
+
         return super().update(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
