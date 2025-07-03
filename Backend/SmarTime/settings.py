@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
+    "whitenoise.runserver_nostatic",  # Para servir archivos estáticos en producción
     # Tus apps
     "Apps.Autenticacion",
     "Apps.Calendario",
@@ -66,6 +67,7 @@ MIDDLEWARE = [
     # CORS
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Para servir archivos estáticos
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -191,7 +193,16 @@ CORS_ALLOWED_ORIGINS = [
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 ALLOWED_HOSTS = [
     "localhost",
     "smartime-production.up.railway.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "https://smartime-production.up.railway.app",
 ]
