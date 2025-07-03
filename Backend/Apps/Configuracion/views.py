@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .serializers import PerfilUsuarioSerializer
 from .serializers import CambiarContrasenaSerializer
 from .serializers import ConfiguracionUsuarioSerializer
-
+from django.utils import timezone
 
 
 #  Vista para obtener y actualizar perfil
@@ -36,13 +36,13 @@ class ConfiguracionUsuarioAPIView(generics.UpdateAPIView):
         serializer = self.get_serializer(data=request_data)
         serializer.is_valid(raise_exception=True)
 
-        # Actualizamos manualmente el objeto
+        # Actualizamos el usuario con los datos validados
         user = self.get_object()
-        user.notificacion = serializer.validated_data.get('notificacion', user.notificacion)
-        user.sugerencia = serializer.validated_data.get('sugerencia', user.sugerencia)
-        user.save()
+        serializer.update(user, serializer.validated_data)
 
         return Response({"detail": "Configuración de usuario actualizada correctamente."}, status=status.HTTP_200_OK)
+
+
 #  Vista para cambiar contraseña
 class CambiarContrasenaAPIView(generics.GenericAPIView):
     serializer_class = CambiarContrasenaSerializer

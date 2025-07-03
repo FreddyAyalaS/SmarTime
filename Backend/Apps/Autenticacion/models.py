@@ -11,3 +11,6 @@ class UsuarioPersonalizado(AbstractUser):
     notificacion = models.BooleanField(default=True)
     sugerencia = models.BooleanField(default=True)
     score = models.IntegerField(default=0)
+    modo_antiprocrastinacion = models.BooleanField(default=False)
+    tiempo_activado = models.DateTimeField(null=True, blank=True)
+
