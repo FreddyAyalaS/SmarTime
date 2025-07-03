@@ -1,0 +1,30 @@
+/* src/styles/StatsPage.css */
+
+.stats-page {
+  padding: 2rem;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+.stats-grid-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Puedes personalizar cada card si lo deseas */
+.card-indicador1,
+.card-indicador2,
+.card-indicador3,
+.card-indicador4 {
+  width: 90%;
+  max-width: 400px;
+}

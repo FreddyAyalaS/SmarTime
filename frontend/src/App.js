@@ -14,6 +14,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import TasksPage from './pages/TaskPage';
 // Layout
 import Layout from './components/Layout';
+import StatsPage from './pages/StatsPage'; // 👈 NUEVO
 
 // Página para rutas no encontradas
 const NotFoundPagePlaceholder = () => (
@@ -66,6 +67,7 @@ function App() {
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/tasks" element={<TasksPage/>} />
+          <Route path="/analytics" element={<StatsPage />} />  // 👈 NUEVO
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 
