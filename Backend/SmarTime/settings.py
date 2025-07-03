@@ -193,5 +193,5 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 ALLOWED_HOSTS = [
     "localhost",
-    "https://smartime-production.up.railway.app/",
+    "smartime-production.up.railway.app",
 ]
