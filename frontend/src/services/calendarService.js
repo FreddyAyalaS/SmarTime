@@ -84,3 +84,5 @@ export const deleteActividadNoAcademica = async (id) => {
   const response = await apiClient.delete(`/calendario/api/actividadesNoAcademicas/${id}/`);
   return response.data;
 };
+
+

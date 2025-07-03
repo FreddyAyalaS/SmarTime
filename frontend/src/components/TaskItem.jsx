@@ -11,7 +11,7 @@ const getColorByType = (type) => {
   }
 };
 
-const TaskItem = ({ task }) => {
+const TaskItem = ({ task, onClick }) => {
   const [{ isDragging }, drag] = useDrag({
     type: "TASK",
     item: { ...task },
@@ -20,25 +20,39 @@ const TaskItem = ({ task }) => {
     }),
   });
 
+  // Normalizar datos por si vienen con distintos nombres:
+  const title = task.title || task.titulo || 'Sin título';
+  const startTime =
+    task.hInicio || task.startTime || task.horaInicio || task.horaEntrega || null;
+
   return (
     <div
       ref={drag}
       className="calendar-task"
+      onClick={onClick}
       style={{
         opacity: isDragging ? 0.5 : 1,
         backgroundColor: getColorByType(task.type),
         color: '#fff',
         padding: '5px',
-        borderRadius: '5px',
+        borderRadius: '8px',
         marginBottom: '5px',
         cursor: 'grab',
+        outline: 'none',
+        boxShadow: 'none',
+        border: 'none',
       }}
+
+
     >
-      <div className="task-title">{task.title}</div>
-      {task.hInicio && <div className="task-time">Inicio: {task.hInicio}</div>}
-      {task.startTime && <div className="task-time">Inicio: {task.startTime}</div>}
-      {task.complexity !== undefined && (
-        <div className="task-complexity">Nivel: {task.complexity}</div>
+      <div className="task-title" style={{ fontWeight: 'bold', fontSize: '14px' }}>
+        {title}
+      </div>
+
+      {startTime && (
+        <div className="task-time" style={{ fontSize: '11px' }}>
+          Inicio: {startTime}
+        </div>
       )}
     </div>
   );

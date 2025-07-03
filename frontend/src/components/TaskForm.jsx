@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
 import '../styles/TaskForm.css';
 
-const TaskForm = ({ onClose, onSave, type }) => {
+const TaskForm = ({ onClose, onSave, type, initialData }) => {
   const [taskData, setTaskData] = useState({
-    title: '',
-    course: '',
-    description: '',
-    deliveryDate: '',
-    deliveryTime: '',
-    realizationDate: '',
-    startTime: '',
-    endTime: '',
-    complexity: 0,
-    temas: '',
-    fecha: '',
-    hInicio: '',
-    hFin: '',
-    repetir: false,
-    semanas: 1,
+    title: initialData?.title || '',
+    course: initialData?.course || '',
+    description: initialData?.description || '',
+    deliveryDate: initialData?.deliveryDate || '',
+    deliveryTime: initialData?.deliveryTime || '',
+    realizationDate: initialData?.realizationDate || '',
+    startTime: initialData?.startTime || '',
+    endTime: initialData?.endTime || '',
+    complexity: initialData?.complexity || 0,
+    temas: initialData?.temas || '',
+    fecha: initialData?.fecha || '',
+    hInicio: initialData?.hInicio || '',
+    hFin: initialData?.hFin || '',
+    repetir: initialData?.repetir || false,
+    semanas: initialData?.semanas || 1,
   });
+
 
   const handleChange = (e) => {
     const { name, value, type: inputType, checked } = e.target;
@@ -51,7 +52,7 @@ const TaskForm = ({ onClose, onSave, type }) => {
   return (
     <div className="modal-overlay">
       <form className={`task-form ${getTypeClass(type)}`} onSubmit={handleSubmit}>
-        
+
         <div className="form-header">
           <h2>{type}:</h2>
           <input
@@ -203,7 +204,10 @@ const TaskForm = ({ onClose, onSave, type }) => {
           )}
 
           <div className="buttons">
-            <button type="submit" className="save-btn">Guardar</button>
+            <button type="submit" className="save-btn">
+              {initialData ? 'Guardar cambios' : 'Guardar'}
+            </button>
+
             <button type="button" className="cancel-btn" onClick={onClose}>Cancelar</button>
           </div>
         </div>
