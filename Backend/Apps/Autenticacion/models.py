@@ -8,6 +8,6 @@ class UsuarioPersonalizado(AbstractUser):
     fecha_nacimiento = models.DateField(null=True, blank=True)
     escuela_profesional = models.CharField(max_length=100, blank=True)
     email = models.EmailField(unique=True)
-    notificacion = models.BooleanField(default=False)
-    sugerencia = models.BooleanField(default=False)
+    notificacion = models.BooleanField(default=True)
+    sugerencia = models.BooleanField(default=True)
     score = models.IntegerField(default=0)

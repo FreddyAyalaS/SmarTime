@@ -1,8 +1,6 @@
-from django.core.mail import EmailMessage, get_connection
+from django.core.mail import EmailMessage, get_connection, send_mail
 from django.template.loader import render_to_string
-from datetime import date
-from django.core.mail import send_mail
-from datetime import datetime
+from datetime import date, datetime
 from django.conf import settings
 
 
