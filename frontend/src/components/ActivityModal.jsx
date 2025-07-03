@@ -1,4 +1,3 @@
-// src/components/ActivityModal.jsx
 import React from 'react';
 import '../styles/ActivityModal.css';
 
@@ -12,90 +11,34 @@ const getColorByType = (type) => {
   }
 };
 
-const ActivityModal = ({ activities, onClose }) => {
+const ActivityModal = ({ activity, onClose, onEdit, onDelete }) => {
+  if (!activity) return null;
+
+  const color = getColorByType(activity.type);
+
   return (
-    <div className="modal-overlay">
-      <div className="activity-modal">
-        <h2>Actividades del día</h2>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="activity-modal" onClick={(e) => e.stopPropagation()}>
+        <h2 style={{ color }}>{activity.type}</h2>
 
-        {activities.map((task, index) => (
-          <div
-            key={index}
-            className="activity-detail"
-            style={{
-              borderLeft: `8px solid ${getColorByType(task.type)}`,
-              paddingLeft: '10px',
-              marginBottom: '10px',
-              backgroundColor: '#f9f9f9',
-              borderRadius: '5px',
-            }}
-          >
-            <strong style={{ color: getColorByType(task.type) }}>
-              {task.type}
-            </strong>
+        {activity.title && <p><strong>Título:</strong> {activity.title}</p>}
+        {activity.course && <p><strong>Curso:</strong> {activity.course}</p>}
+        {activity.fecha && <p><strong>Fecha:</strong> {activity.fecha}</p>}
+        {activity.realizationDate && <p><strong>Fecha de realización:</strong> {activity.realizationDate}</p>}
+        {activity.startTime && <p><strong>Hora inicio:</strong> {activity.startTime}</p>}
+        {activity.deliveryTime && <p><strong>Hora entrega:</strong> {activity.deliveryTime}</p>}
+        {activity.hInicio && <p><strong>Hora inicio:</strong> {activity.hInicio}</p>}
+        {activity.hFin && <p><strong>Hora fin:</strong> {activity.hFin}</p>}
+        {activity.complexity && <p><strong>Complejidad:</strong> {activity.complexity}</p>}
+        {activity.temas && <p><strong>Temas:</strong> {activity.temas}</p>}
+        {activity.description && <p><strong>Descripción:</strong> {activity.description}</p>}
+        {activity.repetir && <p><strong>Repite:</strong> {activity.semanas || 1} semana(s)</p>}
 
-            {/* Título para tareas, estudios y actividades no académicas */}
-            {task.title && (
-              <>
-                <br />
-                <strong>Título:</strong> {task.title}
-              </>
-            )}
-
-            {/* Curso (Tarea, Estudio, Clase) */}
-            {task.course && (
-              <>
-                <br />
-                <strong>Curso:</strong> {task.course}
-              </>
-            )}
-
-            {/* Hora: entrega (Tarea), hInicio/hFin (otros) */}
-            {(task.deliveryTime || (task.hInicio && task.hFin)) && (
-              <>
-                <br />
-                <strong>Hora:</strong>{' '}
-                {task.deliveryTime
-                  ? task.deliveryTime
-                  : `${task.hInicio || '??'} - ${task.hFin || '??'}`}
-              </>
-            )}
-
-            {/* Complejidad solo en Tarea */}
-            {task.complexity && task.type === 'Tarea' && (
-              <>
-                <br />
-                <strong>Complejidad:</strong> {task.complexity}
-              </>
-            )}
-
-            {/* Temas solo para Estudio */}
-            {task.temas && task.type === 'Estudio' && (
-              <>
-                <br />
-                <strong>Temas:</strong> {task.temas}
-              </>
-            )}
-
-            {/* Repetición (Clase y No académica) */}
-            {task.repetir && (
-              <>
-                <br />
-                <strong>Repite:</strong> {task.semanas || 1} semana(s)
-              </>
-            )}
-
-            {/* Descripción */}
-            {task.description && (
-              <>
-                <br />
-                <strong>Descripción:</strong> {task.description}
-              </>
-            )}
-          </div>
-        ))}
-
-        <button onClick={onClose} className="close-btn">Cerrar</button>
+        <div className="modal-buttons">
+          <button onClick={() => onEdit(activity)} className="edit-btn">Editar</button>
+          <button onClick={() => onDelete(activity)} className="delete-btn">Eliminar</button>
+          <button onClick={onClose} className="close-btn">Cerrar</button>
+        </div>
       </div>
     </div>
   );
