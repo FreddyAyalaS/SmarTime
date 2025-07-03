@@ -188,5 +188,10 @@ CORS_ALLOWED_ORIGINS = [
 
 # El email se mostrará en la consola, simulando el envío
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "https://smartime-production.up.railway.app/",
+]
