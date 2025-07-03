@@ -14,7 +14,8 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import TasksPage from './pages/TaskPage';
 // Layout
 import Layout from './components/Layout';
-import StatsPage from './pages/StatsPage'; // 👈 NUEVO
+import StatsPage from './pages/StatsPage';
+import AntiProPage from './pages/AntiProPage';
 
 // Página para rutas no encontradas
 const NotFoundPagePlaceholder = () => (
@@ -66,6 +67,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/anti-procrastination" element={<AntiProPage />} />
           <Route path="/tasks" element={<TasksPage/>} />
           <Route path="/analytics" element={<StatsPage />} />  // 👈 NUEVO
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
