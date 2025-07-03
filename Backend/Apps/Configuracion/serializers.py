@@ -4,6 +4,23 @@ from Apps.Autenticacion.models import UsuarioPersonalizado
 from Apps.Autenticacion.serializers import criterios_password
 
 
+
+# Serializer para actualizar las preferencias de notificación y sugerencia
+class ConfiguracionUsuarioSerializer(serializers.ModelSerializer):
+    notificacion = serializers.BooleanField(required=False)  # Cambiar el estado de las notificaciones
+    sugerencia = serializers.BooleanField(required=False)    # Cambiar el estado de las sugerencias
+
+    class Meta:
+        model = UsuarioPersonalizado  # Usamos el modelo de usuario personalizado
+        fields = ['notificacion', 'sugerencia']  # Solo los campos relevantes
+
+    def validate(self, data):
+        # Asegúrate de que `email` no esté presente en los datos de actualización
+        if 'email' in data:
+            raise serializers.ValidationError({"email": "El campo 'email' no se puede actualizar aquí."})
+        return data
+
+
 class CambiarContrasenaSerializer(serializers.Serializer):
     contrasena_actual = serializers.CharField(write_only=True)
     nueva_contrasena = serializers.CharField(write_only=True)
