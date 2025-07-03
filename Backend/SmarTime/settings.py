@@ -192,7 +192,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React dev server
-    "https://smartime-production.up.railway.app",  # URL de producción
+    "https://smartime-production-35f3.up.railway.app",  # URL de producción
 ]
 
 
