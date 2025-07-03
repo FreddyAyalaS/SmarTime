@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'Apps.Autenticacion',
     'Apps.Calendario',
     'Apps.Tareas',
+    'Apps.Gamificacion',
+
 
     
 ]

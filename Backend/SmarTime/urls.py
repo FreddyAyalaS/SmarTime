@@ -23,5 +23,6 @@ urlpatterns = [
     path('calendario/', include('Apps.Calendario.urls')), 
     path('tareas/', include('Apps.Tareas.urls')),
     path('estadisticas/', include('Apps.Estadisticas.urls')),
+    path('gamificacion/', include('Apps.Gamificacion.urls')),
 
 ]
