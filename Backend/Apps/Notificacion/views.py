@@ -13,6 +13,8 @@ from datetime import date, datetime, timedelta
 def enviar_recordatorios(request):
     hoy = date.today()
 
+    print(hoy)
+
     tarea = Tarea.objects.select_related("usuario").filter(
         fechaRealizacion=hoy, usuario__notificacion=True
     )
@@ -24,6 +26,8 @@ def enviar_recordatorios(request):
     )
 
     act_academicas = list(tarea) + list(clase) + list(estudio)
+
+    print(act_academicas)
 
     if not act_academicas:
         return JsonResponse({"mensaje": "No hay tareas para hoy."})
