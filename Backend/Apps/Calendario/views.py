@@ -18,7 +18,7 @@ from .serializers import (
     ActividadNoAcademicaResumenSerializer,
 )
 from rest_framework.views import APIView
-from Apps.Notificacion.utils import sugerencia_actividad
+from Apps.Notificacion.utils import sugerencia_actividad, verificar_sobrecarga
 
 
 # ViewSet para Tareas
@@ -46,7 +46,7 @@ class TareaViewSet(viewsets.ModelViewSet):
         fin_modificado = "horaFin" in request.data
 
         if fecha_modificada or inicio_modificado or fin_modificado:
-            sugerencia_actividad(self.request.user, self.get_object())
+            verificar_sobrecarga(request.user, self.get_object())
 
         return super().update(request, *args, **kwargs)
 
@@ -102,7 +102,7 @@ class ClaseViewSet(viewsets.ModelViewSet):
         fin_modificado = "horaFin" in request.data
 
         if fecha_modificada or inicio_modificado or fin_modificado:
-            sugerencia_actividad(self.request.user, self.get_object())
+            verificar_sobrecarga(request.user, self.get_object())
 
         return super().update(request, *args, **kwargs)
 
@@ -158,7 +158,7 @@ class EstudioViewSet(viewsets.ModelViewSet):
         fin_modificado = "horaFin" in request.data
 
         if fecha_modificada or inicio_modificado or fin_modificado:
-            sugerencia_actividad(self.request.user, self.get_object())
+            verificar_sobrecarga(request.user, self.get_object())
 
         return super().update(request, *args, **kwargs)
 
