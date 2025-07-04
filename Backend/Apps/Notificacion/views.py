@@ -29,6 +29,12 @@ def enviar_recordatorios(request):
 
     print(act_academicas)
 
+    print(
+        f"fechas y hora de tareas: {tarea.fechaRealizacion} {tarea.horaInicio} {tarea.horaFin}\n"
+        f"fechas y hora de clases: {clase.fecha} {clase.horaInicio} {clase.horaFin}\n"
+        f"fechas y hora de estudios: {estudio.fecha} {estudio.horaInicio} {estudio.horaFin}"
+    )
+
     if not act_academicas:
         return JsonResponse({"mensaje": "No hay tareas para hoy."})
 
