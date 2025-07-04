@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SummaryCard from '../components/SummaryCard';
 import GlobalStatusChart from '../components/GlobalStatusChart';
-import { getTareas } from '../services/calendarService';
-import { getActivities } from '../services/calendarService.mock';
+import { getTareas, getActividadesDeHoy } from '../services/calendarService';
 import '../styles/DashboardPage.css';
 
 const DashboardPage = () => {
@@ -20,10 +19,8 @@ const DashboardPage = () => {
     const fetchTasks = async () => {
       const allTasks = await getTareas();
 
-      // Filtrar tareas de hoy
       setTodayTasks(allTasks.filter(t => t.fechaEntrega === todayStr));
 
-      // Filtrar próximas tareas
       setUpcomingTasks(
         allTasks.filter(t => {
           const entrega = new Date(t.fechaEntrega);
@@ -33,43 +30,44 @@ const DashboardPage = () => {
     };
 
     const fetchTodayActivities = async () => {
-      const all = await getActivities();
+      try {
+        const actividades = await getActividadesDeHoy();
 
-      const todayActs = all.filter(a => a.fecha === todayStr);
-
-      const allTasks = await getTareas();
-      const todayTasksAsActs = allTasks
-        .filter(t => t.fechaEntrega === todayStr)
-        .map(task => ({
-          id: `tarea-${task.id}`,
-          tipo: 'Tarea',
-          title: task.titulo,
-          startTime: task.horaEntrega || '00:00',
-          endTime: '', // Podrías usar horaFin si lo tienes
+        const allToday = actividades.map(act => ({
+          id: act.id,
+          tipo: act.tipo,
+          title: act.titulo || act.temas || act.curso || act.description || '',
+          startTime: act.horaInicio || '00:00',
+          endTime: act.horaFin || '',
+          fecha: todayStr,
         }));
 
-      const allToday = [...todayActs, ...todayTasksAsActs].sort((a, b) => {
-        const horaA = a.startTime || '00:00';
-        const horaB = b.startTime || '00:00';
-        return horaA.localeCompare(horaB);
-      });
+        const ordenadas = allToday.sort((a, b) =>
+          (a.startTime || '').localeCompare(b.startTime || '')
+        );
 
-      setTodayActivities(allToday);
+        setTodayActivities(ordenadas);
+      } catch (error) {
+        console.error('Error al cargar actividades de hoy:', error);
+        setTodayActivities([]);
+      }
     };
 
     const fetchWeeklyIndicators = async () => {
-      const tasks = await getTareas();
-      const activities = await getActivities();
+      const [tasks, actividades] = await Promise.all([
+        getTareas(),
+        getActividadesDeHoy(),
+      ]);
 
       const indicators = [...Array(7)].map((_, i) => {
         const d = new Date(today);
-        d.setDate(today.getDate() - today.getDay() + i + 1); // Lunes a Domingo
+        d.setDate(today.getDate() - today.getDay() + i + 1);
         const dateStr = d.toISOString().split('T')[0];
 
         return {
           day: d.toLocaleDateString('es-PE', { weekday: 'short' }),
           hasTask: tasks.some(t => t.fechaEntrega === dateStr),
-          hasActivity: activities.some(a => a.fecha === dateStr),
+          hasActivity: actividades.some(a => a.fecha === dateStr),
         };
       });
 
@@ -101,11 +99,9 @@ const DashboardPage = () => {
               todayActivities.map((act) => {
                 const horaInicio = act.startTime || '??:??';
                 const horaFin = act.endTime || '??:??';
-                const contenido = act.title || act.temas || act.description || act.course;
-
                 return (
                   <div key={act.id} className={`dashboard-task-box2 ${normalizeTypeClass(act.tipo)}`}>
-                    <div className="task-title">{contenido}</div>
+                    <div className="task-title">{act.title}</div>
                     <div className="task-deadline-text">{horaInicio} - {horaFin}</div>
                   </div>
                 );
