@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     "Apps.Tareas",
     "Apps.Notificacion",
     "Apps.Usuarios",
-    'Apps.Gamificacion',
+    "Apps.Gamificacion",
 ]
 
 AUTH_USER_MODEL = "Autenticacion.UsuarioPersonalizado"
@@ -147,7 +147,7 @@ TIME_ZONE = "America/Lima"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
