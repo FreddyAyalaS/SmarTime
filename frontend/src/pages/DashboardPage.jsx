@@ -3,9 +3,9 @@ import SummaryCard from '../components/SummaryCard';
 import GlobalStatusChart from '../components/GlobalStatusChart';
 import { getTareas, getActividadesDeHoy } from '../services/calendarService';
 import '../styles/DashboardPage.css';
-
+  
 const DashboardPage = () => {
-  const [todayTasks, setTodayTasks] = useState([]);
+  const [, setTodayTasks] = useState([]);
   const [upcomingTasks, setUpcomingTasks] = useState([]);
   const [todayActivities, setTodayActivities] = useState([]);
   const [weeklyIndicators, setWeeklyIndicators] = useState([]);
@@ -130,11 +130,15 @@ const DashboardPage = () => {
 
         {/* PRÓXIMAS TAREAS */}
         <div className="dashboard-grid-cell">
-          <SummaryCard title="Próximas Tareas (Siguientes 7 días)" className="card-proximas">
+          <SummaryCard
+            title="Próximas Tareas (Siguientes 7 días)"
+            className="card-proximas"
+          >
             {upcomingTasks.length > 0 ? (
               upcomingTasks.map((task) => (
                 <div key={task.id} className="dashboard-task-box tarea">
-                  <strong>{task.titulo}</strong><br />
+                  <strong>{task.titulo}</strong>
+                  <br />
                   <div className="task-deadline-text">
                     Vence: {new Date(task.fechaEntrega).toLocaleDateString('es-PE', {
                       weekday: 'long',
@@ -152,7 +156,10 @@ const DashboardPage = () => {
 
         {/* ESTADO GLOBAL */}
         <div className="dashboard-grid-cell">
-          <SummaryCard title="Estado Global de Actividades" className="card-global">
+          <SummaryCard
+            title="Estado Global de Actividades"
+            className="card-global"
+          >
             <GlobalStatusChart />
           </SummaryCard>
         </div>

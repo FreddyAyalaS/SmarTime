@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import dj_database_url
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()  # Cargar las variables de entorno desde el archivo .env
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -52,6 +58,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
+    "whitenoise.runserver_nostatic",  # Para servir archivos estáticos en producción
     # Tus apps
     "Apps.Autenticacion",
     "Apps.Calendario",
@@ -67,6 +74,7 @@ MIDDLEWARE = [
     # CORS
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Para servir archivos estáticos
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -98,12 +106,17 @@ WSGI_APPLICATION = "SmarTime.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {"default": dj_database_url.config(default=DATABASE_URL)}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
 
 
 # Password validation
@@ -180,6 +193,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React dev server
+    "https://smartime-production-35f3.up.railway.app",  # URL de producción
 ]
 
 
@@ -189,5 +203,19 @@ CORS_ALLOWED_ORIGINS = [
 
 # El email se mostrará en la consola, simulando el envío
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "smartime-production.up.railway.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000/",
+    "https://smartime-production.up.railway.app",
+]

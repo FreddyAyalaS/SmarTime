@@ -18,7 +18,7 @@ from .serializers import (
     ActividadNoAcademicaResumenSerializer,
 )
 from rest_framework.views import APIView
-from Apps.Notificacion.utils import sugerencia_actividad
+from Apps.Notificacion.utils import sugerencia_actividad, verificar_sobrecarga
 
 
 # ViewSet para Tareas
@@ -40,7 +40,23 @@ class TareaViewSet(viewsets.ModelViewSet):
                 {"detail": "Método PUT no permitido, usa PATCH para actualizaciones"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
-        return super().update(request, *args, **kwargs)
+
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+
+        fecha_modificada = "fechaRealizacion" in request.data
+        inicio_modificado = "horaInicio" in request.data
+        fin_modificado = "horaFin" in request.data
+
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        if fecha_modificada or inicio_modificado or fin_modificado:
+            updated_instance = self.get_object()
+            verificar_sobrecarga(request.user, updated_instance)
+
+        return Response(self.get_serializer(instance).data)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -88,7 +104,23 @@ class ClaseViewSet(viewsets.ModelViewSet):
                 {"detail": "Método PUT no permitido, usa PATCH para actualizaciones"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
-        return super().update(request, *args, **kwargs)
+
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+
+        fecha_modificada = "fecha" in request.data
+        inicio_modificado = "horaInicio" in request.data
+        fin_modificado = "horaFin" in request.data
+
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        if fecha_modificada or inicio_modificado or fin_modificado:
+            updated_instance = self.get_object()
+            verificar_sobrecarga(request.user, updated_instance)
+
+        return Response(self.get_serializer(instance).data)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -136,7 +168,23 @@ class EstudioViewSet(viewsets.ModelViewSet):
                 {"detail": "Método PUT no permitido, usa PATCH para actualizaciones"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
-        return super().update(request, *args, **kwargs)
+
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+
+        fecha_modificada = "fecha" in request.data
+        inicio_modificado = "horaInicio" in request.data
+        fin_modificado = "horaFin" in request.data
+
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        if fecha_modificada or inicio_modificado or fin_modificado:
+            updated_instance = self.get_object()
+            verificar_sobrecarga(request.user, updated_instance)
+
+        return Response(self.get_serializer(instance).data)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
