@@ -92,32 +92,7 @@ const Header = ({ pageTitle = "Enfocado en Mejorar" }) => { // Título por defec
 
       <div className={rightSectionClasses}>
         {/* Contenedor de la campana de notificación */}
-        <div className={notificationBellContainerClasses}>
-          <button
-            ref={notificationTriggerRef} // Ref para el botón de la campana
-            type="button"
-            className={iconButtonClasses}
-            aria-label="Notificaciones"
-            onClick={toggleNotificationPanel}
-          >
-            <img src={BellIconSVG} alt="Notificaciones" />
-            {unreadCount > 0 && (
-              <span className={unreadDotClasses}>
-                {unreadCount > 9 ? '9+' : unreadCount}
-              </span>
-            )}
-          </button>
-          {/* El panel se renderiza aquí, y su visibilidad se controla con CSS o condicionalmente */}
-          {/* Pasamos la ref al panel también */}
-          <div ref={notificationPanelRef}>
-            <NotificationPanel
-              notifications={notifications}
-              onMarkAsRead={handleMarkAsRead}
-              onClearAll={handleClearAll}
-              isVisible={showNotificationPanel} // El panel maneja su propia renderización basada en esto
-            />
-          </div>
-        </div>
+        
 
         {/* Menú de Usuario */}
         <div className={userMenuClasses}>

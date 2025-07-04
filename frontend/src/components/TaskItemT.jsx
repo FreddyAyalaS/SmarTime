@@ -36,12 +36,6 @@ const TaskItemT = ({ task, onToggleEntregado, onDelete, onSetStatus, onEdit }) =
         >
           Finalizado
         </button>
-        <button
-          className={`status-button-entregado ${isEntregado ? 'entregado' : 'no-entregado'}`}
-          onClick={() => onToggleEntregado(task.id, isEntregado)}
-        >
-          {isEntregado ? "Entregado" : "Entregar"}
-        </button>
       </td>
       <td className={actionsContainerClasses}>
         <button
