@@ -41,14 +41,22 @@ class TareaViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
 
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+
         fecha_modificada = "fechaRealizacion" in request.data
         inicio_modificado = "horaInicio" in request.data
         fin_modificado = "horaFin" in request.data
 
-        if fecha_modificada or inicio_modificado or fin_modificado:
-            verificar_sobrecarga(request.user, self.get_object())
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        return super().update(request, *args, **kwargs)
+        if fecha_modificada or inicio_modificado or fin_modificado:
+            updated_instance = self.get_object()
+            verificar_sobrecarga(request.user, updated_instance)
+
+        return Response(self.get_serializer(instance).data)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -97,14 +105,22 @@ class ClaseViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
 
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+
         fecha_modificada = "fecha" in request.data
         inicio_modificado = "horaInicio" in request.data
         fin_modificado = "horaFin" in request.data
 
-        if fecha_modificada or inicio_modificado or fin_modificado:
-            verificar_sobrecarga(request.user, self.get_object())
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        return super().update(request, *args, **kwargs)
+        if fecha_modificada or inicio_modificado or fin_modificado:
+            updated_instance = self.get_object()
+            verificar_sobrecarga(request.user, updated_instance)
+
+        return Response(self.get_serializer(instance).data)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -153,14 +169,22 @@ class EstudioViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
 
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+
         fecha_modificada = "fecha" in request.data
         inicio_modificado = "horaInicio" in request.data
         fin_modificado = "horaFin" in request.data
 
-        if fecha_modificada or inicio_modificado or fin_modificado:
-            verificar_sobrecarga(request.user, self.get_object())
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        return super().update(request, *args, **kwargs)
+        if fecha_modificada or inicio_modificado or fin_modificado:
+            updated_instance = self.get_object()
+            verificar_sobrecarga(request.user, updated_instance)
+
+        return Response(self.get_serializer(instance).data)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
