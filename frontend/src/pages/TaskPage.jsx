@@ -1,20 +1,18 @@
-// src/pages/TasksPage/TasksPage.jsx
 import React, { useState, useEffect } from 'react';
 import '../styles/TaskPage.css';
 
-// Componentes
 import TaskItem from '../components/TaskItemT';
 import TaskFormModal from '../components/TaskFormModal';
 import Button from '../components/Button';
 
-// ⚙️ Cambiar esta línea según entorno:
 import {
-  getTasks,
-  createTask,
-  updateTask,
-  deleteTask,
-  updateTaskStatus,
-} from '../services/taskServiceSelector'; // ← este decide qué versión usar
+  getTareas,
+  createTarea,
+  updateTarea,
+  deleteTarea,
+} from '../services/calendarService';
+import { updateTaskStatus, updateTaskEntregado } from '../services/taskService';
+
 const TasksPage = () => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +25,7 @@ const TasksPage = () => {
       setIsLoading(true);
       setError('');
       try {
-        const fetchedTasks = await getTasks();
+        const fetchedTasks = await getTareas();
         setTasks(fetchedTasks || []);
       } catch (err) {
         setError(err.message || 'Error al cargar las tareas.');
@@ -54,10 +52,12 @@ const TasksPage = () => {
     setError('');
     try {
       if (editingTask && editingTask.id) {
-        const updatedTask = await updateTask(editingTask.id, taskData);
-        setTasks(prevTasks => prevTasks.map(t => t.id === editingTask.id ? updatedTask : t));
+        const updatedTask = await updateTarea(editingTask.id, taskData);
+        setTasks(prevTasks =>
+          prevTasks.map(t => t.id === editingTask.id ? updatedTask : t)
+        );
       } else {
-        const createdTask = await createTask(taskData);
+        const createdTask = await createTarea(taskData);
         setTasks(prevTasks => [...prevTasks, createdTask]);
       }
       setShowTaskModal(false);
@@ -72,7 +72,7 @@ const TasksPage = () => {
   const handleDeleteTask = async (taskId) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar esta tarea?')) {
       try {
-        await deleteTask(taskId);
+        await deleteTarea(taskId);
         setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
       } catch (err) {
         setError(err.message || 'Error al eliminar la tarea.');
@@ -80,28 +80,28 @@ const TasksPage = () => {
     }
   };
 
-  const handleToggleComplete = async (taskId, isCompleted) => {
-    const newStatus = isCompleted ? 'en_desarrollo' : 'finalizado';
+  const handleToggleEntregado = async (taskId, isEntregado) => {
     try {
-      const updatedTask = await updateTaskStatus(taskId, newStatus);
-      updatedTask.completado = newStatus === 'finalizado';
-      setTasks(prevTasks => prevTasks.map(t => t.id === taskId ? updatedTask : t));
+      const updatedTask = await updateTaskEntregado(taskId, !isEntregado);
+      setTasks(prevTasks =>
+        prevTasks.map(t => t.id === taskId ? updatedTask : t)
+      );
     } catch (err) {
-      setError(err.message || 'Error al actualizar la tarea.');
+      setError(err.message || 'Error al actualizar entregado.');
     }
   };
 
   const handleSetStatus = async (taskId, newStatus) => {
     try {
       const updatedTask = await updateTaskStatus(taskId, newStatus);
-      updatedTask.completado = newStatus === 'finalizado';
-      setTasks(prevTasks => prevTasks.map(t => t.id === taskId ? updatedTask : t));
+      setTasks(prevTasks =>
+        prevTasks.map(t => t.id === taskId ? updatedTask : t)
+      );
     } catch (err) {
       setError(err.message || 'Error al cambiar el estado de la tarea.');
     }
   };
 
-  // Clases
   const pageContainerClasses = "tasks-page-container";
   const pageHeaderClasses = "tasks-page-header";
   const pageTitleClasses = "tasks-page-title";
@@ -144,7 +144,7 @@ const TasksPage = () => {
                 <TaskItem
                   key={task.id}
                   task={task}
-                  onToggleComplete={handleToggleComplete}
+                  onToggleEntregado={handleToggleEntregado}
                   onDelete={handleDeleteTask}
                   onSetStatus={handleSetStatus}
                   onEdit={handleOpenEditTaskModal}

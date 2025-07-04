@@ -105,3 +105,19 @@ export const updateTaskStatus = async (taskId, newState) => {
 
 // Podrías tener una función getErrorMessage local o importarla si la centralizas
 // const getErrorMessage = (error, defaultMessage) => { ... }
+/**
+ * Cambia el estado de entregado de una tarea.
+ * Endpoint: PATCH /tareas/{taskId}/
+ * @param {string|number} taskId - ID de la tarea.
+ * @param {boolean} entregado - Nuevo valor para entregado.
+ * @returns {Promise<object>} Promesa que resuelve con la tarea actualizada.
+ */
+export const updateTaskEntregado = async (taskId, entregado) => {
+  try {
+    const response = await apiClient.patch(`${TASKS_BASE_PATH}/${taskId}/`, { entregado });
+    return response.data;
+  } catch (error) {
+    const errorMessage = error.response?.data?.detail || error.response?.data?.message || error.message || 'Error al actualizar entregado.';
+    throw new Error(errorMessage);
+  }
+};
