@@ -8,6 +8,9 @@ from Apps.Calendario.models import Tarea
 from Apps.Tareas.models import EstadoTarea
 from .models import PuntuacionUsuario
 
+from .models import PuntuacionUsuario
+
+
 
 class CalcularPuntuacionView(APIView):
     permission_classes = [IsAuthenticated]
@@ -102,3 +105,18 @@ class CalcularPuntuacionView(APIView):
             }
         })
 
+
+class HistorialEstrellasView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        historial = PuntuacionUsuario.objects.filter(usuario=request.user).order_by('fecha_inicio')
+        data = [
+            {
+                "semana_inicio": p.fecha_inicio,
+                "semana_fin": p.fecha_fin,
+                "estrellas": p.estrellas
+            }
+            for p in historial
+        ]
+        return Response(data)

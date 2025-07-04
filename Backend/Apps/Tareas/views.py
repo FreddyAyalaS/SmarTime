@@ -4,6 +4,9 @@ from Apps.Calendario.models import Tarea
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from rest_framework.permissions import IsAuthenticated
+
+
 class ActualizarEstadoPorTareaView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -33,9 +36,7 @@ class ActualizarEstadoPorTareaView(APIView):
             return Response({
                 'error': f"No puedes cambiar al estado '{nuevo_estado}' desde '{actual or 'ninguno'}'"
             }, status=400)
-            
-            
-            
+                            
 
 class OcultarTareaView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -49,3 +50,27 @@ class OcultarTareaView(APIView):
         tarea.visible = False
         tarea.save()
         return Response({'mensaje': 'Tarea ocultada correctamente'})
+    
+
+class TareasCompletadasPendientesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        tareas = Tarea.objects.filter(usuario=request.user, visible=True)
+        completadas = 0
+        pendientes = 0
+
+        for tarea in tareas:
+            try:
+                estado = EstadoTarea.objects.get(tarea=tarea)
+                if estado.estado in ['finalizado', 'entregado']:
+                    completadas += 1
+                elif estado.estado in ['inicio', 'en_desarrollo']:
+                    pendientes += 1
+            except EstadoTarea.DoesNotExist:
+                pendientes += 1  # Si no tiene estado, la consideramos pendiente
+
+        return Response({
+            "completadas": completadas,
+            "pendientes": pendientes
+        })
