@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SummaryCard from '../components/SummaryCard';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line } from 'recharts';
 import axios from 'axios';
+import starImg from '../assets/Icons/star.png';
 
 const API_BASE = 'http://localhost:8000';
 
@@ -42,6 +43,8 @@ const StatsPage = () => {
     const semana = new Date(item.semana_inicio);
     return (!ini || semana >= ini) && (!fin || semana <= fin);
   });
+
+  const totalEstrellas = historialEstrellas.reduce((acc, item) => acc + item.estrellas, 0);
 
   return (
     <div className="stats-page">
@@ -100,8 +103,13 @@ const StatsPage = () => {
 
         {/* CARD 4: (puedes dejarla igual o poner otra estadística) */}
         <div className="stats-grid-cell">
-          <SummaryCard title="Estadística 4" className="card-stats">
-            <p>Contenido estadístico aquí</p>
+          <SummaryCard title="Score:" className="card-stats" style={{ textAlign: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <span style={{ fontSize: 28, fontWeight: 'bold', color: '#888' }}>
+                {totalEstrellas} <span style={{ fontSize: 18, fontWeight: 'normal' }}>estrellas</span>
+              </span>
+              <img src={starImg} alt="estrella" style={{ width: 90, marginTop: 10 }} />
+            </div>
           </SummaryCard>
         </div>
 
