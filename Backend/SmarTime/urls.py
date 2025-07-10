@@ -21,12 +21,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("autenticacion/", include("Apps.Autenticacion.urls")),
-    path("calendario/", include("Apps.Calendario.urls")),
+    path('admin/', admin.site.urls),
+    path('autenticacion/', include('Apps.Autenticacion.urls')), 
+    path('calendario/', include('Apps.Calendario.urls')), 
+    path('configuracion/', include('Apps.Configuracion.urls')),
     path("tareas/", include("Apps.Tareas.urls")),
     path("estadisticas/", include("Apps.Estadisticas.urls")),
     path("notificacion/", include("Apps.Notificacion.urls")),
     path('usuarios/', include('Apps.Usuarios.urls')),
     path('gamificacion/', include('Apps.Gamificacion.urls')),
+    path('antiprocrastinacion/', include('Apps.Antiprocrastinacion.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
