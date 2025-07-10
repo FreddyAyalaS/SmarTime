@@ -20,7 +20,7 @@ const AntiProPage = () => {
 
     if (token) {
       fetch(
-        `${API_BASE_URL}/antiprocrastinacion/configuracion-antiprocrastinacion/`,
+        `${API_BASE_URL}antiprocrastinacion/configuracion-antiprocrastinacion/`,
         {
           method: "PATCH",
           headers: {
@@ -100,7 +100,7 @@ const AntiProPage = () => {
     }
 
     fetch(
-      `${API_BASE_URL}/antiprocrastinacion/configuracion-antiprocrastinacion/`,
+      `${API_BASE_URL}antiprocrastinacion/configuracion-antiprocrastinacion/`,
       {
         method: "PATCH",
         headers: {

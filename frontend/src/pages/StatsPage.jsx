@@ -34,7 +34,7 @@ const StatsPage = () => {
   // Cargar tareas completadas/pendientes al montar
   useEffect(() => {
     axios
-      .get(`${API_BASE}/tareas/api/tareas-completadas-pendientes/`, {
+      .get(`${API_BASE}tareas/api/tareas-completadas-pendientes/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
@@ -46,7 +46,7 @@ const StatsPage = () => {
   // Cargar historial de estrellas (todas las semanas)
   useEffect(() => {
     axios
-      .get(`${API_BASE}/gamificacion/api/historial-estrellas/`, {
+      .get(`${API_BASE}gamificacion/api/historial-estrellas/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
@@ -58,7 +58,7 @@ const StatsPage = () => {
   // Cargar estado de tareas semanales (completadas/pendientes)
   useEffect(() => {
     axios
-      .get(`${API_BASE}/estadisticas/api/estadoTareasSemanal/`, {
+      .get(`${API_BASE}estadisticas/api/estadoTareasSemanal/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
