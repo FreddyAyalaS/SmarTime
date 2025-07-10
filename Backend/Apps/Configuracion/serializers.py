@@ -10,8 +10,6 @@ from Apps.Notificacion.utils import (
     sugerencia_actividad,
 )
 
-
-
 # Serializer para actualizar las preferencias de notificación y sugerencia
 class ConfiguracionUsuarioSerializer(serializers.ModelSerializer):
     notificacion = serializers.BooleanField(required=False)  # Cambiar el estado de las notificaciones
