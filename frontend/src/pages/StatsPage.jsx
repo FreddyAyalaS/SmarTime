@@ -1,14 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import SummaryCard from '../components/SummaryCard';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line } from 'recharts';
-import axios from 'axios';
-import starImg from '../assets/Icons/star.png';
-import { PieChart, Pie, Cell, Legend } from 'recharts';
-import '../styles/StatsPage.css';
+import React, { useEffect, useState } from "react";
+import SummaryCard from "../components/SummaryCard";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  LineChart,
+  Line,
+} from "recharts";
+import axios from "axios";
+import starImg from "../assets/Icons/star.png";
+import { PieChart, Pie, Cell, Legend } from "recharts";
+import "../styles/StatsPage.css";
 
-
-
-const API_BASE = 'http://localhost:8000';
+const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/";
 
 const StatsPage = () => {
   // Estado para tareas completadas/pendientes
@@ -18,43 +25,50 @@ const StatsPage = () => {
   const [historialEstrellas, setHistorialEstrellas] = useState([]);
 
   // Estado para filtros de fecha (solo para estrellas)
-  const [fechaInicio, setFechaInicio] = useState('');
-  const [fechaFin, setFechaFin] = useState('');
+  const [fechaInicio, setFechaInicio] = useState("");
+  const [fechaFin, setFechaFin] = useState("");
 
   // Estado para estado de tareas (completadas/pendientes)
   const [estadoTareas, setEstadoTareas] = useState(null);
 
-
   // Cargar tareas completadas/pendientes al montar
   useEffect(() => {
-    axios.get(`${API_BASE}/tareas/api/tareas-completadas-pendientes/`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
-    })
-      .then(res => setTareasStats(res.data))
+    axios
+      .get(`${API_BASE}/tareas/api/tareas-completadas-pendientes/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      })
+      .then((res) => setTareasStats(res.data))
       .catch(() => setTareasStats(null));
   }, []);
 
   // Cargar historial de estrellas (todas las semanas)
   useEffect(() => {
-    axios.get(`${API_BASE}/gamificacion/api/historial-estrellas/`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
-    })
-      .then(res => setHistorialEstrellas(res.data))
+    axios
+      .get(`${API_BASE}/gamificacion/api/historial-estrellas/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      })
+      .then((res) => setHistorialEstrellas(res.data))
       .catch(() => setHistorialEstrellas([]));
   }, []);
 
-
   // Cargar estado de tareas semanales (completadas/pendientes)
   useEffect(() => {
-    axios.get(`${API_BASE}/estadisticas/api/estadoTareasSemanal/`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
-    })
-      .then(res => setEstadoTareas(res.data))
+    axios
+      .get(`${API_BASE}/estadisticas/api/estadoTareasSemanal/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      })
+      .then((res) => setEstadoTareas(res.data))
       .catch(() => setEstadoTareas(null));
   }, []);
 
   // Filtrar historial de estrellas por fechas seleccionadas
-  const estrellasFiltradas = historialEstrellas.filter(item => {
+  const estrellasFiltradas = historialEstrellas.filter((item) => {
     if (!fechaInicio && !fechaFin) return true;
     const ini = fechaInicio ? new Date(fechaInicio) : null;
     const fin = fechaFin ? new Date(fechaFin) : null;
@@ -62,7 +76,10 @@ const StatsPage = () => {
     return (!ini || semana >= ini) && (!fin || semana <= fin);
   });
 
-  const totalEstrellas = historialEstrellas.reduce((acc, item) => acc + item.estrellas, 0);
+  const totalEstrellas = historialEstrellas.reduce(
+    (acc, item) => acc + item.estrellas,
+    0
+  );
 
   const COLORS = [
     "#FF4D4F", // Por hacer - rojo
@@ -82,24 +99,27 @@ const StatsPage = () => {
 
   const dataDona = estadoTareas
     ? ESTADO_LABELS.map((item, idx) => ({
-      name: item.label,
-      value: parseFloat((estadoTareas[item.key] || "0").replace('%', '')),
-      color: COLORS[idx]
-    }))
+        name: item.label,
+        value: parseFloat((estadoTareas[item.key] || "0").replace("%", "")),
+        color: COLORS[idx],
+      }))
     : [];
 
   return (
     <div className="stats-page">
       <div className="stats-grid">
-
         {/* CARD 1: Tareas completadas vs pendientes */}
         <div className="stats-grid-cell">
           <SummaryCard title="Tareas por Curso" className="card-stats">
             {tareasStats ? (
-              <BarChart width={300} height={200} data={[
-                { name: 'Completadas', value: tareasStats.completadas },
-                { name: 'Pendientes', value: tareasStats.pendientes }
-              ]}>
+              <BarChart
+                width={300}
+                height={200}
+                data={[
+                  { name: "Completadas", value: tareasStats.completadas },
+                  { name: "Pendientes", value: tareasStats.pendientes },
+                ]}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis allowDecimals={false} />
@@ -114,9 +134,18 @@ const StatsPage = () => {
 
         {/* CARD 2: Estado Global de Actividades */}
         <div className="stats-grid-cell">
-          <SummaryCard title="Estado Global de Actividades" className="card-stats">
+          <SummaryCard
+            title="Estado Global de Actividades"
+            className="card-stats"
+          >
             {dataDona.length > 0 ? (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <PieChart width={180} height={180}>
                   <Pie
                     data={dataDona}
@@ -136,17 +165,28 @@ const StatsPage = () => {
                 </PieChart>
                 <div>
                   {dataDona.map((entry, idx) => (
-                    <div key={entry.name} style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
-                      <span style={{
-                        display: 'inline-block',
-                        width: 14,
-                        height: 14,
-                        borderRadius: '50%',
-                        background: entry.color,
-                        marginRight: 8
-                      }} />
+                    <div
+                      key={entry.name}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: 6,
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-block",
+                          width: 14,
+                          height: 14,
+                          borderRadius: "50%",
+                          background: entry.color,
+                          marginRight: 8,
+                        }}
+                      />
                       <span style={{ minWidth: 180 }}>{entry.name}</span>
-                      <span style={{ fontWeight: 'bold', marginLeft: 8 }}>{estadoTareas[ESTADO_LABELS[idx].key]}</span>
+                      <span style={{ fontWeight: "bold", marginLeft: 8 }}>
+                        {estadoTareas[ESTADO_LABELS[idx].key]}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -159,16 +199,37 @@ const StatsPage = () => {
 
         {/* CARD 3: Progreso acumulativo de estrellas */}
         <div className="stats-grid-cell">
-          <SummaryCard title="Progreso Acumulativo de Estrellas" className="card-stats">
+          <SummaryCard
+            title="Progreso Acumulativo de Estrellas"
+            className="card-stats"
+          >
             <div style={{ marginBottom: 10 }}>
-              <label>Fecha inicio: <input type="date" value={fechaInicio} onChange={e => setFechaInicio(e.target.value)} /></label>
-              <label style={{ marginLeft: 10 }}>Fecha fin: <input type="date" value={fechaFin} onChange={e => setFechaFin(e.target.value)} /></label>
+              <label>
+                Fecha inicio:{" "}
+                <input
+                  type="date"
+                  value={fechaInicio}
+                  onChange={(e) => setFechaInicio(e.target.value)}
+                />
+              </label>
+              <label style={{ marginLeft: 10 }}>
+                Fecha fin:{" "}
+                <input
+                  type="date"
+                  value={fechaFin}
+                  onChange={(e) => setFechaFin(e.target.value)}
+                />
+              </label>
             </div>
             {estrellasFiltradas.length > 0 ? (
-              <LineChart width={350} height={200} data={estrellasFiltradas.map(item => ({
-                fecha: item.semana_inicio,
-                estrellas: item.estrellas
-              }))}>
+              <LineChart
+                width={350}
+                height={200}
+                data={estrellasFiltradas.map((item) => ({
+                  fecha: item.semana_inicio,
+                  estrellas: item.estrellas,
+                }))}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="fecha" />
                 <YAxis allowDecimals={false} />
@@ -183,16 +244,32 @@ const StatsPage = () => {
 
         {/* CARD 4: (puedes dejarla igual o poner otra estadística) */}
         <div className="stats-grid-cell">
-          <SummaryCard title="Score:" className="card-stats" style={{ textAlign: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <span style={{ fontSize: 28, fontWeight: 'bold', color: '#888' }}>
-                {totalEstrellas} <span style={{ fontSize: 18, fontWeight: 'normal' }}>estrellas</span>
+          <SummaryCard
+            title="Score:"
+            className="card-stats"
+            style={{ textAlign: "center" }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ fontSize: 28, fontWeight: "bold", color: "#888" }}>
+                {totalEstrellas}{" "}
+                <span style={{ fontSize: 18, fontWeight: "normal" }}>
+                  estrellas
+                </span>
               </span>
-              <img src={starImg} alt="estrella" style={{ width: 90, marginTop: 10 }} />
+              <img
+                src={starImg}
+                alt="estrella"
+                style={{ width: 90, marginTop: 10 }}
+              />
             </div>
           </SummaryCard>
         </div>
-
       </div>
     </div>
   );
