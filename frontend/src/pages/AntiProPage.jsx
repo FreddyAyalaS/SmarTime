@@ -10,6 +10,30 @@ const AntiProPage = () => {
   const [minutes, setMinutes] = useState('00');
   const [remainingTime, setRemainingTime] = useState(null);
 
+  console.log(blockedSites)
+
+  //Fetch para el modo bloqueo
+  useEffect(() => {
+    const token = localStorage.getItem('authToken'); // Obtén el token del localStorage
+
+    if (token) {
+      fetch('http://localhost:8000/antiprocrastinacion/configuracion-antiprocrastinacion/', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Agrega el token aquí
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setIsActive(data.modo_antiprocrastinacion);
+          setBlockedSites(Array.isArray(data.urls_bloqueadas) ? data.urls_bloqueadas : []);
+        })
+        .catch((error) => console.error('Error al obtener configuración:', error));
+    }
+  }, []); // Solo se ejecuta una vez al montar el componente
+
+
   useEffect(() => {
     let timer;
     if (isActive && remainingTime > 0) {
@@ -28,18 +52,53 @@ const AntiProPage = () => {
     if (!isActive && totalSeconds > 0) {
       setRemainingTime(totalSeconds);
     }
+    //Envio del estado actualizado al backend
+    saveConfig({ modo_antiprocrastinacion: !isActive, urls_bloqueadas: blockedSites });
   };
 
   const handleAddSite = () => {
     if (newSite && !blockedSites.includes(newSite)) {
-      setBlockedSites([...blockedSites, newSite]);
-      setNewSite('');
+      setBlockedSites((prevBlockedSites) => {
+        const updatedBlockedSites = [...prevBlockedSites, newSite];
+        // Ahora guardamos la configuración con el nuevo estado actualizado
+        saveConfig({ modo_antiprocrastinacion: isActive, urls_bloqueadas: updatedBlockedSites });
+        return updatedBlockedSites;  // Actualizamos el estado
+      });
+      setNewSite('');  // Limpiar el campo de texto
     }
   };
+  
 
   const handleRemoveSite = (site) => {
-    setBlockedSites(blockedSites.filter((s) => s !== site));
+    const updatedSites = blockedSites.filter((s) => s !== site);
+    setBlockedSites(updatedSites);
+    saveConfig({ modo_antiprocrastinacion: isActive, urls_bloqueadas: updatedSites });
   };
+
+  const saveConfig = (configData) => {
+    const token = localStorage.getItem('authToken'); // Obtener el token de localStorage
+
+    if (!token) {
+      console.error('No se encontró el token de autenticación.');
+      return;
+    }
+
+    fetch('http://localhost:8000/antiprocrastinacion/configuracion-antiprocrastinacion/', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // Agregar el token en los encabezados
+      },
+      body: JSON.stringify(configData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Configuración guardada:', data);
+      })
+      .catch((error) => console.error('Error al guardar configuración:', error));
+  };
+
+
 
   const formatTime = (seconds) => {
     const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
@@ -74,13 +133,18 @@ const AntiProPage = () => {
         <button className="add-site-btn" onClick={handleAddSite}>+ agregar sitio</button>
 
         <ul className="site-list">
-          {blockedSites.map((site, i) => (
-            <li key={i}>
-              {site}
-              <button className="remove-btn" onClick={() => handleRemoveSite(site)}>❌</button>
-            </li>
-          ))}
-        </ul>
+  {Array.isArray(blockedSites) && blockedSites.length > 0 ? (
+    blockedSites.map((site, i) => (
+      <li key={i}>
+        {site}
+        <button className="remove-btn" onClick={() => handleRemoveSite(site)}>❌</button>
+      </li>
+    ))
+  ) : (
+    <li>añada sus sitios bloqueados</li>
+  )}
+</ul>
+
       </div>
 
       <div className="antipro-section">
