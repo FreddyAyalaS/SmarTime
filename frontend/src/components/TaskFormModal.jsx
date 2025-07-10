@@ -120,20 +120,6 @@ const TaskFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
                 }
               }}
             />
-            <div>
-              <label htmlFor="estado-tarea" className="input-label">Estado</label>
-              <select
-                id="estado-tarea"
-                name="estado"
-                value={estado}
-                onChange={(e) => setEstado(e.target.value)}
-                className="input-field"
-              >
-                <option value="inicio">Inicio</option>
-                <option value="en_desarrollo">En Desarrollo</option>
-                <option value="finalizado">Finalizado</option>
-              </select>
-            </div>
             <div className={modalFooterClasses}>
               <Button type="button" variant="secondary" onClick={onClose} className={cancelButtonClasses}>
                 Cancelar

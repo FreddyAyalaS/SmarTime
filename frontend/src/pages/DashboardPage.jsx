@@ -1,11 +1,9 @@
-// src/pages/DashboardPage/DashboardPage.jsx
-import React, { useEffect, useState } from "react";
-import SummaryCard from "../components/SummaryCard";
-import GlobalStatusChart from "../components/GlobalStatusChart";
-import { getTasks } from "../services/taskServiceSelector";
-import { getActivities } from "../services/calendarService.mock";
-import "../styles/DashboardPage.css";
-
+import React, { useEffect, useState } from 'react';
+import SummaryCard from '../components/SummaryCard';
+import GlobalStatusChart from '../components/GlobalStatusChart';
+import { getTareas, getActividadesDeHoy } from '../services/calendarService';
+import '../styles/DashboardPage.css';
+  
 const DashboardPage = () => {
   const [, setTodayTasks] = useState([]);
   const [upcomingTasks, setUpcomingTasks] = useState([]);
@@ -13,58 +11,66 @@ const DashboardPage = () => {
   const [weeklyIndicators, setWeeklyIndicators] = useState([]);
 
   useEffect(() => {
-    // 🚨 Simulamos que hoy es 2025-06-30 (por pruebas con datos mock)
-    const todayStr = "2025-06-30";
-    const today = new Date(todayStr);
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
     const next7Days = new Date(today);
     next7Days.setDate(today.getDate() + 7);
 
     const fetchTasks = async () => {
-      const allTasks = await getTasks();
-      setTodayTasks(allTasks.filter((t) => t.fecha_entrega === todayStr));
+      const allTasks = await getTareas();
+
+      setTodayTasks(allTasks.filter(t => t.fechaEntrega === todayStr));
+
       setUpcomingTasks(
-        allTasks.filter((t) => {
-          const entrega = new Date(t.fecha_entrega);
+        allTasks.filter(t => {
+          const entrega = new Date(t.fechaEntrega);
           return entrega > today && entrega <= next7Days;
         })
       );
     };
 
     const fetchTodayActivities = async () => {
-      const all = await getActivities();
+      try {
+        const actividades = await getActividadesDeHoy();
 
-      const todayFiltered = all.filter((a) => {
-        const fecha = a.realizationDate || a.fecha; // Unificamos ambas fechas
-        return fecha === todayStr;
-      });
+        const allToday = actividades.map(act => ({
+          id: act.id,
+          tipo: act.tipo,
+          title: act.titulo || act.temas || act.curso || act.description || '',
+          startTime: act.horaInicio || '00:00',
+          endTime: act.horaFin || '',
+          fecha: todayStr,
+        }));
 
-      const sorted = todayFiltered.sort((a, b) => {
-        const horaA = a.startTime || a.hInicio || "00:00";
-        const horaB = b.startTime || b.hInicio || "00:00";
-        return horaA.localeCompare(horaB);
-      });
+        const ordenadas = allToday.sort((a, b) =>
+          (a.startTime || '').localeCompare(b.startTime || '')
+        );
 
-      setTodayActivities(sorted);
+        setTodayActivities(ordenadas);
+      } catch (error) {
+        console.error('Error al cargar actividades de hoy:', error);
+        setTodayActivities([]);
+      }
     };
 
     const fetchWeeklyIndicators = async () => {
-      const tasks = await getTasks();
-      const activities = await getActivities();
+      const [tasks, actividades] = await Promise.all([
+        getTareas(),
+        getActividadesDeHoy(),
+      ]);
+
       const indicators = [...Array(7)].map((_, i) => {
         const d = new Date(today);
-        d.setDate(today.getDate() - today.getDay() + 1 + i); // Lunes a Domingo
-        const dateStr = d.toISOString().split("T")[0];
+        d.setDate(today.getDate() - today.getDay() + i + 1);
+        const dateStr = d.toISOString().split('T')[0];
 
         return {
-          day: d.toLocaleDateString("es-PE", { weekday: "short" }),
-          hasTask: tasks.some(
-            (t) => t.fecha_tarea === dateStr && !t.completado
-          ),
-          hasActivity: activities.some(
-            (a) => (a.realizationDate || a.fecha) === dateStr
-          ),
+          day: d.toLocaleDateString('es-PE', { weekday: 'short' }),
+          hasTask: tasks.some(t => t.fechaEntrega === dateStr),
+          hasActivity: actividades.some(a => a.fecha === dateStr),
         };
       });
+
       setWeeklyIndicators(indicators);
     };
 
@@ -75,16 +81,11 @@ const DashboardPage = () => {
 
   const normalizeTypeClass = (tipo) => {
     switch (tipo) {
-      case "Tarea":
-        return "tarea";
-      case "Estudio":
-        return "estudio";
-      case "Clase":
-        return "clase";
-      case "Act. no académica":
-        return "act_no_academica";
-      default:
-        return "";
+      case 'Tarea': return 'tarea';
+      case 'Estudio': return 'estudio';
+      case 'Clase': return 'clase';
+      case 'ActividadNoAcademica': return 'act_no_academica';
+      default: return '';
     }
   };
 
@@ -96,22 +97,12 @@ const DashboardPage = () => {
           <SummaryCard title="Actividades de Hoy" className="card-actividades">
             {todayActivities.length > 0 ? (
               todayActivities.map((act) => {
-                const horaInicio = act.startTime || act.hInicio || "??:??";
-                const horaFin = act.endTime || act.hFin || "??:??";
-                const contenido =
-                  act.title || act.temas || act.description || act.course;
-
+                const horaInicio = act.startTime || '??:??';
+                const horaFin = act.endTime || '??:??';
                 return (
-                  <div
-                    key={act.id}
-                    className={`dashboard-task-box2 ${normalizeTypeClass(
-                      act.tipo
-                    )}`}
-                  >
-                    <div className="task-title">{contenido}</div>
-                    <div className="task-deadline-text">
-                      {horaInicio} - {horaFin}
-                    </div>
+                  <div key={act.id} className={`dashboard-task-box2 ${normalizeTypeClass(act.tipo)}`}>
+                    <div className="task-title">{act.title}</div>
+                    <div className="task-deadline-text">{horaInicio} - {horaFin}</div>
                   </div>
                 );
               })
@@ -128,11 +119,7 @@ const DashboardPage = () => {
               {weeklyIndicators.map((day, i) => (
                 <div
                   key={i}
-                  className={`weekly-day${day.hasTask ? " has-task" : ""}${
-                    day.hasActivity ? " has-activity" : ""
-                  }`
-                    .trim()
-                    .replace(/\s+/g, " ")}
+                  className={`weekly-day${day.hasTask ? ' has-task' : ''}${day.hasActivity ? ' has-activity' : ''}`.trim()}
                 >
                   {day.day.charAt(0).toUpperCase() + day.day.slice(1)}
                 </div>
@@ -153,12 +140,11 @@ const DashboardPage = () => {
                   <strong>{task.titulo}</strong>
                   <br />
                   <div className="task-deadline-text">
-                    Vence:{" "}
-                    {new Date(task.fecha_entrega).toLocaleDateString("es-PE", {
-                      weekday: "long",
-                      day: "2-digit",
-                    })}{" "}
-                    {task.hora_entrega || "23:59"}
+                    Vence: {new Date(task.fechaEntrega).toLocaleDateString('es-PE', {
+                      weekday: 'long',
+                      day: '2-digit',
+                    })}{' '}
+                    {task.horaEntrega || '23:59'}
                   </div>
                 </div>
               ))

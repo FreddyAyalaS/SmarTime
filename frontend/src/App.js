@@ -58,7 +58,7 @@ function App() {
     <Router>
       <Routes>
         {/* Rutas públicas */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+         <Route path="/" element={<Navigate to="/landing" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -80,8 +80,8 @@ function App() {
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/anti-procrastination" element={<AntiProPage />} />
-          <Route path="/tasks" element={<TasksPage />} />
-          <Route path="/analytics" element={<StatsPage />} />
+          <Route path="/tasks" element={<TasksPage/>} />
+          <Route path="/analytics" element={<StatsPage />} />  
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Route>
 

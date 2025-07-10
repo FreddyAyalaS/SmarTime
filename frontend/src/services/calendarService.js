@@ -85,4 +85,8 @@ export const deleteActividadNoAcademica = async (id) => {
   return response.data;
 };
 
+export const getActividadesDeHoy = async () => {
+  const response = await apiClient.get('/calendario/api/actividadesHoy/');
+  return response.data;
+};
 

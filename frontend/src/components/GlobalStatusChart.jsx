@@ -1,7 +1,7 @@
 // src/components/GlobalStatusChart.jsx
 import React, { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { getTasks } from '../services/taskService';
+import { getTareas } from '../services/calendarService'; // <- Ya trae campo `estado`
 import '../styles/GlobalStatusChart.css';
 
 const COLORS = {
@@ -15,9 +15,9 @@ const COLORS = {
 const LABELS = {
   por_hacer: 'Por hacer',
   en_proceso_dentro: 'En proceso dentro de la fecha',
-  en_proceso_fuera: 'En proceso afuera de la fecha',
+  en_proceso_fuera: 'En proceso fuera de la fecha',
   finalizado_dentro: 'Finalizado dentro de la fecha',
-  finalizado_fuera: 'Finalizado afuera de la fecha',
+  finalizado_fuera: 'Finalizado fuera de la fecha',
 };
 
 const CustomLegend = ({ payload }) => (
@@ -37,7 +37,9 @@ const GlobalStatusChart = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const allTasks = await getTasks();
+      const allTasks = await getTareas(); // Devuelve tareas con campo `estado`
+      console.log("🚨 Tareas recibidas del calendarService:", allTasks);
+
       const today = new Date().toISOString().split('T')[0];
 
       const counters = {
@@ -49,22 +51,27 @@ const GlobalStatusChart = () => {
       };
 
       allTasks.forEach(task => {
-        const { fecha_entrega, estado } = task;
+        const estado = task.estado || 'inicio';
+        const fechaEntrega = task.fechaEntrega;
+        const vencida = fechaEntrega < today;
 
-        if (estado === 'inicio') {
-          counters.por_hacer++;
-        } else if (estado === 'en_desarrollo') {
-          fecha_entrega >= today
-            ? counters.en_proceso_dentro++
-            : counters.en_proceso_fuera++;
-        } else if (estado === 'finalizado') {
-          fecha_entrega >= today
-            ? counters.finalizado_dentro++
-            : counters.finalizado_fuera++;
+        switch (estado) {
+          case 'inicio':
+            counters.por_hacer++;
+            break;
+          case 'en_desarrollo':
+            vencida ? counters.en_proceso_fuera++ : counters.en_proceso_dentro++;
+            break;
+          case 'finalizado':
+            vencida ? counters.finalizado_fuera++ : counters.finalizado_dentro++;
+            break;
+          default:
+            counters.por_hacer++;
         }
       });
 
       const total = Object.values(counters).reduce((sum, val) => sum + val, 0);
+
       const chartData = Object.entries(counters).map(([key, value]) => ({
         label: LABELS[key],
         value,
