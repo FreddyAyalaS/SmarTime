@@ -103,6 +103,8 @@ def verificar_sobrecarga(usuario, actividad):
         delta = datetime.combine(fecha, t_fin) - datetime.combine(fecha, t_inicio)
         total_horas += delta.total_seconds() / 3600
 
+    print(total_horas)
+
     if total_horas > 10:
         enviar_sugerencia(
             usuario.email,

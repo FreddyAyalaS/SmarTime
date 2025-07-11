@@ -43,6 +43,8 @@ const StatsPage = () => {
       .catch(() => setTareasStats(null));
   }, []);
 
+  console.log("Tareas Stats:", tareasStats);
+
   // Cargar historial de estrellas (todas las semanas)
   useEffect(() => {
     axios
@@ -66,6 +68,8 @@ const StatsPage = () => {
       .then((res) => setEstadoTareas(res.data))
       .catch(() => setEstadoTareas(null));
   }, []);
+
+  console.log("Estado Tareas:", estadoTareas);
 
   // Filtrar historial de estrellas por fechas seleccionadas
   const estrellasFiltradas = historialEstrellas.filter((item) => {
